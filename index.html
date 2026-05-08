@@ -1,0 +1,3565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美妙收入掉金币 - 打工人的财富可视化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+            position: relative;
+            background: linear-gradient(135deg, #1a0000 0%, #331a00 50%, #1a0000 100%);
+        }
+
+        /* 奢华黄金背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,215,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,149,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255,215,0,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(255,149,0,0.2) 0%, transparent 50%);
+            animation: backgroundGlow 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(#ffd700 1px, transparent 1px),
+                radial-gradient(#ff9500 0.5px, transparent 0.5px);
+            background-size: 50px 50px, 25px 25px;
+            background-position: 0 0, 12.5px 12.5px;
+            opacity: 0.1;
+            animation: float 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes backgroundGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+
+        /* 金币粒子层 */
+        .coin-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 接金币小人样式 - 办公室打工人 */
+        .catcher-container {
+            position: fixed;
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+        }
+
+        .catcher-person {
+            width: 100px;
+            height: 120px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: workerTired 0.8s ease-in-out infinite;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+        }
+
+        /* 接金币小人图片样式 */
+        .catcher-character {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        /* 临时图标样式 */
+        .catcher-character.temp-character {
+            animation: goldGlowFull 0.5s ease-in-out;
+        }
+
+        /* 全身金光效果 */
+        @keyframes goldGlowFull {
+            0% {
+                filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
+                transform: scale(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.9));
+                transform: scale(1.05);
+            }
+            100% {
+                filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
+                transform: scale(1);
+            }
+        }
+
+        /* 办公桌完整场景 */
+        .office-desk {
+            position: absolute;
+            bottom: -5px;
+            left: -20px;
+            width: 140px;
+            height: 20px;
+            background: linear-gradient(180deg, #8b7355 0%, #6b5344 100%);
+            border-radius: 5px 5px 0 0;
+            border: 3px solid #5d4037;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* 办公桌腿 */
+        .office-desk::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 15px;
+            width: 12px;
+            height: 15px;
+            background: #6b5344;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .office-desk::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            right: 15px;
+            width: 12px;
+            height: 15px;
+            background: #6b5344;
+            border-radius: 0 0 3px 3px;
+        }
+
+        /* 桌上物品 - 电脑 */
+        .desk-items {
+            position: absolute;
+            top: -25px;
+            left: -10px;
+            width: 120px;
+            height: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .desk-item {
+            width: 20px;
+            height: 20px;
+            position: relative;
+        }
+
+        .desk-item.computer {
+            width: 30px;
+            height: 18px;
+            background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
+            border-radius: 3px;
+            border: 2px solid #4a5568;
+        }
+
+        .desk-item.computer::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 5px;
+            background: #4a5568;
+        }
+
+        /* 咖啡杯 */
+        .desk-item.coffee {
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(180deg, #795548 0%, #5d4037 100%);
+            border-radius: 50% 50% 3px 3px;
+            border: 2px solid #5d4037;
+        }
+
+        .desk-item.coffee::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -5px;
+            width: 8px;
+            height: 10px;
+            background: #8d6e63;
+            border-radius: 2px;
+        }
+
+        /* 文件堆 */
+        .desk-item.documents {
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(180deg, #fff9c4 0%, #fff59d 100%);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .desk-item.documents::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 11px;
+            background: #fffde7;
+            border-radius: 1px;
+        }
+
+        /* 打工人头部 */
+        .catcher-head {
+            width: 40px;
+            height: 45px;
+            background: linear-gradient(135deg, #ffe4c4 0%, #deb887 100%);
+            border-radius: 50%;
+            position: relative;
+            border: 2px solid #cd853f;
+            box-shadow: inset 0 3px 6px rgba(255,255,255,0.4);
+        }
+
+        /* 黑框眼镜 */
+        .catcher-glasses {
+            position: absolute;
+            top: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .catcher-eye {
+            width: 12px;
+            height: 10px;
+            background: #2c1810;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .catcher-eye::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            background: #1a1a2e;
+            left: 5px;
+        }
+
+        /* 眼镜框 */
+        .catcher-glasses::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 14px;
+            border: 3px solid #1a1a2e;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* 疲惫的眼睛 */
+        .catcher-eye::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 4px;
+            background: #1a1a2e;
+            bottom: 1px;
+            left: 2px;
+        }
+
+        /* 深黑眼圈 */
+        .catcher-head::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 5px;
+            background: #8b4513;
+            border-radius: 50%;
+            top: 16px;
+            left: 6px;
+            opacity: 0.4;
+        }
+
+        .catcher-head::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 5px;
+            background: #8b4513;
+            border-radius: 50%;
+            top: 16px;
+            right: 6px;
+            opacity: 0.4;
+        }
+
+        /* 疲惫的表情 */
+        .catcher-smile {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 2px;
+            background: #1a1a2e;
+            border-radius: 1px;
+            opacity: 0.6;
+        }
+
+        /* 程序员发型 */
+        .catcher-hair {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 15px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 50% 50% 0 0;
+        }
+
+        /* 身体 - 格子衬衫 */
+        .catcher-body {
+            width: 35px;
+            height: 30px;
+            background: linear-gradient(135deg, #f5f5dc 0%, #ddd8c7 100%);
+            border-radius: 5px 5px 0 0;
+            margin-top: -6px;
+            position: relative;
+            border: 2px solid #b8860b;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* 衬衫格子图案 */
+        .catcher-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 3px,
+                rgba(139, 69, 19, 0.1) 3px,
+                rgba(139, 69, 19, 0.1) 6px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 3px,
+                rgba(139, 69, 19, 0.1) 3px,
+                rgba(139, 69, 19, 0.1) 6px
+            );
+            border-radius: 5px 5px 0 0;
+        }
+
+        /* 领带 */
+        .catcher-tie {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 18px;
+            background: linear-gradient(180deg, #dc143c 0%, #8b0000 100%);
+            border-radius: 2px;
+        }
+
+        .catcher-tie::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -6px;
+            width: 20px;
+            height: 8px;
+            background: linear-gradient(180deg, #dc143c 0%, #8b0000 100%);
+            border-radius: 2px;
+        }
+
+        /* 打工人手臂 - 疲惫垂下 */
+        .catcher-arms {
+            position: absolute;
+            width: 100%;
+            top: 8px;
+        }
+
+        .catcher-arm {
+            position: absolute;
+            width: 14px;
+            height: 35px;
+            background: linear-gradient(135deg, #ff8fab 0%, #ff6b9d 100%);
+            border-radius: 7px;
+            border: 2px solid #e91e63;
+            top: 0;
+        }
+
+        .catcher-arm.left {
+            left: -10px;
+            transform: rotate(-25deg);
+        }
+
+        .catcher-arm.right {
+            right: -10px;
+            transform: rotate(25deg);
+        }
+
+        /* 手掌 */
+        .catcher-arm::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #ffe4c4;
+            border-radius: 50%;
+            bottom: -4px;
+            left: 1px;
+            border: 2px solid #deb887;
+        }
+
+        /* 可爱的腿 */
+        .catcher-legs {
+            display: flex;
+            gap: 6px;
+            margin-top: -3px;
+        }
+
+        .catcher-leg {
+            width: 12px;
+            height: 25px;
+            background: linear-gradient(180deg, #87ceeb 0%, #4682b4 100%);
+            border-radius: 0 0 6px 6px;
+            border: 2px solid #2e6b9e;
+        }
+
+        /* 金色鞋子 */
+        .catcher-leg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
+            border-radius: 4px;
+            border: 2px solid #ff6b00;
+        }
+
+        .caught-coin-counter {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
+            color: #8b4513;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(255,215,0,0.5);
+            border: 3px solid #fff;
+            animation: counterPulse 0.4s ease-out;
+            z-index: 2;
+        }
+
+        /* 称号徽章样式 */
+        .title-badge {
+            position: absolute;
+            top: -85px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 50%, #c2185b 100%);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(233,30,99,0.6);
+            border: 3px solid #fff;
+            animation: badgeFloat 2s ease-in-out infinite;
+            z-index: 3;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .title-badge::before {
+            content: '🏆';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        /* 华丽的金色篮子 */
+        .catcher-basket {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55px;
+            height: 40px;
+            background: linear-gradient(135deg, #daa520 0%, #b8860b 50%, #cd853f 100%);
+            border-radius: 8px 8px 30px 30px;
+            border: 3px solid #8b4513;
+            box-shadow: 0 4px 12px rgba(218,165,32,0.5), inset 0 2px 6px rgba(255,255,255,0.3);
+        }
+
+        /* 篮子内部 */
+        .catcher-basket::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            background: linear-gradient(135deg, #ffe4b5 0%, #f4a460 100%);
+            border-radius: 5px 5px 25px 25px;
+            border: 2px dashed #deb887;
+        }
+
+        /* 篮子装饰 */
+        .catcher-basket::after {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 16px;
+            animation: starTwinkle 1s ease-in-out infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        @keyframes catcherBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes counterPulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.3); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        /* 称号升级特效 */
+        @keyframes badgeUpgrade {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            50% { transform: translateX(-50%) scale(1.5); opacity: 0.8; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
+
+        @keyframes coinCatchEffect {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+
+        .catch-effect {
+            position: absolute;
+            font-size: 30px;
+            animation: coinCatchEffect 0.5s ease-out forwards;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .score-popup {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: scoreFloat 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 1002;
+        }
+
+        @keyframes scoreFloat {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
+        }
+
+        /* 小游戏控制面板 */
+        .game-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1003;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .game-toggle-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
+            color: #8b4513;
+            border: 3px solid #fff;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .game-toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .game-toggle-btn.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: #fff;
+        }
+
+        .game-info {
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffd700;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            font-size: 14px;
+            display: none;
+        }
+
+        .game-info.active {
+            display: block;
+        }
+
+        .game-info h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .coin-particle {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            transform: translateY(100vh);
+            animation: coinFloat linear infinite;
+        }
+
+        @keyframes coinFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 头部设计 */
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ffd700, #ffed4a, #ff9500, #ffd700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.1em;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        /* 语言切换按钮 */
+        .lang-switch {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            border: 2px solid #ff9500;
+            color: #1a1a2e;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.7);
+            background: linear-gradient(135deg, #ffed4a, #ffd700);
+        }
+
+        /* 主输入区域 */
+        .input-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.15));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 10px 40px rgba(255,215,0,0.3),
+                inset 0 0 30px rgba(255,215,0,0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,215,0,0.2), transparent);
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-label {
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            display: block;
+            font-weight: bold;
+        }
+
+        .income-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            font-size: 1.5em;
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.6);
+            color: #ffd700;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .income-input:focus {
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            transform: scale(1.02);
+            border-color: #ff9500;
+        }
+
+        .income-input::placeholder {
+            color: #666;
+        }
+
+        /* 目标设定 */
+        .goal-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .goal-label {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .goal-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px 15px;
+            font-size: 1.1em;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.6);
+            color: #ffd700;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 0 15px rgba(255,215,0,0.1);
+        }
+
+        /* 隐藏实时状态显示 */
+
+        /* 收入单位展示区域 */
+        .units-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .unit-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.05));
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(255,215,0,0.15);
+            backdrop-filter: blur(8px);
+            flex: 1 1 calc(20% - 12px);
+            min-width: 150px;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .unit-card:hover::before {
+            left: 100%;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,149,0,0.1));
+        }
+
+        .unit-card.active {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,149,0,0.2));
+            box-shadow: 
+                0 0 40px rgba(255,215,0,0.5),
+                inset 0 0 30px rgba(255,215,0,0.1);
+        }
+
+        .unit-icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+
+        .unit-name {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .unit-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255,215,0,0.7);
+        }
+
+        .unit-card.active .unit-value {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 钱包区域 */
+        .wallet-section {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .wallet-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wallet-icon svg {
+            width: 100%;
+            height: 100%;
+            animation: walletPulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(244, 67, 54, 0.7));
+        }
+
+        /* 钱包小人图片样式 */
+        .wallet-character {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 2;
+            position: relative;
+            border-radius: 50%;
+        }
+
+        /* 淡金色光环效果 */
+        .wallet-icon::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0.1) 40%, transparent 70%);
+            z-index: 1;
+            animation: goldGlow 3s ease-in-out infinite;
+        }
+
+        /* 光环动画 */
+        @keyframes goldGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.08); opacity: 0.8; }
+        }
+
+        @keyframes walletPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .wallet-icon::before {
+            content: '';
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.3) 0%, transparent 70%);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .wallet-icon::after {
+            content: '';
+            position: absolute;
+            width: 180%;
+            height: 180%;
+            border: 2px solid rgba(255, 69, 0, 0.2);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .wallet-stats {
+            margin-top: 15px;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* 成就系统 */
+        .achievements-section {
+            margin-bottom: 30px;
+        }
+
+        .achievements-title {
+            text-align: center;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            box-shadow: inset 0 0 20px rgba(255,215,0,0.05);
+        }
+
+        .achievement.unlocked {
+            border-color: #ffd700;
+            opacity: 1;
+            box-shadow: 
+                0 0 30px rgba(255,215,0,0.5),
+                inset 0 0 20px rgba(255,215,0,0.15);
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,149,0,0.15));
+        }
+
+        .achievement-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .achievement-name {
+            font-size: 0.9em;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        /* 接金币游戏成就专用样式 */
+        .game-achievements-section {
+            background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(255,77,138,0.1));
+            border: 2px solid #ff6b9d;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .game-achievements-title {
+            text-align: center;
+            background: linear-gradient(135deg, #ff6b9d, #ff4d8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* 当前成就显示区域 */
+        .current-achievement-display {
+            background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(255,77,138,0.15));
+            border: 2px solid #ff6b9d;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 0 30px rgba(255,107,157,0.3);
+        }
+
+        .current-achievement-icon {
+            font-size: 4em;
+            flex-shrink: 0;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .current-achievement-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .current-achievement-name {
+            font-size: 1.4em;
+            background: linear-gradient(135deg, #ff6b9d, #ff4d8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .current-achievement-coins {
+            font-size: 1em;
+            color: #ff9500;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .current-achievement-desc {
+            font-size: 0.9em;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        /* 最高成就按钮 */
+        .high-score-btn {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+
+        .high-score-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        /* 最高成就弹窗 */
+        .high-score-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            backdrop-filter: blur(5px);
+        }
+
+        .high-score-modal.active {
+            display: flex;
+        }
+
+        .high-score-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #ffd700;
+            border-radius: 25px;
+            padding: 30px;
+            min-width: 350px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .high-score-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .high-score-trophy {
+            font-size: 3em;
+            display: block;
+            margin-bottom: 10px;
+            animation: trophyBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes trophyBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .high-score-header h3 {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .high-score-display {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 149, 0, 0.1));
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .high-score-icon {
+            font-size: 4em;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        .high-score-info {
+            flex: 1;
+        }
+
+        .high-score-name {
+            font-size: 1.4em;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .high-score-coins {
+            font-size: 1em;
+            color: #ff9500;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .high-score-desc {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        .high-score-close-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            border: none;
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .high-score-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .game-achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        .game-achievement {
+            background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(255,77,138,0.1));
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            transition: all 0.4s ease;
+            opacity: 0.3;
+            filter: blur(3px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 初始称号 - 无所事事 */
+        .game-achievement[data-coins="0"] {
+            opacity: 1;
+            filter: blur(0);
+            border-color: #ff6b9d;
+            box-shadow: 
+                0 0 30px rgba(255,107,157,0.5),
+                inset 0 0 20px rgba(255,107,157,0.15);
+            background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(255,77,138,0.15));
+        }
+
+        .game-achievement.unlocked {
+            border-color: #ff6b9d;
+            opacity: 1;
+            filter: blur(0);
+            box-shadow: 
+                0 0 30px rgba(255,107,157,0.5),
+                inset 0 0 20px rgba(255,107,157,0.15);
+            background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(255,77,138,0.15));
+        }
+
+        .game-achievement:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255,107,157,0.4);
+        }
+
+        .game-achievement-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .game-achievement-name {
+            font-size: 0.85em;
+            background: linear-gradient(135deg, #ff6b9d, #ff4d8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-achievement.unlocked .game-achievement-name {
+            opacity: 1;
+        }
+
+        .game-achievement-coins {
+            font-size: 0.7em;
+            color: #ff9500;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .game-achievement-desc {
+            font-size: 0.65em;
+            color: #999;
+            margin-top: 8px;
+            padding: 5px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-achievement.unlocked .game-achievement-desc {
+            opacity: 1;
+        }
+
+        /* 锁定图标 */
+        .game-achievement::before {
+            content: '🔒';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-achievement:not(.unlocked):hover::before {
+            opacity: 0.5;
+        }
+
+        /* 增长模拟 */
+        .simulation-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 10px 40px rgba(255,215,0,0.2),
+                inset 0 0 30px rgba(255,215,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .simulation-title {
+            text-align: center;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .simulation-item {
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,149,0,0.05));
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,215,0,0.2);
+            box-shadow: inset 0 0 20px rgba(255,215,0,0.05);
+        }
+
+        .simulation-period {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .simulation-amount {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+
+        /* 金币动画画布 */
+        #coinCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* 庆祝效果 */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 101;
+            display: none;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .lang-switch {
+                position: static;
+                margin-top: 15px;
+            }
+
+            .input-section {
+                padding: 25px;
+            }
+
+            .income-input {
+                font-size: 1.2em;
+            }
+
+            .unit-value {
+                font-size: 1.5em;
+            }
+
+            .wallet-icon {
+                font-size: 3em;
+            }
+        }
+
+        /* 分享按钮 */
+        .share-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            border: 2px solid #ffd700;
+            color: #1a1a2e;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255,215,0,0.5);
+            text-shadow: 0 0 5px rgba(255,215,0,0.3);
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.7);
+            background: linear-gradient(135deg, #ffed4a, #ffd700);
+        }
+
+        /* 历史记录 */
+        .history-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,149,0,0.05));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 10px 30px rgba(255,215,0,0.15),
+                inset 0 0 30px rgba(255,215,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .history-title {
+            text-align: left;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .clear-all-btn {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+            border: 2px solid #e91e63;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .clear-all-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(244, 67, 54, 0.5);
+        }
+
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,149,0,0.05));
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,215,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            transform: translateX(5px);
+        }
+
+        .history-date {
+            color: #b8b8b8;
+            font-size: 0.9em;
+            flex: 1;
+        }
+
+        .history-amount {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .delete-single-btn {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+            border: 2px solid #e91e63;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+        }
+
+        .delete-single-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(244, 67, 54, 0.5);
+        }
+        
+        /* 确认删除弹窗 */
+        .delete-confirm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(255,215,0,0.95), rgba(255,149,0,0.95));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            z-index: 200;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            display: none;
+            backdrop-filter: blur(10px);
+            min-width: 300px;
+        }
+
+        .delete-confirm.active {
+            display: block;
+        }
+
+        .delete-confirm h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-btn, .cancel-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244,67,54,0.5);
+        }
+
+        .cancel-btn {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26,26,46,0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- 小游戏控制面板 -->
+    <div class="game-controls">
+        <button class="game-toggle-btn" id="gameToggleBtn">🎮 开始接金币游戏</button>
+        <div class="game-info" id="gameInfo">
+            <h3>接金币小游戏</h3>
+            <p>移动鼠标控制小人接住金币</p>
+            <p>已接金币：<strong id="caughtCoinsCount">0</strong> 枚</p>
+        </div>
+    </div>
+
+    <!-- 接金币小人 -->
+    <div class="catcher-container" id="catcherContainer">
+        <div class="caught-coin-counter" id="caughtCoinsCounter">0</div>
+        <div class="title-badge" id="titleBadge">新手</div>
+        <div class="catcher-person">
+            <img src="https://www.coze.cn/s/gEdDvgfCk9U/?width_height=961x1015" alt="接金币小人" class="catcher-character">
+        </div>
+    </div>
+
+    <div class="coin-particles" id="coinParticles"></div>
+    <canvas id="coinCanvas"></canvas>
+    
+    <div class="container">
+        <header>
+            <h1 id="mainTitle">💰 美妙收入掉金币</h1>
+            <p class="subtitle" id="subtitle">打工人，看看你的时间值多少钱</p>
+            <button class="lang-switch" id="langSwitch">English</button>
+        </header>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label class="input-label" id="incomeLabel">请输入您的月薪（元）</label>
+                <input type="number" class="income-input" id="monthlyIncome" placeholder="输入您的月薪" min="0">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label" id="passiveLabel">请输入您的每月被动收入（元）</label>
+                <input type="number" class="income-input" id="passiveIncome" placeholder="输入每月被动收入" min="0">
+            </div>
+            
+            <div class="goal-section">
+                <label class="goal-label" id="goalLabel">🎯 月收入目标（元）</label>
+                <input type="number" class="goal-input" id="incomeGoal" placeholder="设定目标收入">
+            </div>
+        </div>
+
+        <div class="wallet-section">
+            <div class="wallet-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" fill="none">
+                    <!-- 金边效果 -->
+                    <defs>
+                        <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#FFED4A;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#FF9500;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="goldGlow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 钱包主体 -->
+                    <path d="M12 12C12 8.68629 14.6863 6 18 6H82C85.3137 6 88 8.68629 88 12V68C88 71.3137 85.3137 74 82 74H18C14.6863 74 12 71.3137 12 68V12Z" fill="#E53935" stroke="url(#goldBorder)" stroke-width="4" filter="url(#goldGlow)"/>
+                    <!-- 钱包翻盖 -->
+                    <path d="M12 12H88V32C88 35.3137 85.3137 38 82 38H18C14.6863 38 12 35.3137 12 32V12Z" fill="#FF5252" stroke="url(#goldBorder)" stroke-width="3" filter="url(#goldGlow)"/>
+                    <!-- 包扣 - 两个金色凸起，带金边 -->
+                    <ellipse cx="42" cy="25" rx="6" ry="4" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                    <ellipse cx="42" cy="25" rx="3" ry="2" fill="#FFED4A"/>
+                    <ellipse cx="58" cy="25" rx="6" ry="4" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                    <ellipse cx="58" cy="25" rx="3" ry="2" fill="#FFED4A"/>
+                    <!-- 钱包细节线条 -->
+                    <line x1="20" y1="50" x2="80" y2="50" stroke="url(#goldBorder)" stroke-width="2" stroke-opacity="0.4"/>
+                    <line x1="20" y1="58" x2="80" y2="58" stroke="url(#goldBorder)" stroke-width="2" stroke-opacity="0.4"/>
+                    <line x1="20" y1="66" x2="80" y2="66" stroke="url(#goldBorder)" stroke-width="2" stroke-opacity="0.4"/>
+                </svg>
+            </div>
+            <div class="wallet-stats">
+                <span id="walletLabel">已累计金额：</span><span id="coinCount">0.0000</span> <span id="coinUnit">元</span>
+            </div>
+        </div>
+
+        <div class="units-section">
+            <div class="unit-card active" data-unit="second">
+                <div class="unit-icon">⏱️</div>
+                <div class="unit-name" id="secondLabel">每秒收入</div>
+                <div class="unit-value" id="secondValue">¥0.00</div>
+            </div>
+            <div class="unit-card" data-unit="minute">
+                <div class="unit-icon">⌚</div>
+                <div class="unit-name" id="minuteLabel">每分钟收入</div>
+                <div class="unit-value" id="minuteValue">¥0.00</div>
+            </div>
+            <div class="unit-card" data-unit="hour">
+                <div class="unit-icon">⏰</div>
+                <div class="unit-name" id="hourLabel">每小时收入</div>
+                <div class="unit-value" id="hourValue">¥0.00</div>
+            </div>
+            <div class="unit-card" data-unit="day">
+                <div class="unit-icon">📅</div>
+                <div class="unit-name" id="dayLabel">每日收入</div>
+                <div class="unit-value" id="dayValue">¥0.00</div>
+            </div>
+            <div class="unit-card" data-unit="week">
+                <div class="unit-icon">📆</div>
+                <div class="unit-name" id="weekLabel">每周收入</div>
+                <div class="unit-value" id="weekValue">¥0.00</div>
+            </div>
+        </div>
+
+
+
+        <div class="achievements-section">
+            <h2 class="achievements-title" id="achievementsTitle">🏆 收入成就系统</h2>
+            <div class="achievements-grid">
+                <div class="achievement" data-achievement="month-new">
+                    <div class="achievement-icon">🌱</div>
+                    <div class="achievement-name" id="monthNewName">月薪新人<br>月薪>3000元</div>
+                </div>
+                <div class="achievement" data-achievement="day-hundred">
+                    <div class="achievement-icon">💯</div>
+                    <div class="achievement-name" id="dayHundredName">日入过百<br>日薪>100元</div>
+                </div>
+                <div class="achievement" data-achievement="hour-king">
+                    <div class="achievement-icon">👑</div>
+                    <div class="achievement-name" id="hourKingName">时薪王者<br>时薪>100元</div>
+                </div>
+                <div class="achievement" data-achievement="income-elite">
+                    <div class="achievement-icon">⭐</div>
+                    <div class="achievement-name" id="incomeEliteName">收入精英<br>月薪>10000元</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 接金币游戏成就栏目 -->
+        <div class="game-achievements-section">
+            <h2 class="game-achievements-title" id="gameAchievementsTitle">🎮 接金币游戏成就</h2>
+            
+            <!-- 当前成就显示区域 -->
+            <div class="current-achievement-display" id="currentAchievementDisplay">
+                <div class="current-achievement-icon" id="currentAchievementIcon">😐</div>
+                <div class="current-achievement-info">
+                    <div class="current-achievement-name" id="currentAchievementName">无所事事</div>
+                    <div class="current-achievement-coins" id="currentAchievementCoins">0 金币</div>
+                    <div class="current-achievement-desc" id="currentAchievementDesc">刚开始踏上摸鱼之旅</div>
+                </div>
+                <button class="high-score-btn" id="highScoreBtn">🏆 <span id="highScoreBtnText">最高成就</span></button>
+            </div>
+            
+            <div class="game-achievements-grid" id="gameAchievementsGrid">
+                <!-- 成就将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 长期积累效果栏目 -->
+        <div class="simulation-section">
+            <h2 class="simulation-title" id="simulationTitle">📈 长期积累效果</h2>
+            <div class="simulation-grid">
+                <div class="simulation-item">
+                    <div class="simulation-period" id="monthSimLabel">1个月积累</div>
+                    <div class="simulation-amount" id="monthSim">¥0</div>
+                </div>
+                <div class="simulation-item">
+                    <div class="simulation-period" id="quarterSimLabel">3个月积累</div>
+                    <div class="simulation-amount" id="quarterSim">¥0</div>
+                </div>
+                <div class="simulation-item">
+                    <div class="simulation-period" id="halfYearSimLabel">半年积累</div>
+                    <div class="simulation-amount" id="halfYearSim">¥0</div>
+                </div>
+                <div class="simulation-item">
+                    <div class="simulation-period" id="yearSimLabel">1年积累</div>
+                    <div class="simulation-amount" id="yearSim">¥0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <div class="history-header">
+                <h2 class="history-title" id="historyTitle">📊 历史记录</h2>
+                <button class="clear-all-btn" id="clearAllHistoryBtn">🗑️ 清除全部</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-item" style="justify-content: center; color: #666;" id="noHistoryText">
+                    暂无历史记录
+                </div>
+            </div>
+        </div>
+
+        <div class="share-section">
+            <button class="share-btn" id="shareBtn">📤 分享我的收入成就</button>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+    
+    <!-- 删除确认弹窗 -->
+    <div class="delete-confirm" id="deleteConfirm">
+        <h3 id="confirmTitle">确定要清除所有历史记录吗？</h3>
+        <div class="confirm-buttons">
+            <button class="confirm-btn" id="confirmDelete">确认删除</button>
+            <button class="cancel-btn" id="cancelDelete">取消</button>
+        </div>
+    </div>
+
+    <!-- 最高成就弹窗 -->
+    <div class="high-score-modal" id="highScoreModal">
+        <div class="high-score-content">
+            <div class="high-score-header">
+                <span class="high-score-trophy">🏆</span>
+                <h3 id="highScoreTitle">历史最高成就</h3>
+            </div>
+            <div class="high-score-display">
+                <div class="high-score-icon" id="highScoreIcon">😐</div>
+                <div class="high-score-info">
+                    <div class="high-score-name" id="highScoreName">无所事事</div>
+                    <div class="high-score-coins" id="highScoreCoins">0 金币</div>
+                    <div class="high-score-desc" id="highScoreDesc">刚开始踏上摸鱼之旅</div>
+                </div>
+            </div>
+            <button class="high-score-close-btn" id="highScoreCloseBtn">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        // 创建金币粒子背景
+        function createCoinParticles() {
+            const container = document.getElementById('coinParticles');
+            const count = 20;
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'coin-particle';
+                particle.textContent = '💰';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.fontSize = (16 + Math.random() * 16) + 'px';
+                container.appendChild(particle);
+            }
+        }
+
+        createCoinParticles();
+
+        // 核心变量
+        let monthlyIncome = 0;
+        let passiveIncome = 0;
+        let incomeGoal = 0;
+        let totalCollectedMoney = 0;
+        let activeUnit = 'second';
+        let coins = [];
+        let unlockedAchievements = new Set();
+        let history = JSON.parse(localStorage.getItem('incomeHistory') || '[]');
+        let currentLang = 'zh';
+        let dropInterval = null;
+        let accumulatedCoinCount = 0;
+        
+        // 小游戏相关变量
+        let gameActive = false;
+        let caughtCoinsCount = 0;
+        let catcherX = 0;
+        let catcherY = 0;
+        let audioContext = null;
+        let gameCoins = []; // 小游戏专用的金币数组
+        let gameAnimationId = null;
+        
+        // 为每个单位单独维护起始时间和累积金额
+        let unitStates = {
+            second: { startTime: Date.now(), accumulatedMoney: 0 },
+            minute: { startTime: Date.now(), accumulatedMoney: 0 },
+            hour: { startTime: Date.now(), accumulatedMoney: 0 },
+            day: { startTime: Date.now(), accumulatedMoney: 0 },
+            week: { startTime: Date.now(), accumulatedMoney: 0 }
+        };
+
+        // 翻译数据
+        const translations = {
+            zh: {
+                mainTitle: '💰 美妙收入掉金币',
+                subtitle: '打工人，看看你的时间值多少钱',
+                incomeLabel: '请输入您的月薪（元）',
+                goalLabel: '🎯 月收入目标（元）',
+                passiveLabel: '请输入您的每月被动收入（元）',
+                liveStatusTitle: '🪙 实时金币掉落状态',
+                walletLabel: '已累计金额：',
+                coinUnit: '元',
+                secondLabel: '每秒收入',
+                minuteLabel: '每分钟收入',
+                hourLabel: '每小时收入',
+                dayLabel: '每日收入',
+                weekLabel: '每周收入',
+                achievementsTitle: '🏆 收入成就系统',
+                monthNewName: '月薪新人<br>月薪>3000元',
+                dayHundredName: '日入过百<br>日薪>100元',
+                hourKingName: '时薪王者<br>时薪>100元',
+                incomeEliteName: '收入精英<br>月薪>10000元',
+                simulationTitle: '📈 长期积累效果',
+                monthSimLabel: '1个月积累',
+                quarterSimLabel: '3个月积累',
+                halfYearSimLabel: '半年积累',
+                yearSimLabel: '1年积累',
+                historyTitle: '📊 历史记录',
+                noHistoryText: '暂无历史记录',
+                shareBtn: '📤 分享我的收入成就',
+                incomePlaceholder: '输入您的月薪',
+                goalPlaceholder: '设定目标收入',
+                passivePlaceholder: '输入您的被动收入',
+                statusTextInitial: '请先输入月薪以开始实时掉落',
+                deleteSingle: '🗑️',
+                clearAllBtn: '🗑️ 清除全部',
+                gameToggleStart: '🎮 开始接金币游戏',
+                gameToggleStop: '🛑 停止接金币游戏',
+                gameAchievementsTitle: '🎮 接金币游戏成就',
+                currentAchievementLabel: '当前成就',
+                coinUnitText: '金币',
+                highScoreBtnText: '最高成就',
+                highScoreTitle: '历史最高成就',
+                highScoreCloseBtn: '关闭',
+                gameInfoTitle: '接金币小游戏',
+                gameInfoTip: '移动鼠标控制小人接住金币',
+                gameInfoCaught: '已接金币：',
+                gameInfoUnit: '枚',
+                achievementIdle: '无所事事',
+                achievementBored: '闲得发慌',
+                achievementFart: '闲出屁',
+                achievementFoot: '闲得抠脚',
+                achievementMushroom: '闲出蘑菇',
+                achievementMoldy: '闲到发霉',
+                achievementNothing: '闲得没事干',
+                achievementSky: '闲出天际',
+                achievementEgg: '闲得蛋疼',
+                achievementYipi: '闲得一批',
+                achievementDoubt: '闲到怀疑人生',
+                achievementIdleDesc: '刚开始踏上摸鱼之旅',
+                achievementBoredDesc: '时间太多，开始发慌',
+                achievementFartDesc: '摸鱼达到初步境界',
+                achievementFootDesc: '抠脚都能接住金币',
+                achievementMushroomDesc: '蘑菇都长出来了',
+                achievementMoldyDesc: '时间长出了霉菌',
+                achievementNothingDesc: '已经闲到无所事事',
+                achievementSkyDesc: '摸鱼已经超越地球',
+                achievementEggDesc: '蛋都闲得自己玩球',
+                achievementYipiDesc: '已经闲得开始散步',
+                achievementDoubtDesc: '怀疑人生是不是来摸鱼的'
+            },
+            en: {
+                mainTitle: '💰 Beautiful Income Coin Drop',
+                subtitle: 'Worker, see how much your time is worth',
+                incomeLabel: 'Please enter your monthly income (CNY)',
+                goalLabel: '🎯 Monthly income goal (CNY)',
+                passiveLabel: 'Please enter your monthly passive income (CNY)',
+                liveStatusTitle: '🪙 Real-time Coin Drop Status',
+                walletLabel: 'Total Accumulated: ',
+                coinUnit: ' CNY',
+                secondLabel: 'Per Second',
+                minuteLabel: 'Per Minute',
+                hourLabel: 'Per Hour',
+                dayLabel: 'Per Day',
+                weekLabel: 'Per Week',
+                achievementsTitle: '🏆 Income Achievement System',
+                monthNewName: 'Monthly Newcomer<br>Monthly>3000 CNY',
+                dayHundredName: 'Daily 100+<br>Daily>100 CNY',
+                hourKingName: 'Hourly King<br>Hourly>100 CNY',
+                incomeEliteName: 'Income Elite<br>Monthly>10000 CNY',
+                simulationTitle: '📈 Long-term Accumulation',
+                monthSimLabel: '1 Month Accumulation',
+                quarterSimLabel: '3 Months Accumulation',
+                halfYearSimLabel: '6 Months Accumulation',
+                yearSimLabel: '1 Year Accumulation',
+                historyTitle: '📊 History Records',
+                noHistoryText: 'No history records',
+                shareBtn: '📤 Share My Income Achievement',
+                incomePlaceholder: 'Enter your monthly income',
+                goalPlaceholder: 'Set income goal',
+                passivePlaceholder: 'Enter your passive income',
+                statusTextInitial: 'Please enter monthly income to start real-time coin drop',
+                clearHistoryBtn: '🗑️ Clear All',
+                clearAllBtn: '🗑️ Clear All',
+                gameToggleStart: '🎮 Start Coin Game',
+                gameToggleStop: '🛑 Stop Coin Game',
+                gameAchievementsTitle: '🎮 Coin Game Achievements',
+                currentAchievementLabel: 'Current Achievement',
+                coinUnitText: 'coins',
+                highScoreBtnText: 'Best Record',
+                highScoreTitle: 'Historical Best Record',
+                highScoreCloseBtn: 'Close',
+                gameInfoTitle: 'Coin Catching Game',
+                gameInfoTip: 'Move mouse to control character to catch coins',
+                gameInfoCaught: 'Coins caught: ',
+                gameInfoUnit: '',
+                achievementIdle: 'Idle',
+                achievementBored: 'So Bored',
+                achievementFart: 'Farting Around',
+                achievementFoot: 'Foot Picking',
+                achievementMushroom: 'Mushroom Growing',
+                achievementMoldy: 'Getting Moldy',
+                achievementNothing: 'Nothing to Do',
+                achievementSky: 'Beyond the Sky',
+                achievementEgg: 'Egg Pain',
+                achievementYipi: 'Super Idle',
+                achievementDoubt: 'Doubting Life',
+                achievementIdleDesc: 'Just started the fishing journey',
+                achievementBoredDesc: 'Too much time, getting anxious',
+                achievementFartDesc: 'Reached initial fishing realm',
+                achievementFootDesc: 'Can catch coins while picking feet',
+                achievementMushroomDesc: 'Mushrooms are growing',
+                achievementMoldyDesc: 'Mold growing over time',
+                achievementNothingDesc: 'Already idle to the max',
+                achievementSkyDesc: 'Fishing beyond Earth',
+                achievementEggDesc: 'Eggs playing ball by themselves',
+                achievementYipiDesc: 'Started walking aimlessly',
+                achievementDoubtDesc: 'Wondering if life is just fishing'
+            }
+        };
+
+        // 画布设置
+        const canvas = document.getElementById('coinCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+
+        // 初始化画布尺寸
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 小游戏金币类
+        class GameCoin {
+            constructor() {
+                this.x = Math.random() * (window.innerWidth - 50) + 25;
+                this.y = -30;
+                this.radius = 12 + Math.random() * 8;
+                this.speedY = Math.random() * 2 + 3;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+                this.opacity = 1;
+                this.caught = false;
+            }
+
+            update() {
+                if (!this.caught) {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.rotation += this.rotationSpeed;
+                    this.speedY += 0.05; // 重力加速
+                    
+                    // 检查是否被小人接住
+                    if (this.checkCatcherCollision()) {
+                        this.caught = true;
+                        this.onCaught();
+                    }
+                    
+                    // 超出屏幕底部
+                    if (this.y > window.innerHeight + 50) {
+                        this.opacity = 0;
+                    }
+                }
+            }
+
+            checkCatcherCollision() {
+                const catcherContainer = document.getElementById('catcherContainer');
+                const catcherRect = catcherContainer.getBoundingClientRect();
+                
+                // 检查金币是否进入小人的接球范围（篮子区域）
+                const basketCenterX = catcherRect.left + catcherRect.width / 2;
+                const basketCenterY = catcherRect.bottom - 20;
+                const catchRadius = 40;
+                
+                const distance = Math.sqrt(
+                    Math.pow(this.x - basketCenterX, 2) + 
+                    Math.pow(this.y - basketCenterY, 2)
+                );
+                
+                return distance < catchRadius;
+            }
+
+            onCaught() {
+                caughtCoinsCount++;
+                document.getElementById('caughtCoinsCount').textContent = caughtCoinsCount;
+                document.getElementById('caughtCoinsCounter').textContent = caughtCoinsCount;
+                
+                // 更新称号显示
+                updateTitleDisplay();
+                
+                // 播放金币接住的声音
+                playCoinSound();
+                
+                // 显示接住金币的动画效果
+                showCatchEffect(this.x, this.y);
+                
+                // 显示得分弹窗
+                showScorePopup(this.x, this.y);
+                
+                // 临时切换图标并触发金光效果
+                showTemporaryGoldenCharacter();
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.opacity;
+
+                // 绘制小游戏金币
+                const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius);
+                gradient.addColorStop(0, '#ffed4a');
+                gradient.addColorStop(0.6, '#ffd700');
+                gradient.addColorStop(1, '#ff9500');
+
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                ctx.strokeStyle = '#ff9500';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#ff9500';
+                ctx.font = `bold ${this.radius * 0.8}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('¥', 0, 0);
+
+                ctx.restore();
+            }
+        }
+
+        // 播放金币声音
+        function playCoinSound() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800 + Math.random() * 400;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        }
+
+        // 称号系统
+        const titles = {
+            0: '无所事事',
+            10: '闲得发慌',
+            30: '闲出屁',
+            60: '闲得抠脚',
+            100: '闲出蘑菇',
+            150: '闲到发霉',
+            300: '闲得没事干',
+            450: '闲出天际',
+            600: '闲得蛋疼',
+            750: '闲得一批',
+            1000: '闲到怀疑人生'
+        };
+
+        // 接金币游戏成就数据
+        const coinGameAchievements = [
+            { coins: 0, title: '无所事事', icon: '😐', description: '刚开始踏上摸鱼之旅' },
+            { coins: 10, title: '闲得发慌', icon: '😰', description: '时间太多，开始发慌' },
+            { coins: 30, title: '闲出屁', icon: '💨', description: '摸鱼达到初步境界' },
+            { coins: 60, title: '闲得抠脚', icon: '🦶', description: '抠脚都能接住金币' },
+            { coins: 100, title: '闲出蘑菇', icon: '🍄', description: '蘑菇都长出来了' },
+            { coins: 150, title: '闲到发霉', icon: '🍞', description: '时间长出了霉菌' },
+            { coins: 300, title: '闲得没事干', icon: '😴', description: '已经闲到无所事事' },
+            { coins: 450, title: '闲出天际', icon: '🌌', description: '摸鱼已经超越地球' },
+            { coins: 600, title: '闲得蛋疼', icon: '⚽', description: '蛋都闲得自己玩球' },
+            { coins: 750, title: '闲得一批', icon: '🚶', description: '已经闲得开始散步' },
+            { coins: 1000, title: '闲到怀疑人生', icon: '🤯', description: '怀疑人生是不是来摸鱼的' }
+        ];
+
+        // 获取当前称号
+        function getCurrentTitle(coinCount) {
+            let currentTitle = '';
+            for (const [threshold, title] of Object.entries(titles).sort((a, b) => parseInt(b[0]) - parseInt(a[0]))) {
+                if (coinCount >= parseInt(threshold)) {
+                    currentTitle = title;
+                    break;
+                }
+            }
+            return currentTitle || titles['0'];
+        }
+
+        // 初始化接金币游戏成就系统
+        function initCoinGameAchievements(currentCoins = 0) {
+            const achievementsGrid = document.getElementById('gameAchievementsGrid');
+            if (!achievementsGrid) return;
+            
+            achievementsGrid.innerHTML = '';
+            
+            coinGameAchievements.forEach(achievement => {
+                const achievementElement = document.createElement('div');
+                achievementElement.className = 'game-achievement';
+                achievementElement.dataset.coins = achievement.coins;
+                
+                // 根据当前金币数解锁成就
+                if (currentCoins >= achievement.coins) {
+                    achievementElement.classList.add('unlocked');
+                }
+                
+                achievementElement.innerHTML = `
+                    <div class="game-achievement-icon">${achievement.icon}</div>
+                    <div class="game-achievement-name">${achievement.title}</div>
+                    <div class="game-achievement-coins">${achievement.coins} ${currentLang === 'en' ? 'coins' : '金币'}</div>
+                    <div class="game-achievement-desc">${achievement.description}</div>
+                `;
+                
+                achievementsGrid.appendChild(achievementElement);
+            });
+            
+            // 更新当前成就显示
+            updateCurrentAchievementDisplay(currentCoins);
+        }
+
+        // 更新主页面的当前成就显示
+        function updateCurrentAchievementDisplay(coinCount) {
+            const currentIcon = document.getElementById('currentAchievementIcon');
+            const currentName = document.getElementById('currentAchievementName');
+            const currentCoins = document.getElementById('currentAchievementCoins');
+            const currentDesc = document.getElementById('currentAchievementDesc');
+            
+            // 获取当前最高成就
+            let currentAchievement = coinGameAchievements[0]; // 默认为"无所事事"
+            for (const achievement of coinGameAchievements) {
+                if (coinCount >= achievement.coins) {
+                    currentAchievement = achievement;
+                }
+            }
+            
+            // 更新显示
+            if (currentIcon) currentIcon.textContent = currentAchievement.icon;
+            if (currentName) currentName.textContent = currentAchievement.title;
+            if (currentCoins) currentCoins.textContent = `${currentAchievement.coins} ${currentLang === 'en' ? 'coins' : '金币'}`;
+            if (currentDesc) currentDesc.textContent = currentAchievement.description;
+        }
+
+        // 更新接金币游戏成就解锁状态
+        function updateCoinGameAchievements(coinCount) {
+            const achievements = document.querySelectorAll('.game-achievement');
+            let highestAchievement = 0;
+            
+            achievements.forEach(achievement => {
+                const requiredCoins = parseInt(achievement.dataset.coins);
+                if (coinCount >= requiredCoins) {
+                    achievement.classList.add('unlocked');
+                    highestAchievement = Math.max(highestAchievement, requiredCoins);
+                } else {
+                    achievement.classList.remove('unlocked');
+                }
+            });
+            
+            // 解锁新成就时显示特效
+            if (highestAchievement > localStorage.getItem('highestCoinAchievement') || 0) {
+                localStorage.setItem('highestCoinAchievement', highestAchievement);
+                createCoinRain(5 + highestAchievement / 10);
+                const title = getCurrentTitle(highestAchievement);
+                const msg = currentLang === 'en' ? 
+                    `🎉 New Achievement Unlocked: ${title}` :
+                    `🎉 解锁新成就：${title}`;
+                showNotification(msg);
+            }
+        }
+
+        // 显示最高成就弹窗
+        function showHighScoreModal() {
+            const highScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
+            const modal = document.getElementById('highScoreModal');
+            const iconEl = document.getElementById('highScoreIcon');
+            const nameEl = document.getElementById('highScoreName');
+            const coinsEl = document.getElementById('highScoreCoins');
+            const descEl = document.getElementById('highScoreDesc');
+
+            // 获取对应的成就
+            let achievement = coinGameAchievements[0];
+            for (const a of coinGameAchievements) {
+                if (highScore >= a.coins) {
+                    achievement = a;
+                }
+            }
+
+            // 更新弹窗内容
+            if (iconEl) iconEl.textContent = achievement.icon;
+            if (nameEl) nameEl.textContent = achievement.title;
+            if (coinsEl) coinsEl.textContent = `${highScore} ${currentLang === 'en' ? 'coins' : '金币'}`;
+            if (descEl) descEl.textContent = achievement.description;
+
+            // 显示弹窗
+            if (modal) modal.classList.add('active');
+        }
+
+        // 关闭最高成就弹窗
+        function closeHighScoreModal() {
+            const modal = document.getElementById('highScoreModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // 更新称号显示
+        function updateTitleDisplay() {
+            const currentTitle = getCurrentTitle(caughtCoinsCount);
+            const titleBadge = document.getElementById('titleBadge');
+            
+            if (currentTitle) {
+                titleBadge.textContent = currentTitle;
+                titleBadge.style.display = 'block';
+                
+                // 称号升级特效
+                titleBadge.style.animation = 'none';
+                titleBadge.offsetHeight; // 触发重排
+                titleBadge.style.animation = 'badgeUpgrade 0.6s ease-out, badgeFloat 2s ease-in-out infinite';
+            } else {
+                titleBadge.textContent = '无所事事';
+                titleBadge.style.display = 'block';
+            }
+            
+            // 更新成就解锁状态
+            updateCoinGameAchievements(caughtCoinsCount);
+            
+            // 更新主页面的当前成就显示
+            updateCurrentAchievementDisplay(caughtCoinsCount);
+        }
+
+        // 显示接住金币的特效
+        function showCatchEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.className = 'catch-effect';
+            effect.textContent = '💰';
+            effect.style.left = x + 'px';
+            effect.style.top = y + 'px';
+            document.body.appendChild(effect);
+            
+            setTimeout(() => effect.remove(), 500);
+        }
+
+        // 显示得分弹窗
+        function showScorePopup(x, y) {
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = '+1';
+            popup.style.left = x + 'px';
+            popup.style.top = y + 'px';
+            document.body.appendChild(popup);
+            
+            setTimeout(() => popup.remove(), 1000);
+        }
+
+        // 临时切换图标并显示金光效果
+        let isGoldenCharacterActive = false;
+        function showTemporaryGoldenCharacter() {
+            if (isGoldenCharacterActive) return; // 防止重复触发
+            isGoldenCharacterActive = true;
+
+            const characterImages = document.querySelectorAll('.catcher-character');
+            const originalSrc = 'https://www.coze.cn/s/gEdDvgfCk9U/?width_height=961x1015';
+            const goldenSrc = 'https://www.coze.cn/s/Ghhgs2sAEeE/?width_height=1987x2109';
+
+            characterImages.forEach(img => {
+                // 保存原始src
+                img.dataset.originalSrc = img.src;
+                // 切换到金色图标
+                img.src = goldenSrc;
+                // 添加金光效果类
+                img.classList.add('temp-character');
+            });
+
+            // 0.5秒后恢复原始图标
+            setTimeout(() => {
+                characterImages.forEach(img => {
+                    img.src = img.dataset.originalSrc || originalSrc;
+                    img.classList.remove('temp-character');
+                });
+                isGoldenCharacterActive = false;
+            }, 500);
+        }
+
+        // 小游戏动画循环
+        function gameAnimate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 移除已接住或已消失的金币
+            gameCoins = gameCoins.filter(coin => coin.opacity > 0 && !coin.caught);
+            
+            // 更新和绘制金币
+            gameCoins.forEach(coin => {
+                coin.update();
+                coin.draw();
+            });
+            
+            if (gameActive) {
+                gameAnimationId = requestAnimationFrame(gameAnimate);
+            }
+        }
+
+        // 开始小游戏
+        function startGame() {
+            gameActive = true;
+            caughtCoinsCount = 0;
+            gameCoins = [];
+            
+            // 暂停收入金币掉落
+            if (dropInterval) {
+                clearInterval(dropInterval);
+                dropInterval = null;
+            }
+            
+            const t = translations[currentLang];
+            document.getElementById('catcherContainer').style.display = 'block';
+            document.getElementById('gameInfo').classList.add('active');
+            document.getElementById('gameToggleBtn').textContent = t.gameToggleStop;
+            document.getElementById('gameToggleBtn').classList.add('active');
+            document.getElementById('caughtCoinsCount').textContent = '0';
+            document.getElementById('caughtCoinsCounter').textContent = '0';
+            
+            // 重置称号为"无所事事"
+            const titleBadge = document.getElementById('titleBadge');
+            titleBadge.textContent = currentLang === 'en' ? t.achievementIdle : '无所事事';
+            titleBadge.style.display = 'block';
+            
+            // 显示小人初始位置
+            const catcherContainer = document.getElementById('catcherContainer');
+            catcherContainer.style.left = (window.innerWidth / 2 - 30) + 'px';
+            catcherContainer.style.top = (window.innerHeight - 150) + 'px';
+            
+            // 开始游戏金币掉落
+            startGameCoinDrop();
+            
+            // 开始动画循环
+            gameAnimate();
+        }
+
+        // 停止小游戏
+        function stopGame() {
+            gameActive = false;
+            gameCoins = [];
+            
+            const t = translations[currentLang];
+            document.getElementById('catcherContainer').style.display = 'none';
+            document.getElementById('gameInfo').classList.remove('active');
+            document.getElementById('gameToggleBtn').textContent = t.gameToggleStart;
+            document.getElementById('gameToggleBtn').classList.remove('active');
+            
+            if (gameAnimationId) {
+                cancelAnimationFrame(gameAnimationId);
+                gameAnimationId = null;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 游戏结束后更新成就系统并显示名称
+            if (caughtCoinsCount > 0) {
+                // 更新成就卡片的解锁状态
+                updateCoinGameAchievements(caughtCoinsCount);
+                
+                // 立即更新主页面的成就显示
+                updateTitleDisplay();
+                
+                // 保存最高金币数到本地存储
+                const currentHighScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
+                if (caughtCoinsCount > currentHighScore) {
+                    localStorage.setItem('coinGameHighScore', caughtCoinsCount);
+                }
+                
+                // 获取当前成就名称并显示通知
+                const currentTitle = getCurrentTitle(caughtCoinsCount);
+                const coinText = currentLang === 'en' ? 
+                    `🎉 Caught ${caughtCoinsCount} coins! Achievement: ${currentTitle}` :
+                    `🎉 接住了 ${caughtCoinsCount} 枚金币！成就：${currentTitle}`;
+                showNotification(coinText);
+                
+                // 计算当前解锁的最高成就
+                let highestAchievement = 0;
+                for (const [threshold] of Object.entries(titles).sort((a, b) => parseInt(b[0]) - parseInt(a[0]))) {
+                    if (caughtCoinsCount >= parseInt(threshold)) {
+                        highestAchievement = parseInt(threshold);
+                        break;
+                    }
+                }
+                // 更新本地存储的最高成就
+                const savedHighest = parseInt(localStorage.getItem('highestCoinAchievement') || 0);
+                if (highestAchievement > savedHighest) {
+                    localStorage.setItem('highestCoinAchievement', highestAchievement);
+                }
+            }
+            
+            // 恢复收入金币掉落
+            startRealTimeCoinDrop();
+        }
+
+        // 小游戏金币掉落
+        function startGameCoinDrop() {
+            function dropGameCoins() {
+                if (!gameActive) return;
+                
+                // 每0.5秒掉落1-3个金币
+                const coinsToDrop = Math.floor(Math.random() * 3) + 1;
+                for (let i = 0; i < coinsToDrop; i++) {
+                    setTimeout(() => {
+                        if (gameActive) {
+                            gameCoins.push(new GameCoin());
+                        }
+                    }, i * 200);
+                }
+            }
+            
+            dropGameCoins();
+            setInterval(dropGameCoins, 500);
+        }
+
+        // 鼠标移动控制小人位置
+        document.addEventListener('mousemove', (e) => {
+            if (!gameActive) return;
+            
+            const catcherContainer = document.getElementById('catcherContainer');
+            const catcherWidth = 60;
+            const catcherHeight = 80;
+            
+            // 更新小人位置，让小人跟随鼠标
+            catcherX = e.clientX - catcherWidth / 2;
+            catcherY = e.clientY - catcherHeight;
+            
+            // 限制小人不出屏幕
+            catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
+            catcherY = Math.max(0, Math.min(window.innerHeight - catcherHeight, catcherY));
+            
+            catcherContainer.style.left = catcherX + 'px';
+            catcherContainer.style.top = catcherY + 'px';
+        });
+
+        // 小游戏按钮事件
+        document.getElementById('gameToggleBtn').addEventListener('click', () => {
+            if (gameActive) {
+                stopGame();
+            } else {
+                startGame();
+            }
+        });
+
+        // 原有的金币雨功能
+        class Coin {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = Math.random() * 10 + 15;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+                this.opacity = 1;
+                this.collected = false;
+                this.walletX = window.innerWidth / 2;
+                this.walletY = window.innerHeight - 100;
+            }
+
+            update() {
+                if (!this.collected) {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.rotation += this.rotationSpeed;
+
+                    // 重力加速
+                    this.speedY += 0.1;
+
+                    // 检查是否到达钱包位置
+                    if (this.y > this.walletY - 50) {
+                        this.collected = true;
+                        this.speedY = -2;
+                    }
+                } else {
+                    // 飞向钱包动画
+                    const dx = this.walletX - this.x;
+                    const dy = this.walletY - this.y;
+                    this.x += dx * 0.1;
+                    this.y += dy * 0.1;
+                    this.opacity -= 0.1;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.opacity;
+
+                // 绘制3D金币
+                const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius);
+                gradient.addColorStop(0, '#ffed4a');
+                gradient.addColorStop(0.7, '#ffd700');
+                gradient.addColorStop(1, '#ff9500');
+
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // 金币边缘
+                ctx.strokeStyle = '#ff9500';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // 金币中心符号
+                ctx.fillStyle = '#ff9500';
+                ctx.font = `bold ${this.radius}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('¥', 0, 0);
+
+                ctx.restore();
+            }
+        }
+
+        // 创建金币雨
+        function createCoinRain(count = 1) {
+            // 限制金币总数，防止性能问题
+            const maxCoins = 100;
+            const currentCoins = coins.length;
+            
+            // 如果当前金币数量已超过最大值，减少新掉落的金币数
+            let adjustedCount = count;
+            if (currentCoins >= maxCoins) {
+                adjustedCount = 0;
+            } else if (currentCoins + count > maxCoins) {
+                adjustedCount = maxCoins - currentCoins;
+            }
+            
+            // 创建金币
+            for (let i = 0; i < adjustedCount; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * canvas.width;
+                    const y = -50;
+                    coins.push(new Coin(x, y));
+                }, i * 50);
+            }
+
+            if (!animationId) {
+                animate();
+            }
+        }
+
+        // 动画循环
+        let lastUpdateTime = Date.now();
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            coins = coins.filter(coin => coin.opacity > 0);
+
+            let justCollected = false;
+            coins.forEach(coin => {
+                const wasCollected = coin.collected;
+                coin.update();
+                coin.draw();
+
+                if (!wasCollected && coin.collected) {
+                    justCollected = true;
+                }
+            });
+
+            if (justCollected) {
+                accumulatedCoinCount++;
+            }
+
+            // 每次都更新累计金额显示（每帧更新）
+            updateCoinCount();
+            lastUpdateTime = Date.now();
+
+            if (coins.length > 0) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                animationId = null;
+            }
+        }
+
+        // 更新累计金额显示（根据当前选择的单位进行计算）
+        function updateCoinCount() {
+            if (monthlyIncome <= 0 && passiveIncome <= 0) {
+                totalCollectedMoney = 0;
+            } else {
+                // 根据当前选择的单位计算累计金额（使用月薪+被动收入）
+                const income = calculateIncome(0);
+                const unitState = unitStates[activeUnit];
+                const currentTime = Date.now();
+                const elapsedTimeInSeconds = (currentTime - unitState.startTime) / 1000;
+                
+                // 根据不同时间单位计算累计金额，每个单位从对应的收入金额开始
+                switch(activeUnit) {
+                    case 'second':
+                        // 每秒收入：初始为每秒收入，累计金额每秒变化一次（每秒收入 × 经过秒数）
+                        const elapsedSeconds = Math.floor(elapsedTimeInSeconds);
+                        totalCollectedMoney = income.second * (elapsedSeconds > 0 ? elapsedSeconds : 1);
+                        break;
+                    case 'minute':
+                        // 每分钟收入：初始为每分钟收入，累计金额每分钟变化一次（每分钟收入 × 经过分钟数）
+                        const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
+                        totalCollectedMoney = income.minute * (elapsedTimeInMinutes > 0 ? elapsedTimeInMinutes : 1);
+                        break;
+                    case 'hour':
+                        // 每小时收入：初始为每小时收入，累计金额每小时变化一次（每小时收入 × 经过小时数）
+                        const elapsedTimeInHours = Math.floor(elapsedTimeInSeconds / 3600);
+                        totalCollectedMoney = income.hour * (elapsedTimeInHours > 0 ? elapsedTimeInHours : 1);
+                        break;
+                    case 'day':
+                        // 每日收入：初始为每日收入，累计金额每天变化一次（每日收入 × 经过的天数）
+                        const elapsedTimeInDays = Math.floor(elapsedTimeInSeconds / (3600 * 24));
+                        totalCollectedMoney = income.day * (elapsedTimeInDays > 0 ? elapsedTimeInDays : 1);
+                        break;
+                    case 'week':
+                        // 每周收入：初始为每周收入，累计金额每周变化一次（每周收入 × 经过的周数）
+                        const elapsedTimeInWeeks = Math.floor(elapsedTimeInSeconds / (3600 * 24 * 5));
+                        totalCollectedMoney = income.week * (elapsedTimeInWeeks > 0 ? elapsedTimeInWeeks : 1);
+                        break;
+                }
+                
+                // 保存当前单位的累积金额
+                unitStates[activeUnit].accumulatedMoney = totalCollectedMoney;
+            }
+            
+            const coinDisplay = document.getElementById('coinCount');
+            coinDisplay.textContent = totalCollectedMoney.toFixed(4);
+            coinDisplay.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                coinDisplay.style.transform = 'scale(1)';
+            }, 150);
+            
+            // 保存到本地存储
+            localStorage.setItem('totalCollectedMoney', totalCollectedMoney);
+            localStorage.setItem('unitStates', JSON.stringify(unitStates));
+        }
+
+        // 计算总收入（月薪+被动收入）
+        function getTotalMonthlyIncome() {
+            return monthlyIncome + passiveIncome;
+        }
+
+        // 计算各时间段收入
+        function calculateIncome(monthly) {
+            // 如果传入的参数为0，使用当前计算的总收入
+            const totalMonthly = monthly > 0 ? monthly : getTotalMonthlyIncome();
+            const daysPerMonth = 30;
+            const hoursPerDay = 8;
+            const daysPerWeek = 5;
+
+            const dayIncome = totalMonthly / daysPerMonth;
+            const hourIncome = dayIncome / hoursPerDay;
+            const minuteIncome = hourIncome / 60;
+            const secondIncome = minuteIncome / 60;
+            const weekIncome = dayIncome * daysPerWeek;
+
+            return {
+                second: secondIncome,
+                minute: minuteIncome,
+                hour: hourIncome,
+                day: dayIncome,
+                week: weekIncome,
+                month: totalMonthly  // 使用总收入（月薪+被动收入）
+            };
+        }
+
+        // 更新显示
+        function updateDisplay(income) {
+            document.getElementById('secondValue').textContent = `¥${income.second.toFixed(4)}`;
+            document.getElementById('minuteValue').textContent = `¥${income.minute.toFixed(2)}`;
+            document.getElementById('hourValue').textContent = `¥${income.hour.toFixed(2)}`;
+            document.getElementById('dayValue').textContent = `¥${income.day.toFixed(2)}`;
+            document.getElementById('weekValue').textContent = `¥${income.week.toFixed(2)}`;
+
+            // 更新模拟数据（income.month已经是月薪+被动收入的总和）
+            document.getElementById('monthSim').textContent = `¥${income.month.toLocaleString()}`;
+            document.getElementById('quarterSim').textContent = `¥${(income.month * 3).toLocaleString()}`;
+            document.getElementById('halfYearSim').textContent = `¥${(income.month * 6).toLocaleString()}`;
+            document.getElementById('yearSim').textContent = `¥${(income.month * 12).toLocaleString()}`;
+
+            // 检查成就
+            checkAchievements(income);
+
+            // 检查目标
+            checkGoal(income.month);
+
+            // 更新实时掉落状态
+            updateLiveStatus(income);
+        }
+
+        // 更新实时掉落状态
+        function updateLiveStatus(income) {
+            // 该函数已废弃，保留函数结构避免报错
+        }
+
+        // 开始实时金币掉落（所有单位统一每秒随机掉落）
+        function startRealTimeCoinDrop() {
+            if (dropInterval) {
+                clearInterval(dropInterval);
+            }
+
+            // 如果游戏正在进行，不启动收入金币掉落
+            if (gameActive) {
+                return;
+            }
+
+            if (monthlyIncome <= 0 && passiveIncome <= 0) {
+                return;
+            }
+            
+            // 限制金币掉落，防止性能问题
+            let lastDropTime = 0;
+            let isDropping = false;
+            
+            // 所有单位统一为每秒掉落，掉落数量固定范围
+            function dropCoins() {
+                // 防止重复掉落
+                const now = Date.now();
+                if (isDropping || now - lastDropTime < 800) {
+                    return;
+                }
+                isDropping = true;
+                lastDropTime = now;
+                
+                // 不同单位对应的固定掉落数量范围
+                const dropRanges = {
+                    second: { min: 1, max: 3 },        // 每秒收入：每秒随机掉落1-3枚金币
+                    minute: { min: 3, max: 6 },       // 每分钟收入：每秒随机掉落3-6枚金币
+                    hour: { min: 6, max: 10 },        // 每小时收入：每秒随机掉落6-10枚金币
+                    day: { min: 10, max: 15 },        // 每日收入：每秒随机掉落10-15枚金币
+                    week: { min: 15, max: 22 }       // 每周收入：每秒随机掉落15-22枚金币
+                };
+                
+                const range = dropRanges[activeUnit];
+                const coinsToDrop = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+                
+                // 每秒掉落随机数量的金币，最多30枚以保持性能
+                createCoinRain(Math.min(coinsToDrop, 30));
+                
+                // 短暂延迟后允许再次掉落
+                setTimeout(() => {
+                    isDropping = false;
+                }, 200);
+            }
+            
+            // 立即执行一次
+            dropCoins();
+            
+            // 设置定时器，每秒掉落金币
+            dropInterval = setInterval(dropCoins, 1000);
+        }
+
+        // 切换单位时重置金币计数
+        function resetCoinCountForNewUnit() {
+            const income = calculateIncome(0); // 使用月薪+被动收入
+            const unitIncomes = {
+                second: income.second,
+                minute: income.minute,
+                hour: income.hour,
+                day: income.day,
+                week: income.week
+            };
+            
+            // 根据当前单位计算金币计数基准
+            const baseIncome = unitIncomes[activeUnit];
+            
+            // 如果当前单位收入大于等于1，金币数等于收入值
+            if (baseIncome >= 1) {
+                coinCount = Math.floor(baseIncome);
+            } else {
+                // 否则从0开始计数
+                coinCount = 0;
+            }
+            
+            updateCoinCount();
+        }
+
+        // 检查成就
+        function checkAchievements(income) {
+            const achievements = [
+                { id: 'month-new', condition: income.month >= 3000 },
+                { id: 'day-hundred', condition: income.day >= 100 },
+                { id: 'hour-king', condition: income.hour >= 100 },
+                { id: 'income-elite', condition: income.month >= 10000 }
+            ];
+
+            achievements.forEach(ach => {
+                const element = document.querySelector(`[data-achievement="${ach.id}"]`);
+                if (ach.condition && !unlockedAchievements.has(ach.id)) {
+                    unlockedAchievements.add(ach.id);
+                    element.classList.add('unlocked');
+                    createCoinRain(10); // 解锁成就时大量金币掉落
+                    const achievementName = currentLang === 'zh' ? 
+                        element.querySelector('.achievement-name').textContent : 
+                        'Achievement Unlocked!';
+                    showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
+                }
+            });
+
+            // 保存解锁状态
+            localStorage.setItem('unlockedAchievements', JSON.stringify([...unlockedAchievements]));
+        }
+
+        // 检查目标
+        function checkGoal(currentIncome) {
+            if (incomeGoal > 0 && currentIncome >= incomeGoal) {
+                showCelebration();
+                showNotification(currentLang === 'zh' ? '🎊 恭喜！您已达到收入目标！' : '🎊 Congratulations! You have reached your income goal!');
+            }
+        }
+
+        // 显示庆祝效果
+        function showCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('active');
+            
+            // 显示庆祝效果
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createCoinRain(1);
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                celebration.classList.remove('active');
+            }, 3000);
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #ffd700, #ff9500);
+                color: #1a1a2e;
+                padding: 15px 30px;
+                border-radius: 10px;
+                font-weight: bold;
+                z-index: 1000;
+                animation: slideDown 0.3s ease;
+                box-shadow: 0 5px 20px rgba(255, 215, 0, 0.7);
+                border: 2px solid #ff9500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); }
+                to { transform: translateX(-50%) translateY(0); }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); }
+                to { transform: translateX(-50%) translateY(-100%); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 添加历史记录
+        function addToHistory(income) {
+            const record = {
+                date: new Date().toLocaleString(currentLang === 'zh' ? 'zh-CN' : 'en-US'),
+                amount: income
+            };
+            history.unshift(record);
+            if (history.length > 10) history.pop();
+            localStorage.setItem('incomeHistory', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+
+        // 更新历史记录显示
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            const noHistoryText = document.getElementById('noHistoryText');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = `<div class="history-item" style="justify-content: center; color: #666;" id="noHistoryText">${currentLang === 'zh' ? '暂无历史记录' : 'No history records'}</div>`;
+                return;
+            }
+
+            historyList.innerHTML = history.map((record, index) => `
+                <div class="history-item" data-index="${index}">
+                    <span class="history-date">${record.date}</span>
+                    <span class="history-amount">¥${record.amount.toLocaleString()}</span>
+                    <button class="delete-single-btn" onclick="deleteSingleHistory(${index})">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        // 删除单条历史记录
+        function deleteSingleHistory(index) {
+            showDeleteConfirm(index);
+        }
+
+        // 删除历史记录
+        function deleteHistory(index = null) {
+            if (index !== null) {
+                // 删除单条记录
+                history.splice(index, 1);
+            } else {
+                // 删除所有记录
+                history = [];
+            }
+            localStorage.setItem('incomeHistory', JSON.stringify(history));
+            updateHistoryDisplay();
+            hideDeleteConfirm();
+            showNotification(currentLang === 'zh' ? '🗑️ 历史记录已清除' : '🗑️ History records cleared');
+        }
+
+        // 显示删除确认弹窗
+        function showDeleteConfirm(index = null) {
+            const confirmBox = document.getElementById('deleteConfirm');
+            const confirmTitle = document.getElementById('confirmTitle');
+            const confirmBtn = document.getElementById('confirmDelete');
+            
+            confirmBox.classList.add('active');
+            
+            if (index !== null) {
+                // 删除单条记录
+                confirmTitle.textContent = currentLang === 'zh' ? '确定要删除这条历史记录吗？' : 'Are you sure you want to delete this history record?';
+                confirmBtn.textContent = currentLang === 'zh' ? '确认删除' : 'Confirm Delete';
+                confirmBtn.onclick = () => deleteHistory(index);
+            } else {
+                // 删除所有记录
+                confirmTitle.textContent = currentLang === 'zh' ? '确定要清除所有历史记录吗？' : 'Are you sure you want to clear all history records?';
+                confirmBtn.textContent = currentLang === 'zh' ? '确认删除' : 'Confirm Delete';
+                confirmBtn.onclick = () => deleteHistory();
+            }
+        }
+
+        // 隐藏删除确认弹窗
+        function hideDeleteConfirm() {
+            const confirmBox = document.getElementById('deleteConfirm');
+            confirmBox.classList.remove('active');
+        }
+
+        // 分享功能
+        function shareAchievement() {
+            const income = calculateIncome(0); // 使用月薪+被动收入
+            const totalIncome = getTotalMonthlyIncome();
+            const text = currentLang === 'zh' ? 
+                `我的月总收入是 ¥${totalIncome.toLocaleString()}\n每秒收入 ¥${income.second.toFixed(4)}\n我已经收集了 ${coinCount} 枚金币！\n来体验一下你的时间值多少钱吧！` :
+                `My total monthly income is ¥${totalIncome.toLocaleString()}\nPer second income ¥${income.second.toFixed(4)}\nI have collected ${coinCount} coins!\nCome experience the value of your time!`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: currentLang === 'zh' ? '美妙收入掉金币' : 'Beautiful Income Coin Drop',
+                    text: text
+                });
+            } else {
+                // 复制到剪贴板
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification(currentLang === 'zh' ? '📋 已复制到剪贴板，去分享吧！' : '📋 Copied to clipboard, go share it!');
+                });
+            }
+        }
+
+        // 语言切换功能
+        function switchLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            document.getElementById('langSwitch').textContent = currentLang === 'zh' ? 'English' : '中文';
+            updateLanguageContent();
+            
+            // 保存语言偏好
+            localStorage.setItem('preferredLang', currentLang);
+        }
+
+
+        // 更新语言内容
+        function updateLanguageContent() {
+            const t = translations[currentLang];
+            
+            // 安全更新函数
+            const safeUpdate = (id, value, prop = 'textContent') => {
+                const el = document.getElementById(id);
+                if (el) el[prop] = value;
+            };
+            
+            // 主标题区域
+            safeUpdate('mainTitle', t.mainTitle);
+            safeUpdate('subtitle', t.subtitle);
+            
+            // 输入区域
+            safeUpdate('incomeLabel', t.incomeLabel);
+            safeUpdate('goalLabel', t.goalLabel);
+            safeUpdate('passiveLabel', t.passiveLabel);
+            safeUpdate('monthlyIncome', t.incomePlaceholder, 'placeholder');
+            safeUpdate('incomeGoal', t.goalPlaceholder, 'placeholder');
+            safeUpdate('passiveIncome', t.passivePlaceholder, 'placeholder');
+            
+            // 收入显示区域
+            safeUpdate('secondLabel', t.secondLabel);
+            safeUpdate('minuteLabel', t.minuteLabel);
+            safeUpdate('hourLabel', t.hourLabel);
+            safeUpdate('dayLabel', t.dayLabel);
+            safeUpdate('weekLabel', t.weekLabel);
+            
+            // 实时掉落状态区域
+            safeUpdate('liveStatusTitle', t.liveStatusTitle);
+            safeUpdate('walletLabel', t.walletLabel);
+            safeUpdate('coinUnit', t.coinUnit);
+            
+            // 收入成就系统区域
+            safeUpdate('achievementsTitle', t.achievementsTitle);
+            safeUpdate('monthNewName', t.monthNewName, 'innerHTML');
+            safeUpdate('dayHundredName', t.dayHundredName, 'innerHTML');
+            safeUpdate('hourKingName', t.hourKingName, 'innerHTML');
+            safeUpdate('incomeEliteName', t.incomeEliteName, 'innerHTML');
+            
+            // 长期积累效果区域
+            safeUpdate('simulationTitle', t.simulationTitle);
+            safeUpdate('monthSimLabel', t.monthSimLabel);
+            safeUpdate('quarterSimLabel', t.quarterSimLabel);
+            safeUpdate('halfYearSimLabel', t.halfYearSimLabel);
+            safeUpdate('yearSimLabel', t.yearSimLabel);
+            
+            // 历史记录区域
+            safeUpdate('historyTitle', t.historyTitle);
+            safeUpdate('shareBtn', t.shareBtn);
+            safeUpdate('clearAllHistoryBtn', t.clearAllBtn);
+            
+            // 接金币游戏区域
+            const gameToggleBtn = document.getElementById('gameToggleBtn');
+            if (gameToggleBtn) {
+                if (gameToggleBtn.classList.contains('active')) {
+                    gameToggleBtn.textContent = t.gameToggleStop;
+                } else {
+                    gameToggleBtn.textContent = t.gameToggleStart;
+                }
+            }
+            safeUpdate('gameAchievementsTitle', t.gameAchievementsTitle);
+            
+            // 更新游戏信息区域
+            const gameInfoElement = document.getElementById('gameInfo');
+            if (gameInfoElement) {
+                const h3 = gameInfoElement.querySelector('h3');
+                const paragraphs = gameInfoElement.querySelectorAll('p');
+                if (h3) h3.textContent = t.gameInfoTitle;
+                if (paragraphs[0]) paragraphs[0].textContent = t.gameInfoTip;
+                if (paragraphs[1]) {
+                    const strong = paragraphs[1].querySelector('strong');
+                    const coins = strong ? strong.textContent : '0';
+                    paragraphs[1].innerHTML = `${t.gameInfoCaught}<strong id="caughtCoinsCount">${coins}</strong> ${t.gameInfoUnit}`;
+                }
+            }
+            
+            // 更新接金币游戏成就数据
+            const achievementKeys = [
+                { zh: '无所事事', enKey: 'achievementIdle', zhDesc: '刚开始踏上摸鱼之旅', enDescKey: 'achievementIdleDesc' },
+                { zh: '闲得发慌', enKey: 'achievementBored', zhDesc: '时间太多，开始发慌', enDescKey: 'achievementBoredDesc' },
+                { zh: '闲出屁', enKey: 'achievementFart', zhDesc: '摸鱼达到初步境界', enDescKey: 'achievementFartDesc' },
+                { zh: '闲得抠脚', enKey: 'achievementFoot', zhDesc: '抠脚都能接住金币', enDescKey: 'achievementFootDesc' },
+                { zh: '闲出蘑菇', enKey: 'achievementMushroom', zhDesc: '蘑菇都长出来了', enDescKey: 'achievementMushroomDesc' },
+                { zh: '闲到发霉', enKey: 'achievementMoldy', zhDesc: '时间长出了霉菌', enDescKey: 'achievementMoldyDesc' },
+                { zh: '闲得没事干', enKey: 'achievementNothing', zhDesc: '已经闲到无所事事', enDescKey: 'achievementNothingDesc' },
+                { zh: '闲出天际', enKey: 'achievementSky', zhDesc: '摸鱼已经超越地球', enDescKey: 'achievementSkyDesc' },
+                { zh: '闲得蛋疼', enKey: 'achievementEgg', zhDesc: '蛋都闲得自己玩球', enDescKey: 'achievementEggDesc' },
+                { zh: '闲得一批', enKey: 'achievementYipi', zhDesc: '已经闲得开始散步', enDescKey: 'achievementYipiDesc' },
+                { zh: '闲到怀疑人生', enKey: 'achievementDoubt', zhDesc: '怀疑人生是不是来摸鱼的', enDescKey: 'achievementDoubtDesc' }
+            ];
+            
+            achievementKeys.forEach((key, index) => {
+                coinGameAchievements[index].title = currentLang === 'en' ? t[key.enKey] : key.zh;
+                coinGameAchievements[index].description = currentLang === 'en' ? t[key.enDescKey] : key.zhDesc;
+            });
+            
+            // 重新渲染成就卡片，使用当前游戏中的金币数
+            initCoinGameAchievements(caughtCoinsCount);
+            
+            // 更新最高成就按钮和弹窗文本
+            safeUpdate('highScoreBtnText', t.highScoreBtnText);
+            safeUpdate('highScoreTitle', t.highScoreTitle);
+            safeUpdate('highScoreCloseBtn', t.highScoreCloseBtn);
+            
+            // 更新titleBadge显示
+            if (currentAchievementName) {
+                const titleBadge = document.getElementById('titleBadge');
+                const achievementMatch = achievementKeys.find(k => k.zh === currentAchievementName);
+                if (titleBadge && achievementMatch) {
+                    titleBadge.textContent = currentLang === 'en' ? t[achievementMatch.enKey] : currentAchievementName;
+                }
+            }
+            
+            // 更新初始状态文本
+            if (monthlyIncome <= 0) {
+                safeUpdate('statusText', t.statusTextInitial, 'innerHTML');
+            }
+
+            // 更新历史记录显示
+            updateHistoryDisplay();
+            
+            // 更新实时状态显示
+            if (monthlyIncome > 0 || passiveIncome > 0) {
+                const income = calculateIncome(0); // 使用月薪+被动收入
+                updateLiveStatus(income);
+            }
+        }
+
+        // 事件监听
+        const monthlyInput = document.getElementById('monthlyIncome');
+        const passiveInput = document.getElementById('passiveIncome');
+        const goalInput = document.getElementById('incomeGoal');
+        const unitCards = document.querySelectorAll('.unit-card');
+        const shareBtn = document.getElementById('shareBtn');
+        const langSwitch = document.getElementById('langSwitch');
+        const cancelDeleteBtn = document.getElementById('cancelDelete');
+        const clearAllHistoryBtn = document.getElementById('clearAllHistoryBtn');
+
+        monthlyInput.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            if (!isNaN(value) && value >= 0) {
+                monthlyIncome = value;
+                // 重置所有单位的开始时间
+                Object.keys(unitStates).forEach(unit => {
+                    unitStates[unit].startTime = Date.now();
+                });
+                const income = calculateIncome(0); // 使用计算后的总收入
+                updateDisplay(income);
+                startRealTimeCoinDrop();
+            }
+        });
+
+        passiveInput.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            if (!isNaN(value) && value >= 0) {
+                passiveIncome = value;
+                localStorage.setItem('passiveIncome', value);
+                // 重置所有单位的开始时间
+                Object.keys(unitStates).forEach(unit => {
+                    unitStates[unit].startTime = Date.now();
+                });
+                const income = calculateIncome(0); // 使用计算后的总收入
+                updateDisplay(income);
+                startRealTimeCoinDrop();
+            }
+        });
+
+        // 输入月薪后立即添加到历史记录
+        monthlyInput.addEventListener('change', (e) => {
+            const value = parseFloat(e.target.value);
+            if (!isNaN(value) && value > 0) {
+                // 输入月薪后立即显示月薪记录
+                addToHistory(value);
+            }
+        });
+
+        // 输入被动收入后立即添加两者相加的记录
+        passiveInput.addEventListener('change', (e) => {
+            const value = parseFloat(e.target.value);
+            if (!isNaN(value) && value > 0 && monthlyIncome > 0) {
+                // 输入被动收入后，显示两者相加的记录
+                const totalMonthlyIncome = monthlyIncome + value;
+                addToHistory(totalMonthlyIncome);
+            }
+        });
+
+        goalInput.addEventListener('input', (e) => {
+            incomeGoal = parseFloat(e.target.value) || 0;
+        });
+
+        unitCards.forEach(card => {
+            card.addEventListener('click', () => {
+                unitCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                activeUnit = card.dataset.unit;
+                
+                // 切换到该单位时，不重置起始时间，使用已有状态继续计算
+                // 如果该单位是第一次被点击，则初始化起始时间
+                if (!unitStates[activeUnit].startTime) {
+                    unitStates[activeUnit].startTime = Date.now();
+                }
+                
+                // 更新实时掉落状态和累计收入
+                const income = calculateIncome(0); // 使用月薪+被动收入
+                updateCoinCount();
+                updateLiveStatus(income);
+                
+                // 显示该单位的视觉反馈（使用固定的掉落数量范围）
+                const dropRanges = {
+                    second: { min: 1, max: 3 },        // 每秒收入：每秒随机掉落1-3枚金币
+                    minute: { min: 3, max: 6 },       // 每分钟收入：每秒随机掉落3-6枚金币
+                    hour: { min: 6, max: 10 },        // 每小时收入：每秒随机掉落6-10枚金币
+                    day: { min: 10, max: 15 },        // 每日收入：每秒随机掉落10-15枚金币
+                    week: { min: 15, max: 22 }       // 每周收入：每秒随机掉落15-22枚金币
+                };
+                const range = dropRanges[activeUnit];
+                const coinsToDrop = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+                createCoinRain(Math.min(coinsToDrop, 30));
+                
+                // 重启实时掉落计时器
+                startRealTimeCoinDrop();
+            });
+        });
+
+        shareBtn.addEventListener('click', shareAchievement);
+        langSwitch.addEventListener('click', switchLanguage);
+        cancelDeleteBtn.addEventListener('click', hideDeleteConfirm);
+        clearAllHistoryBtn.addEventListener('click', () => showDeleteConfirm(null));
+
+        // 最高成就按钮事件
+        const highScoreBtn = document.getElementById('highScoreBtn');
+        const highScoreCloseBtn = document.getElementById('highScoreCloseBtn');
+        const highScoreModal = document.getElementById('highScoreModal');
+
+        if (highScoreBtn) {
+            highScoreBtn.addEventListener('click', showHighScoreModal);
+        }
+        if (highScoreCloseBtn) {
+            highScoreCloseBtn.addEventListener('click', closeHighScoreModal);
+        }
+        if (highScoreModal) {
+            highScoreModal.addEventListener('click', (e) => {
+                if (e.target === highScoreModal) {
+                    closeHighScoreModal();
+                }
+            });
+        }
+
+        // 初始化
+        function init() {
+            // 加载保存的语言偏好
+            const savedLang = localStorage.getItem('preferredLang');
+            if (savedLang) {
+                currentLang = savedLang;
+                document.getElementById('langSwitch').textContent = currentLang === 'zh' ? 'English' : '中文';
+                updateLanguageContent();
+            }
+
+            // 初始化每个单位的状态
+            const savedUnitStates = localStorage.getItem('unitStates');
+            if (savedUnitStates) {
+                unitStates = JSON.parse(savedUnitStates);
+                // 确保每个单位都有起始时间，如果没有则设置为当前时间
+                Object.keys(unitStates).forEach(unit => {
+                    if (!unitStates[unit].startTime) {
+                        unitStates[unit].startTime = Date.now();
+                    }
+                });
+            } else {
+                // 首次初始化，为每个单位设置起始时间
+                const initialTime = Date.now();
+                unitStates = {
+                    second: { startTime: initialTime, accumulatedMoney: 0 },
+                    minute: { startTime: initialTime, accumulatedMoney: 0 },
+                    hour: { startTime: initialTime, accumulatedMoney: 0 },
+                    day: { startTime: initialTime, accumulatedMoney: 0 },
+                    week: { startTime: initialTime, accumulatedMoney: 0 }
+                };
+            }
+            
+            // 加载累计收入（不再单独加载，改为从单位状态中获取）
+            if (unitStates[activeUnit]) {
+                totalCollectedMoney = unitStates[activeUnit].accumulatedMoney || 0;
+                updateCoinCount();
+            }
+
+            // 加载解锁的成就
+            const savedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements') || '[]');
+            savedAchievements.forEach(ach => {
+                unlockedAchievements.add(ach);
+                const element = document.querySelector(`[data-achievement="${ach}"]`);
+                if (element) {
+                    element.classList.add('unlocked');
+                }
+            });
+
+            // 初始化接金币游戏成就系统
+            initCoinGameAchievements();
+
+            // 加载历史记录
+            updateHistoryDisplay();
+
+            // 加载上次的活跃单位
+            const savedUnit = localStorage.getItem('activeUnit') || 'second';
+            activeUnit = savedUnit;
+            unitCards.forEach(card => {
+                if (card.dataset.unit === activeUnit) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            // 加载上次的收入值
+            const savedIncome = parseFloat(localStorage.getItem('monthlyIncome') || '0');
+            if (savedIncome > 0) {
+                monthlyIncome = savedIncome;
+                monthlyInput.value = savedIncome;
+            }
+
+            // 加载上次的被动收入值
+            const savedPassive = parseFloat(localStorage.getItem('passiveIncome') || '0');
+            if (savedPassive > 0) {
+                passiveIncome = savedPassive;
+                passiveInput.value = savedPassive;
+            }
+
+            // 如果有收入，显示收入计算
+            if (savedIncome > 0 || savedPassive > 0) {
+                const income = calculateIncome(0); // 使用计算后的总收入
+                updateDisplay(income);
+                startRealTimeCoinDrop();
+            }
+
+            // 欢迎提示
+            setTimeout(() => {
+                showNotification(currentLang === 'zh' ? '💰 欢迎来到美妙收入掉金币！' : '💰 Welcome to Beautiful Income Coin Drop!');
+            }, 500);
+        }
+
+        // 页面卸载前保存状态
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('totalCollectedMoney', totalCollectedMoney);
+            localStorage.setItem('monthlyIncome', monthlyIncome);
+            localStorage.setItem('passiveIncome', passiveIncome);
+            localStorage.setItem('activeUnit', activeUnit);
+        });
+
+        init();
+    </script>
+</body>
+</html>
