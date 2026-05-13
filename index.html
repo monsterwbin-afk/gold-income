@@ -1740,7 +1740,7 @@
         <div class="caught-coin-counter" id="caughtCoinsCounter">0</div>
         <div class="title-badge" id="titleBadge">新手</div>
         <div class="catcher-person">
-            <img src="https://www.coze.cn/s/gEdDvgfCk9U/?width_height=961x1015" alt="接金币小人" class="catcher-character">
+            <img id="catcherCharacterImg" class="catcher-character" src="images/catcher-idle.png" alt="接金币小人" width="100" height="120" decoding="async">
         </div>
     </div>
 
@@ -1992,7 +1992,11 @@
         let audioContext = null;
         let gameCoins = []; // 小游戏专用的金币数组
         let gameAnimationId = null;
-        
+        /** 接金币小人：图2空闲 / 图3接到瞬间（与仓库 images 下文件对应） */
+        const CATCHER_IMG_IDLE = 'images/catcher-idle.png';
+        const CATCHER_IMG_CATCH = 'images/catcher-catch.png';
+        let catcherPoseTimeout = null;
+
         // 为每个单位单独维护起始时间和累积金额
         let unitStates = {
             second: { startTime: Date.now(), accumulatedMoney: 0 },
@@ -2485,33 +2489,33 @@
             setTimeout(() => popup.remove(), 1000);
         }
 
-        // 临时切换图标并显示金光效果
-        let isGoldenCharacterActive = false;
+        // 接到金币：瞬间切换为图3（举手），再恢复图2（空闲）+ 金光动画
+        const CATCHER_CATCH_POSE_MS = 320;
         function showTemporaryGoldenCharacter() {
-            if (isGoldenCharacterActive) return; // 防止重复触发
-            isGoldenCharacterActive = true;
+            const img = document.getElementById('catcherCharacterImg');
+            if (!img) return;
 
-            const characterImages = document.querySelectorAll('.catcher-character');
-            const originalSrc = 'https://www.coze.cn/s/gEdDvgfCk9U/?width_height=961x1015';
-            const goldenSrc = 'https://www.coze.cn/s/Ghhgs2sAEeE/?width_height=1987x2109';
+            img.src = CATCHER_IMG_CATCH;
+            img.classList.add('temp-character');
 
-            characterImages.forEach(img => {
-                // 保存原始src
-                img.dataset.originalSrc = img.src;
-                // 切换到金色图标
-                img.src = goldenSrc;
-                // 添加金光效果类
-                img.classList.add('temp-character');
-            });
+            if (catcherPoseTimeout) clearTimeout(catcherPoseTimeout);
+            catcherPoseTimeout = setTimeout(() => {
+                img.src = CATCHER_IMG_IDLE;
+                img.classList.remove('temp-character');
+                catcherPoseTimeout = null;
+            }, CATCHER_CATCH_POSE_MS);
+        }
 
-            // 0.5秒后恢复原始图标
-            setTimeout(() => {
-                characterImages.forEach(img => {
-                    img.src = img.dataset.originalSrc || originalSrc;
-                    img.classList.remove('temp-character');
-                });
-                isGoldenCharacterActive = false;
-            }, 500);
+        function resetCatcherCharacterPose() {
+            if (catcherPoseTimeout) {
+                clearTimeout(catcherPoseTimeout);
+                catcherPoseTimeout = null;
+            }
+            const img = document.getElementById('catcherCharacterImg');
+            if (img) {
+                img.src = CATCHER_IMG_IDLE;
+                img.classList.remove('temp-character');
+            }
         }
 
         // 小游戏动画循环
@@ -2561,6 +2565,8 @@
             const catcherContainer = document.getElementById('catcherContainer');
             catcherContainer.style.left = (window.innerWidth / 2 - 30) + 'px';
             catcherContainer.style.top = (window.innerHeight - 150) + 'px';
+
+            resetCatcherCharacterPose();
             
             // 开始游戏金币掉落
             startGameCoinDrop();
@@ -2579,6 +2585,8 @@
             document.getElementById('gameInfo').classList.remove('active');
             document.getElementById('gameToggleBtn').textContent = t.gameToggleStart;
             document.getElementById('gameToggleBtn').classList.remove('active');
+
+            resetCatcherCharacterPose();
             
             if (gameAnimationId) {
                 cancelAnimationFrame(gameAnimationId);
