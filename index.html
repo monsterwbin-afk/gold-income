@@ -2727,22 +2727,64 @@
         // 鼠标移动控制小人位置
         document.addEventListener('mousemove', (e) => {
             if (!gameActive) return;
-            
+
             const catcherContainer = document.getElementById('catcherContainer');
             const catcherWidth = 60;
             const catcherHeight = 80;
-            
+
             // 更新小人位置，让小人跟随鼠标
             catcherX = e.clientX - catcherWidth / 2;
             catcherY = e.clientY - catcherHeight;
-            
+
             // 限制小人不出屏幕
             catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
             catcherY = Math.max(0, Math.min(window.innerHeight - catcherHeight, catcherY));
-            
+
             catcherContainer.style.left = catcherX + 'px';
             catcherContainer.style.top = catcherY + 'px';
         });
+
+        // 触摸事件控制小人位置（移动端）
+        let isTouching = false;
+
+        document.addEventListener('touchstart', (e) => {
+            if (!gameActive) return;
+            isTouching = true;
+            e.preventDefault(); // 防止页面滚动
+
+            const touch = e.touches[0];
+            updateCatcherPosition(touch.clientX, touch.clientY);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!gameActive || !isTouching) return;
+            e.preventDefault(); // 防止页面滚动
+
+            const touch = e.touches[0];
+            updateCatcherPosition(touch.clientX, touch.clientY);
+        });
+
+        document.addEventListener('touchend', (e) => {
+            isTouching = false;
+        });
+
+        // 统一的位置更新函数
+        function updateCatcherPosition(clientX, clientY) {
+            const catcherContainer = document.getElementById('catcherContainer');
+            const catcherWidth = 60;
+            const catcherHeight = 80;
+
+            // 更新小人位置
+            catcherX = clientX - catcherWidth / 2;
+            catcherY = clientY - catcherHeight;
+
+            // 限制小人不出屏幕
+            catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
+            catcherY = Math.max(0, Math.min(window.innerHeight - catcherHeight, catcherY));
+
+            catcherContainer.style.left = catcherX + 'px';
+            catcherContainer.style.top = catcherY + 'px';
+        }
 
         // 小游戏按钮事件
         document.getElementById('gameToggleBtn').addEventListener('click', () => {
