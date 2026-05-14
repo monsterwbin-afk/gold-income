@@ -3004,6 +3004,10 @@
 
         // 开始实时金币掉落（所有单位统一每秒随机掉落）
         function startRealTimeCoinDrop() {
+            if (document.hidden) {
+                return;
+            }
+
             if (dropInterval) {
                 clearInterval(dropInterval);
             }
@@ -3023,6 +3027,10 @@
             
             // 所有单位统一为每秒掉落，掉落数量固定范围
             function dropCoins() {
+                if (document.hidden) {
+                    return;
+                }
+
                 // 防止重复掉落
                 const now = Date.now();
                 if (isDropping || now - lastDropTime < 800) {
@@ -3058,6 +3066,20 @@
             // 设置定时器，每秒掉落金币
             dropInterval = setInterval(dropCoins, 1000);
         }
+
+        // 页面可见性变化处理
+        function handleVisibilityChange() {
+            if (document.hidden) {
+                if (dropInterval) {
+                    clearInterval(dropInterval);
+                    dropInterval = null;
+                }
+            } else {
+                startRealTimeCoinDrop();
+            }
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         // 切换单位时重置金币计数
         function resetCoinCountForNewUnit() {
