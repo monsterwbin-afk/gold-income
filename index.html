@@ -2744,39 +2744,43 @@
             catcherContainer.style.top = catcherY + 'px';
         });
 
-        // 触摸事件控制小人位置（移动端）
-        let isTouching = false;
+        // 触摸事件控制小人位置（移动端）- 只能通过触摸小人本身移动
+        let isDraggingCatcher = false;
+        let touchOffsetX = 0;
+        let touchOffsetY = 0;
 
-        document.addEventListener('touchstart', (e) => {
+        const catcherContainer = document.getElementById('catcherContainer');
+
+        catcherContainer.addEventListener('touchstart', (e) => {
             if (!gameActive) return;
-            isTouching = true;
-            e.preventDefault(); // 防止页面滚动
 
             const touch = e.touches[0];
-            updateCatcherPosition(touch.clientX, touch.clientY);
+            const catcherRect = catcherContainer.getBoundingClientRect();
+
+            // 检查触摸是否在小人范围内
+            if (touch.clientX >= catcherRect.left && touch.clientX <= catcherRect.right &&
+                touch.clientY >= catcherRect.top && touch.clientY <= catcherRect.bottom) {
+
+                isDraggingCatcher = true;
+                e.preventDefault(); // 防止页面滚动
+
+                // 计算触摸点相对于小人的偏移
+                touchOffsetX = touch.clientX - catcherRect.left;
+                touchOffsetY = touch.clientY - catcherRect.top;
+            }
         });
 
         document.addEventListener('touchmove', (e) => {
-            if (!gameActive || !isTouching) return;
+            if (!gameActive || !isDraggingCatcher) return;
             e.preventDefault(); // 防止页面滚动
 
             const touch = e.touches[0];
-            updateCatcherPosition(touch.clientX, touch.clientY);
-        });
-
-        document.addEventListener('touchend', (e) => {
-            isTouching = false;
-        });
-
-        // 统一的位置更新函数
-        function updateCatcherPosition(clientX, clientY) {
-            const catcherContainer = document.getElementById('catcherContainer');
             const catcherWidth = 60;
             const catcherHeight = 80;
 
-            // 更新小人位置
-            catcherX = clientX - catcherWidth / 2;
-            catcherY = clientY - catcherHeight;
+            // 根据触摸位置和偏移计算小人新位置
+            catcherX = touch.clientX - touchOffsetX;
+            catcherY = touch.clientY - touchOffsetY;
 
             // 限制小人不出屏幕
             catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
@@ -2784,7 +2788,12 @@
 
             catcherContainer.style.left = catcherX + 'px';
             catcherContainer.style.top = catcherY + 'px';
-        }
+        });
+
+        document.addEventListener('touchend', (e) => {
+            isDraggingCatcher = false;
+        });
+
 
         // 小游戏按钮事件
         document.getElementById('gameToggleBtn').addEventListener('click', () => {
