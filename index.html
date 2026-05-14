@@ -735,7 +735,7 @@
         .lang-switch {
             position: absolute;
             top: 30px;
-            right: 20px;
+            left: 20px;
             background: linear-gradient(135deg, #ffd700, #ffed4a);
             border: 2px solid #ff9500;
             color: #1a1a2e;
@@ -839,27 +839,57 @@
             z-index: 1;
         }
 
+        .goal-section {
+            text-align: center;
+        }
+
         .goal-label {
+            font-size: 1.2em;
             background: linear-gradient(135deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 10px;
+            display: block;
             font-weight: bold;
         }
 
-        .goal-input {
+        .goal-input,
+        .income-input {
             width: 100%;
-            max-width: 300px;
-            padding: 10px 15px;
-            font-size: 1.1em;
-            border: 2px solid #ffd700;
-            border-radius: 8px;
+            max-width: 400px;
+            padding: 15px 20px;
+            font-size: 1.5em;
+            border: 3px solid #ffd700;
+            border-radius: 10px;
             background: rgba(0,0,0,0.6);
             color: #ffd700;
             text-align: center;
             outline: none;
+            transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(255,215,0,0.1);
+        }
+
+        .goal-input:focus,
+        .income-input:focus {
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            transform: scale(1.02);
+            border-color: #ff9500;
+        }
+
+        .goal-tip {
+            display: block;
+            width: 100%;
+            margin: 10px auto 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.4;
+            max-width: 400px;
+            text-align: center;
         }
 
         /* 隐藏实时状态显示 */
@@ -1558,6 +1588,39 @@
             background: linear-gradient(135deg, #ffed4a, #ffd700);
         }
 
+        .about-link-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .about-card, .privacy-card {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 160px;
+            min-width: 150px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(255,215,0,0.25);
+            transition: all 0.3s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,215,0,0.35);
+            background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,149,0,0.12));
+        }
+
         /* 历史记录 */
         .history-section {
             background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,149,0,0.05));
@@ -1740,7 +1803,7 @@
         <div class="caught-coin-counter" id="caughtCoinsCounter">0</div>
         <div class="title-badge" id="titleBadge">新手</div>
         <div class="catcher-person">
-            <img id="catcherCharacterImg" class="catcher-character" src="images/catcher-idle.png" alt="接金币小人" width="100" height="120" decoding="async">
+            <img src="images/catcher-idle.png" alt="接金币小人" class="catcher-character">
         </div>
     </div>
 
@@ -1756,18 +1819,19 @@
 
         <div class="input-section">
             <div class="input-group">
-                <label class="input-label" id="incomeLabel">请输入您的月薪（元）</label>
+                <label class="input-label" id="incomeLabel">请输入您的月薪</label>
                 <input type="number" class="income-input" id="monthlyIncome" placeholder="输入您的月薪" min="0">
             </div>
             
             <div class="input-group">
-                <label class="input-label" id="passiveLabel">请输入您的每月被动收入（元）</label>
+                <label class="input-label" id="passiveLabel">请输入您的每月被动收入</label>
                 <input type="number" class="income-input" id="passiveIncome" placeholder="输入每月被动收入" min="0">
             </div>
             
             <div class="goal-section">
-                <label class="goal-label" id="goalLabel">🎯 月收入目标（元）</label>
+                <label class="goal-label" id="goalLabel">🎯 月收入目标</label>
                 <input type="number" class="goal-input" id="incomeGoal" placeholder="设定目标收入">
+                <p class="goal-tip" id="goalTip">思考如何达到月收入目标</p>
             </div>
         </div>
 
@@ -1805,7 +1869,7 @@
                 </svg>
             </div>
             <div class="wallet-stats">
-                <span id="walletLabel">已累计金额：</span><span id="coinCount">0.0000</span> <span id="coinUnit">元</span>
+                <span id="walletLabel">已累计金额：</span><span id="coinCount">0.0000</span> <span id="coinUnit" style="display: none;">元</span>
             </div>
         </div>
 
@@ -1844,19 +1908,19 @@
             <div class="achievements-grid">
                 <div class="achievement" data-achievement="month-new">
                     <div class="achievement-icon">🌱</div>
-                    <div class="achievement-name" id="monthNewName">月薪新人<br>月薪>3000元</div>
+                    <div class="achievement-name" id="monthNewName">月薪新人<br>月薪>3000</div>
                 </div>
                 <div class="achievement" data-achievement="day-hundred">
                     <div class="achievement-icon">💯</div>
-                    <div class="achievement-name" id="dayHundredName">日入过百<br>日薪>100元</div>
+                    <div class="achievement-name" id="dayHundredName">日入过百<br>日薪>100</div>
                 </div>
                 <div class="achievement" data-achievement="hour-king">
                     <div class="achievement-icon">👑</div>
-                    <div class="achievement-name" id="hourKingName">时薪王者<br>时薪>100元</div>
+                    <div class="achievement-name" id="hourKingName">时薪王者<br>时薪>100</div>
                 </div>
                 <div class="achievement" data-achievement="income-elite">
                     <div class="achievement-icon">⭐</div>
-                    <div class="achievement-name" id="incomeEliteName">收入精英<br>月薪>10000元</div>
+                    <div class="achievement-name" id="incomeEliteName">收入精英<br>月薪>10000</div>
                 </div>
             </div>
         </div>
@@ -1918,6 +1982,10 @@
 
         <div class="share-section">
             <button class="share-btn" id="shareBtn">📤 分享我的收入成就</button>
+            <div class="about-link-section">
+                <a class="about-card" id="aboutBtn" href="about.html">关于我们</a>
+                <a class="privacy-card" id="privacyBtn" href="privacy.html">隐私政策</a>
+            </div>
         </div>
     </div>
 
@@ -1992,11 +2060,7 @@
         let audioContext = null;
         let gameCoins = []; // 小游戏专用的金币数组
         let gameAnimationId = null;
-        /** 接金币小人：图2空闲 / 图3接到瞬间（与仓库 images 下文件对应） */
-        const CATCHER_IMG_IDLE = 'images/catcher-idle.png';
-        const CATCHER_IMG_CATCH = 'images/catcher-catch.png';
-        let catcherPoseTimeout = null;
-
+        
         // 为每个单位单独维护起始时间和累积金额
         let unitStates = {
             second: { startTime: Date.now(), accumulatedMoney: 0 },
@@ -2011,22 +2075,22 @@
             zh: {
                 mainTitle: '💰 美妙收入掉金币',
                 subtitle: '打工人，看看你的时间值多少钱',
-                incomeLabel: '请输入您的月薪（元）',
-                goalLabel: '🎯 月收入目标（元）',
-                passiveLabel: '请输入您的每月被动收入（元）',
+                incomeLabel: '请输入您的月薪',
+                goalLabel: '🎯 月收入目标',
+                passiveLabel: '请输入您的每月被动收入',
                 liveStatusTitle: '🪙 实时金币掉落状态',
                 walletLabel: '已累计金额：',
-                coinUnit: '元',
+                coinUnit: '',
                 secondLabel: '每秒收入',
                 minuteLabel: '每分钟收入',
                 hourLabel: '每小时收入',
                 dayLabel: '每日收入',
                 weekLabel: '每周收入',
                 achievementsTitle: '🏆 收入成就系统',
-                monthNewName: '月薪新人<br>月薪>3000元',
-                dayHundredName: '日入过百<br>日薪>100元',
-                hourKingName: '时薪王者<br>时薪>100元',
-                incomeEliteName: '收入精英<br>月薪>10000元',
+                monthNewName: '月薪新人<br>月薪>3000',
+                dayHundredName: '日入过百<br>日薪>100',
+                hourKingName: '时薪王者<br>时薪>100',
+                incomeEliteName: '收入精英<br>月薪>10000',
                 simulationTitle: '📈 长期积累效果',
                 monthSimLabel: '1个月积累',
                 quarterSimLabel: '3个月积累',
@@ -2034,9 +2098,12 @@
                 yearSimLabel: '1年积累',
                 historyTitle: '📊 历史记录',
                 noHistoryText: '暂无历史记录',
-                shareBtn: '📤 分享我的收入成就',
+                shareBtn: '📤 分享我的接金币游戏成就',
+                aboutBtn: '关于我们',
+                privacyBtn: '隐私政策',
                 incomePlaceholder: '输入您的月薪',
                 goalPlaceholder: '设定目标收入',
+                goalTip: '思考如何达到月收入目标',
                 passivePlaceholder: '输入您的被动收入',
                 statusTextInitial: '请先输入月薪以开始实时掉落',
                 deleteSingle: '🗑️',
@@ -2079,22 +2146,22 @@
             en: {
                 mainTitle: '💰 Beautiful Income Coin Drop',
                 subtitle: 'Worker, see how much your time is worth',
-                incomeLabel: 'Please enter your monthly income (CNY)',
-                goalLabel: '🎯 Monthly income goal (CNY)',
-                passiveLabel: 'Please enter your monthly passive income (CNY)',
+                incomeLabel: 'Please enter your monthly income',
+                goalLabel: '🎯 Monthly income goal',
+                passiveLabel: 'Please enter your monthly passive income',
                 liveStatusTitle: '🪙 Real-time Coin Drop Status',
                 walletLabel: 'Total Accumulated: ',
-                coinUnit: ' CNY',
+                coinUnit: '',
                 secondLabel: 'Per Second',
                 minuteLabel: 'Per Minute',
                 hourLabel: 'Per Hour',
                 dayLabel: 'Per Day',
                 weekLabel: 'Per Week',
                 achievementsTitle: '🏆 Income Achievement System',
-                monthNewName: 'Monthly Newcomer<br>Monthly>3000 CNY',
-                dayHundredName: 'Daily 100+<br>Daily>100 CNY',
-                hourKingName: 'Hourly King<br>Hourly>100 CNY',
-                incomeEliteName: 'Income Elite<br>Monthly>10000 CNY',
+                monthNewName: 'Monthly Newcomer<br>Monthly>3000',
+                dayHundredName: 'Daily 100+<br>Daily>100',
+                hourKingName: 'Hourly King<br>Hourly>100',
+                incomeEliteName: 'Income Elite<br>Monthly>10000',
                 simulationTitle: '📈 Long-term Accumulation',
                 monthSimLabel: '1 Month Accumulation',
                 quarterSimLabel: '3 Months Accumulation',
@@ -2102,9 +2169,12 @@
                 yearSimLabel: '1 Year Accumulation',
                 historyTitle: '📊 History Records',
                 noHistoryText: 'No history records',
-                shareBtn: '📤 Share My Income Achievement',
+                shareBtn: '📤 Share My Coin Game Achievement',
+                aboutBtn: 'About',
+                privacyBtn: 'Privacy',
                 incomePlaceholder: 'Enter your monthly income',
                 goalPlaceholder: 'Set income goal',
+                goalTip: 'Think about how to reach your monthly income goal',
                 passivePlaceholder: 'Enter your passive income',
                 statusTextInitial: 'Please enter monthly income to start real-time coin drop',
                 clearHistoryBtn: '🗑️ Clear All',
@@ -2285,19 +2355,19 @@
             oscillator.stop(audioContext.currentTime + 0.2);
         }
 
-        // 称号系统
+        // 称号系统 - 中文称号到翻译键的映射
         const titles = {
-            0: '无所事事',
-            10: '闲得发慌',
-            30: '闲出屁',
-            60: '闲得抠脚',
-            100: '闲出蘑菇',
-            150: '闲到发霉',
-            300: '闲得没事干',
-            450: '闲出天际',
-            600: '闲得蛋疼',
-            750: '闲得一批',
-            1000: '闲到怀疑人生'
+            0: 'achievementIdle',
+            10: 'achievementBored',
+            30: 'achievementFart',
+            60: 'achievementFoot',
+            100: 'achievementMushroom',
+            150: 'achievementMoldy',
+            300: 'achievementNothing',
+            450: 'achievementSky',
+            600: 'achievementEgg',
+            750: 'achievementYipi',
+            1000: 'achievementDoubt'
         };
 
         // 接金币游戏成就数据
@@ -2315,16 +2385,18 @@
             { coins: 1000, title: '闲到怀疑人生', icon: '🤯', description: '怀疑人生是不是来摸鱼的' }
         ];
 
-        // 获取当前称号
+        // 获取当前称号（支持多语言）
         function getCurrentTitle(coinCount) {
-            let currentTitle = '';
-            for (const [threshold, title] of Object.entries(titles).sort((a, b) => parseInt(b[0]) - parseInt(a[0]))) {
+            let titleKey = 'achievementIdle';
+            for (const [threshold, key] of Object.entries(titles).sort((a, b) => parseInt(b[0]) - parseInt(a[0]))) {
                 if (coinCount >= parseInt(threshold)) {
-                    currentTitle = title;
+                    titleKey = key;
                     break;
                 }
             }
-            return currentTitle || titles['0'];
+            // 根据当前语言返回对应的称号
+            const t = translations[currentLang];
+            return t[titleKey] || t.achievementIdle;
         }
 
         // 初始化接金币游戏成就系统
@@ -2454,7 +2526,8 @@
                 titleBadge.offsetHeight; // 触发重排
                 titleBadge.style.animation = 'badgeUpgrade 0.6s ease-out, badgeFloat 2s ease-in-out infinite';
             } else {
-                titleBadge.textContent = '无所事事';
+                const t = translations[currentLang];
+                titleBadge.textContent = t.achievementIdle;
                 titleBadge.style.display = 'block';
             }
             
@@ -2489,33 +2562,33 @@
             setTimeout(() => popup.remove(), 1000);
         }
 
-        // 接到金币：瞬间切换为图3（举手），再恢复图2（空闲）+ 金光动画
-        const CATCHER_CATCH_POSE_MS = 320;
+        // 临时切换图标并显示金光效果
+        let isGoldenCharacterActive = false;
         function showTemporaryGoldenCharacter() {
-            const img = document.getElementById('catcherCharacterImg');
-            if (!img) return;
+            if (isGoldenCharacterActive) return; // 防止重复触发
+            isGoldenCharacterActive = true;
 
-            img.src = CATCHER_IMG_CATCH;
-            img.classList.add('temp-character');
+            const characterImages = document.querySelectorAll('.catcher-character');
+            const originalSrc = 'images/catcher-idle.png';
+            const goldenSrc = 'images/catcher-catch.png';
 
-            if (catcherPoseTimeout) clearTimeout(catcherPoseTimeout);
-            catcherPoseTimeout = setTimeout(() => {
-                img.src = CATCHER_IMG_IDLE;
-                img.classList.remove('temp-character');
-                catcherPoseTimeout = null;
-            }, CATCHER_CATCH_POSE_MS);
-        }
+            characterImages.forEach(img => {
+                // 保存原始src
+                img.dataset.originalSrc = img.src;
+                // 切换到金色图标
+                img.src = goldenSrc;
+                // 添加金光效果类
+                img.classList.add('temp-character');
+            });
 
-        function resetCatcherCharacterPose() {
-            if (catcherPoseTimeout) {
-                clearTimeout(catcherPoseTimeout);
-                catcherPoseTimeout = null;
-            }
-            const img = document.getElementById('catcherCharacterImg');
-            if (img) {
-                img.src = CATCHER_IMG_IDLE;
-                img.classList.remove('temp-character');
-            }
+            // 0.5秒后恢复原始图标
+            setTimeout(() => {
+                characterImages.forEach(img => {
+                    img.src = img.dataset.originalSrc || originalSrc;
+                    img.classList.remove('temp-character');
+                });
+                isGoldenCharacterActive = false;
+            }, 500);
         }
 
         // 小游戏动画循环
@@ -2565,8 +2638,6 @@
             const catcherContainer = document.getElementById('catcherContainer');
             catcherContainer.style.left = (window.innerWidth / 2 - 30) + 'px';
             catcherContainer.style.top = (window.innerHeight - 150) + 'px';
-
-            resetCatcherCharacterPose();
             
             // 开始游戏金币掉落
             startGameCoinDrop();
@@ -2585,8 +2656,6 @@
             document.getElementById('gameInfo').classList.remove('active');
             document.getElementById('gameToggleBtn').textContent = t.gameToggleStart;
             document.getElementById('gameToggleBtn').classList.remove('active');
-
-            resetCatcherCharacterPose();
             
             if (gameAnimationId) {
                 cancelAnimationFrame(gameAnimationId);
@@ -2618,7 +2687,7 @@
                 
                 // 计算当前解锁的最高成就
                 let highestAchievement = 0;
-                for (const [threshold] of Object.entries(titles).sort((a, b) => parseInt(b[0]) - parseInt(a[0]))) {
+                for (const threshold of Object.keys(titles).sort((a, b) => parseInt(b[0]) - parseInt(a[0]))) {
                     if (caughtCoinsCount >= parseInt(threshold)) {
                         highestAchievement = parseInt(threshold);
                         break;
@@ -2885,8 +2954,8 @@
             // 如果传入的参数为0，使用当前计算的总收入
             const totalMonthly = monthly > 0 ? monthly : getTotalMonthlyIncome();
             const daysPerMonth = 30;
-            const hoursPerDay = 8;
-            const daysPerWeek = 5;
+            const hoursPerDay = 24;
+            const daysPerWeek = 7;
 
             const dayIncome = totalMonthly / daysPerMonth;
             const hourIncome = dayIncome / hoursPerDay;
@@ -3026,14 +3095,22 @@
 
             achievements.forEach(ach => {
                 const element = document.querySelector(`[data-achievement="${ach.id}"]`);
-                if (ach.condition && !unlockedAchievements.has(ach.id)) {
-                    unlockedAchievements.add(ach.id);
-                    element.classList.add('unlocked');
-                    createCoinRain(10); // 解锁成就时大量金币掉落
-                    const achievementName = currentLang === 'zh' ? 
-                        element.querySelector('.achievement-name').textContent : 
-                        'Achievement Unlocked!';
-                    showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
+                if (ach.condition) {
+                    if (!unlockedAchievements.has(ach.id)) {
+                        unlockedAchievements.add(ach.id);
+                        element.classList.add('unlocked');
+                        createCoinRain(10); // 解锁成就时大量金币掉落
+                        const achievementName = currentLang === 'zh' ? 
+                            element.querySelector('.achievement-name').textContent : 
+                            'Achievement Unlocked!';
+                        showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
+                    }
+                } else {
+                    // 如果条件不再满足，移除解锁状态
+                    if (unlockedAchievements.has(ach.id)) {
+                        unlockedAchievements.delete(ach.id);
+                        element.classList.remove('unlocked');
+                    }
                 }
             });
 
@@ -3187,16 +3264,35 @@
 
         // 分享功能
         function shareAchievement() {
-            const income = calculateIncome(0); // 使用月薪+被动收入
-            const totalIncome = getTotalMonthlyIncome();
+            const highScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
+            const currentCoins = caughtCoinsCount;
+            
+            // 获取历史最高成就
+            let highAchievement = coinGameAchievements[0];
+            for (const a of coinGameAchievements) {
+                if (highScore >= a.coins) {
+                    highAchievement = a;
+                }
+            }
+            
+            // 获取当前成就
+            let currentAchievement = coinGameAchievements[0];
+            for (const a of coinGameAchievements) {
+                if (currentCoins >= a.coins) {
+                    currentAchievement = a;
+                }
+            }
+            
+            const pageUrl = 'https://monsterwbin-afk.github.io/gold-income/';
             const text = currentLang === 'zh' ? 
-                `我的月总收入是 ¥${totalIncome.toLocaleString()}\n每秒收入 ¥${income.second.toFixed(4)}\n我已经收集了 ${coinCount} 枚金币！\n来体验一下你的时间值多少钱吧！` :
-                `My total monthly income is ¥${totalIncome.toLocaleString()}\nPer second income ¥${income.second.toFixed(4)}\nI have collected ${coinCount} coins!\nCome experience the value of your time!`;
+                `我在接金币游戏中取得了 ${highScore} 金币的历史最高分！\n当前成就：${highAchievement.title}\n当前金币：${currentCoins}\n快来挑战吧！\n${pageUrl}` :
+                `I achieved a historical high score of ${highScore} coins in the Coin Catching Game!\nBest Achievement: ${highAchievement.title}\nCurrent Coins: ${currentCoins}\nCome challenge yourself!\n${pageUrl}`;
             
             if (navigator.share) {
                 navigator.share({
-                    title: currentLang === 'zh' ? '美妙收入掉金币' : 'Beautiful Income Coin Drop',
-                    text: text
+                    title: currentLang === 'zh' ? '接金币游戏成就分享' : 'Coin Game Achievement Share',
+                    text: text,
+                    url: pageUrl
                 });
             } else {
                 // 复制到剪贴板
@@ -3235,6 +3331,7 @@
             safeUpdate('incomeLabel', t.incomeLabel);
             safeUpdate('goalLabel', t.goalLabel);
             safeUpdate('passiveLabel', t.passiveLabel);
+            safeUpdate('goalTip', t.goalTip);
             safeUpdate('monthlyIncome', t.incomePlaceholder, 'placeholder');
             safeUpdate('incomeGoal', t.goalPlaceholder, 'placeholder');
             safeUpdate('passiveIncome', t.passivePlaceholder, 'placeholder');
@@ -3268,6 +3365,8 @@
             // 历史记录区域
             safeUpdate('historyTitle', t.historyTitle);
             safeUpdate('shareBtn', t.shareBtn);
+            safeUpdate('aboutBtn', t.aboutBtn);
+            safeUpdate('privacyBtn', t.privacyBtn);
             safeUpdate('clearAllHistoryBtn', t.clearAllBtn);
             
             // 接金币游戏区域
@@ -3429,10 +3528,10 @@
                 // 显示该单位的视觉反馈（使用固定的掉落数量范围）
                 const dropRanges = {
                     second: { min: 1, max: 3 },        // 每秒收入：每秒随机掉落1-3枚金币
-                    minute: { min: 3, max: 6 },       // 每分钟收入：每秒随机掉落3-6枚金币
-                    hour: { min: 6, max: 10 },        // 每小时收入：每秒随机掉落6-10枚金币
-                    day: { min: 10, max: 15 },        // 每日收入：每秒随机掉落10-15枚金币
-                    week: { min: 15, max: 22 }       // 每周收入：每秒随机掉落15-22枚金币
+                    minute: { min: 2, max: 5 },       // 每分钟收入：每秒随机掉落2-5枚金币
+                    hour: { min: 3, max: 6 },        // 每小时收入：每秒随机掉落3-6枚金币
+                    day: { min: 4, max: 8 },        // 每日收入：每秒随机掉落4-8枚金币
+                    week: { min: 6, max: 10 }       // 每周收入：每秒随机掉落6-10枚金币
                 };
                 const range = dropRanges[activeUnit];
                 const coinsToDrop = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
@@ -3444,6 +3543,20 @@
         });
 
         shareBtn.addEventListener('click', shareAchievement);
+        const aboutBtn = document.getElementById('aboutBtn');
+        if (aboutBtn) {
+            aboutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = `about.html?lang=${currentLang}`;
+            });
+        }
+        const privacyBtn = document.getElementById('privacyBtn');
+        if (privacyBtn) {
+            privacyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = `privacy.html?lang=${currentLang}`;
+            });
+        }
         langSwitch.addEventListener('click', switchLanguage);
         cancelDeleteBtn.addEventListener('click', hideDeleteConfirm);
         clearAllHistoryBtn.addEventListener('click', () => showDeleteConfirm(null));
