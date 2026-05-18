@@ -2752,6 +2752,19 @@
         document.addEventListener('touchstart', function(e) {
             if (!gameActive) return;
             
+            const touch = e.touches[0];
+            
+            // 检查触摸是否发生在游戏控制按钮上
+            const gameToggleBtn = document.getElementById('gameToggleBtn');
+            if (gameToggleBtn) {
+                const btnRect = gameToggleBtn.getBoundingClientRect();
+                if (touch.clientX >= btnRect.left && touch.clientX <= btnRect.right &&
+                    touch.clientY >= btnRect.top && touch.clientY <= btnRect.bottom) {
+                    // 触摸在按钮上，不阻止默认行为，让点击事件正常触发
+                    return;
+                }
+            }
+            
             isDraggingCatcher = true;
             e.preventDefault();
         }, { passive: false });
