@@ -3340,44 +3340,131 @@
         }
 
         // 分享功能
-        function shareAchievement() {
-            const highScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
-            const currentCoins = caughtCoinsCount;
-            
-            // 获取历史最高成就
-            let highAchievement = coinGameAchievements[0];
-            for (const a of coinGameAchievements) {
-                if (highScore >= a.coins) {
-                    highAchievement = a;
-                }
-            }
-            
-            // 获取当前成就
-            let currentAchievement = coinGameAchievements[0];
-            for (const a of coinGameAchievements) {
-                if (currentCoins >= a.coins) {
-                    currentAchievement = a;
-                }
-            }
-            
-            const pageUrl = 'https://monsterwbin-afk.github.io/gold-income/';
-            const text = currentLang === 'zh' ? 
-                `我在接金币游戏中取得了 ${highScore} 金币的历史最高分！\n当前成就：${highAchievement.title}\n当前金币：${currentCoins}\n快来挑战吧！\n${pageUrl}` :
-                `I achieved a historical high score of ${highScore} coins in the Coin Catching Game!\nBest Achievement: ${highAchievement.title}\nCurrent Coins: ${currentCoins}\nCome challenge yourself!\n${pageUrl}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: currentLang === 'zh' ? '接金币游戏成就分享' : 'Coin Game Achievement Share',
-                    text: text,
-                    url: pageUrl
-                });
-            } else {
-                // 复制到剪贴板
-                navigator.clipboard.writeText(text).then(() => {
-                    showNotification(currentLang === 'zh' ? '📋 已复制到剪贴板，去分享吧！' : '📋 Copied to clipboard, go share it!');
-                });
-            }
+        // 生成分享图片
+function generateShareImage(highScore, highAchievement) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 400;
+    const ctx = canvas.getContext('2d');
+    
+    // 绘制背景渐变
+    const bgGradient = ctx.createLinearGradient(0, 0, 0, 400);
+    bgGradient.addColorStop(0, '#1a1a2e');
+    bgGradient.addColorStop(1, '#16213e');
+    ctx.fillStyle = bgGradient;
+    ctx.fillRect(0, 0, 600, 400);
+    
+    // 绘制金色边框
+    ctx.strokeStyle = '#ffd700';
+    ctx.lineWidth = 4;
+    ctx.roundRect(20, 20, 560, 360, 20);
+    ctx.stroke();
+    
+    // 绘制奖杯图标
+    ctx.font = '60px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('🏆', 300, 100);
+    
+    // 绘制标题
+    ctx.font = 'bold 28px Arial';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText(currentLang === 'zh' ? '历史最高成就' : 'Highest Achievement', 300, 150);
+    
+    // 绘制成就卡片背景
+    const cardGradient = ctx.createLinearGradient(150, 170, 450, 280);
+    cardGradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+    cardGradient.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
+    ctx.fillStyle = cardGradient;
+    ctx.roundRect(150, 170, 300, 110, 15);
+    ctx.fill();
+    ctx.strokeStyle = '#ffd700';
+    ctx.lineWidth = 2;
+    ctx.roundRect(150, 170, 300, 110, 15);
+    ctx.stroke();
+    
+    // 绘制成就图标
+    ctx.font = '50px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(highAchievement.icon, 200, 230);
+    
+    // 绘制成就名称
+    ctx.font = 'bold 22px Arial';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText(highAchievement.title, 300, 205);
+    
+    // 绘制金币数量
+    ctx.font = '18px Arial';
+    ctx.fillStyle = '#ff9500';
+    ctx.fillText(`${highScore} ${currentLang === 'zh' ? '金币' : 'Coins'}`, 300, 235);
+    
+    // 绘制成就描述
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#ccc';
+    ctx.fillText(highAchievement.description, 300, 265);
+    
+    // 绘制底部装饰
+    ctx.font = '20px Arial';
+    ctx.fillStyle = '#ffd700';
+    ctx.textAlign = 'center';
+    ctx.fillText('🎮 快来挑战吧！', 300, 330);
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#999';
+    ctx.fillText('monsterwbin-afk.github.io/gold-income', 300, 360);
+    
+    return canvas.toDataURL('image/png');
+}
+
+// 分享功能
+async function shareAchievement() {
+    const highScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
+    
+    // 获取历史最高成就
+    let highAchievement = coinGameAchievements[0];
+    for (const a of coinGameAchievements) {
+        if (highScore >= a.coins) {
+            highAchievement = a;
         }
+    }
+    
+    const pageUrl = 'https://monsterwbin-afk.github.io/gold-income/';
+    const text = currentLang === 'zh' ? 
+        `我在接金币游戏中取得了 ${highScore} 金币的历史最高分！\n成就：${highAchievement.title}\n快来挑战吧！\n${pageUrl}` :
+        `I achieved ${highScore} coins in Coin Catching Game!\nAchievement: ${highAchievement.title}\nCome challenge!\n${pageUrl}`;
+    
+    // 生成分享图片
+    const imageDataUrl = generateShareImage(highScore, highAchievement);
+    
+    // 检查是否支持 Web Share API（带文件分享）
+    if (navigator.share && navigator.canShare) {
+        try {
+            const blob = await fetch(imageDataUrl).then(res => res.blob());
+            const file = new File([blob], 'achievement.png', { type: 'image/png' });
+            const shareData = {
+                title: currentLang === 'zh' ? '接金币游戏成就分享' : 'Coin Game Achievement',
+                text: text,
+                url: pageUrl,
+                files: [file]
+            };
+            
+            if (navigator.canShare(shareData)) {
+                await navigator.share(shareData);
+                return;
+            }
+        } catch (err) {
+            console.log('Web Share with files not supported');
+        }
+    }
+    
+    // 回退方案：下载图片并复制链接
+    const link = document.createElement('a');
+    link.href = imageDataUrl;
+    link.download = `coin-game-achievement-${highScore}.png`;
+    link.click();
+    
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification(currentLang === 'zh' ? '📸 图片已下载，链接已复制！' : '📸 Image downloaded, link copied!');
+    });
+}
 
         // 语言切换功能
         function switchLanguage() {
