@@ -81,7 +81,7 @@
         .catcher-container {
             position: fixed;
             z-index: 1000;
-            pointer-events: none;
+            pointer-events: auto;
             display: none;
         }
 
@@ -2746,27 +2746,37 @@
 
         // 触摸事件控制小人位置（移动端）- 按住屏幕任意位置移动小人
         let isDraggingCatcher = false;
+        let lastTouchTime = 0;
 
         const catcherContainer = document.getElementById('catcherContainer');
 
         document.addEventListener('touchstart', (e) => {
             if (!gameActive) return;
+            
+            const currentTime = new Date().getTime();
+            // 防止双击误触发
+            if (currentTime - lastTouchTime < 300) {
+                e.preventDefault();
+                return;
+            }
+            lastTouchTime = currentTime;
 
             isDraggingCatcher = true;
-            e.preventDefault(); // 防止页面滚动
-        });
+            e.preventDefault();
+        }, { passive: false });
 
         document.addEventListener('touchmove', (e) => {
             if (!gameActive || !isDraggingCatcher) return;
-            e.preventDefault(); // 防止页面滚动
+            
+            e.preventDefault();
 
             const touch = e.touches[0];
             const catcherWidth = 60;
             const catcherHeight = 80;
 
-            // 将小人移动到触摸位置（中心对齐）
+            // 将小人移动到触摸位置（底部对齐，与鼠标控制一致）
             catcherX = touch.clientX - catcherWidth / 2;
-            catcherY = touch.clientY - catcherHeight / 2;
+            catcherY = touch.clientY - catcherHeight;
 
             // 限制小人不出屏幕
             catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
@@ -2774,9 +2784,13 @@
 
             catcherContainer.style.left = catcherX + 'px';
             catcherContainer.style.top = catcherY + 'px';
-        });
+        }, { passive: false });
 
         document.addEventListener('touchend', (e) => {
+            isDraggingCatcher = false;
+        });
+
+        document.addEventListener('touchcancel', (e) => {
             isDraggingCatcher = false;
         });
 
