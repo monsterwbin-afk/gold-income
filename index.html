@@ -2729,16 +2729,14 @@
             if (!gameActive) return;
 
             const catcherContainer = document.getElementById('catcherContainer');
-            const catcherWidth = 60;
-            const catcherHeight = 80;
 
-            // 更新小人位置，让小人跟随鼠标
-            catcherX = e.clientX - catcherWidth / 2;
-            catcherY = e.clientY - catcherHeight;
+            // 更新小人位置，让小人跟随鼠标（使用正确的尺寸）
+            catcherX = e.clientX - CATCHER_WIDTH / 2;
+            catcherY = e.clientY - CATCHER_HEIGHT;
 
             // 限制小人不出屏幕
-            catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
-            catcherY = Math.max(0, Math.min(window.innerHeight - catcherHeight, catcherY));
+            catcherX = Math.max(0, Math.min(window.innerWidth - CATCHER_WIDTH, catcherX));
+            catcherY = Math.max(0, Math.min(window.innerHeight - CATCHER_HEIGHT, catcherY));
 
             catcherContainer.style.left = catcherX + 'px';
             catcherContainer.style.top = catcherY + 'px';
@@ -2746,51 +2744,44 @@
 
         // 触摸事件控制小人位置（移动端）- 按住屏幕任意位置移动小人
         let isDraggingCatcher = false;
-        let lastTouchTime = 0;
 
-        const catcherContainer = document.getElementById('catcherContainer');
+        // 使用正确的小人尺寸（与CSS一致）
+        const CATCHER_WIDTH = 100;
+        const CATCHER_HEIGHT = 120;
 
-        document.addEventListener('touchstart', (e) => {
+        document.addEventListener('touchstart', function(e) {
             if (!gameActive) return;
             
-            const currentTime = new Date().getTime();
-            // 防止双击误触发
-            if (currentTime - lastTouchTime < 300) {
-                e.preventDefault();
-                return;
-            }
-            lastTouchTime = currentTime;
-
             isDraggingCatcher = true;
             e.preventDefault();
         }, { passive: false });
 
-        document.addEventListener('touchmove', (e) => {
+        document.addEventListener('touchmove', function(e) {
             if (!gameActive || !isDraggingCatcher) return;
             
             e.preventDefault();
 
             const touch = e.touches[0];
-            const catcherWidth = 60;
-            const catcherHeight = 80;
+            const catcherContainer = document.getElementById('catcherContainer');
+            if (!catcherContainer) return;
 
-            // 将小人移动到触摸位置（底部对齐，与鼠标控制一致）
-            catcherX = touch.clientX - catcherWidth / 2;
-            catcherY = touch.clientY - catcherHeight;
+            // 将小人移动到触摸位置（底部对齐）
+            catcherX = touch.clientX - CATCHER_WIDTH / 2;
+            catcherY = touch.clientY - CATCHER_HEIGHT;
 
             // 限制小人不出屏幕
-            catcherX = Math.max(0, Math.min(window.innerWidth - catcherWidth, catcherX));
-            catcherY = Math.max(0, Math.min(window.innerHeight - catcherHeight, catcherY));
+            catcherX = Math.max(0, Math.min(window.innerWidth - CATCHER_WIDTH, catcherX));
+            catcherY = Math.max(0, Math.min(window.innerHeight - CATCHER_HEIGHT, catcherY));
 
             catcherContainer.style.left = catcherX + 'px';
             catcherContainer.style.top = catcherY + 'px';
         }, { passive: false });
 
-        document.addEventListener('touchend', (e) => {
+        document.addEventListener('touchend', function(e) {
             isDraggingCatcher = false;
         });
 
-        document.addEventListener('touchcancel', (e) => {
+        document.addEventListener('touchcancel', function(e) {
             isDraggingCatcher = false;
         });
 
