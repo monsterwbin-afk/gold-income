@@ -276,7 +276,7 @@
             <p class="about-text" id="aboutText5">请参阅 Google Analytics cookie 使用情况、Google 隐私政策。</p>
             <h2 class="section-title" id="sectionTitle3">Google Adsense</h2>
             <ul class="privacy-list">
-                <li id="privacyItem1">Salary-Calculator.net 使用 Google Adsense 展示广告。</li>
+                <li id="privacyItem1">本网站使用 Google Adsense 展示广告。</li>
                 <li id="privacyItem2">包括 Google 在内的第三方供应商使用 cookies 根据用户以前访问您网站或其他网站的情况投放广告。</li>
                 <li id="privacyItem3">Google 使用广告 cookies 使其及其合作伙伴能够根据您对其网站和/或其他网站的访问情况向您投放广告。</li>
                 <li id="privacyItem4">用户可通过访问 Ads Settings 选择退出个性化广告。</li>
@@ -298,7 +298,7 @@
                 aboutText4: '本网站使用 Google Analytics 来监控站点使用情况，以改善页面质量。Google Analytics 提供的统计数据仅用于网站管理。Google Analytics 使用 cookies。',
                 aboutText5: '请参阅 Google Analytics cookie 使用情况、Google 隐私政策。',
                 sectionTitle3: 'Google Adsense',
-                privacyItem1: 'Salary-Calculator.net 使用 Google Adsense 展示广告。',
+                privacyItem1: '本网站使用 Google Adsense 展示广告。',
                 privacyItem2: '包括 Google 在内的第三方供应商使用 cookies 根据用户以前访问您网站或其他网站的情况投放广告。',
                 privacyItem3: 'Google 使用广告 cookies 使其及其合作伙伴能够根据您对其网站和/或其他网站的访问情况向您投放广告。',
                 privacyItem4: '用户可通过访问 Ads Settings 选择退出个性化广告。',
@@ -370,9 +370,8 @@
             updateLanguageContent();
         }
 
-        document.getElementById('langSwitch').addEventListener('click', switchLanguage);
-
         window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('langSwitch').addEventListener('click', switchLanguage);
             const urlParams = new URLSearchParams(window.location.search);
             const langParam = urlParams.get('lang');
             const savedLang = localStorage.getItem('preferredLang');

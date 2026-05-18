@@ -307,9 +307,8 @@
             updateLanguageContent();
         }
 
-        document.getElementById('langSwitch').addEventListener('click', switchLanguage);
-
         window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('langSwitch').addEventListener('click', switchLanguage);
             const urlParams = new URLSearchParams(window.location.search);
             const langParam = urlParams.get('lang');
             const savedLang = localStorage.getItem('preferredLang');
