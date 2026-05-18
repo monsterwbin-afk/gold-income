@@ -3492,13 +3492,6 @@ async function shareAchievement() {
         showNotification(currentLang === 'zh' ? '📋 链接已复制到剪贴板！' : '📋 Link copied to clipboard!');
     });
 }
-    link.download = `coin-game-achievement-${highScore}.png`;
-    link.click();
-    
-    navigator.clipboard.writeText(text).then(() => {
-        showNotification(currentLang === 'zh' ? '📸 图片已下载，链接已复制！' : '📸 Image downloaded, link copied!');
-    });
-}
 
         // 语言切换功能
         function switchLanguage() {
