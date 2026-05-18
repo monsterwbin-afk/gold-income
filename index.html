@@ -3382,8 +3382,8 @@ function generateShareImage(highScore, highAchievement) {
     ctx.roundRect(150, 170, 300, 110, 15);
     ctx.stroke();
     
-    // 绘制成就图标
-    ctx.font = '50px Arial';
+    // 绘制成就图标（使用支持emoji的字体）
+    ctx.font = '50px "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", Arial';
     ctx.textAlign = 'left';
     ctx.fillText(highAchievement.icon, 200, 230);
     
