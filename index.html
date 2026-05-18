@@ -3414,6 +3414,12 @@ function generateShareImage(highScore, highAchievement) {
     return canvas.toDataURL('image/png');
 }
 
+// 判断是否为移动端
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768);
+}
+
 // 分享功能
 async function shareAchievement() {
     const highScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
@@ -3431,10 +3437,40 @@ async function shareAchievement() {
         `我在接金币游戏中取得了 ${highScore} 金币的历史最高分！\n成就：${highAchievement.title}\n快来挑战吧！\n${pageUrl}` :
         `I achieved ${highScore} coins in Coin Catching Game!\nAchievement: ${highAchievement.title}\nCome challenge!\n${pageUrl}`;
     
-    // 生成分享图片
+    const isMobile = isMobileDevice();
+    
+    // 电脑端：直接分享文字链接
+    if (!isMobile) {
+        if (navigator.share) {
+            navigator.share({
+                title: currentLang === 'zh' ? '接金币游戏成就分享' : 'Coin Game Achievement',
+                text: text,
+                url: pageUrl
+            });
+        } else {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(currentLang === 'zh' ? '📋 链接已复制到剪贴板！' : '📋 Link copied to clipboard!');
+            });
+        }
+        return;
+    }
+    
+    // 移动端：生成并分享图片
     const imageDataUrl = generateShareImage(highScore, highAchievement);
     
-    // 检查是否支持 Web Share API（带文件分享）
+    // 微信浏览器特殊处理
+    if (/MicroMessenger/i.test(navigator.userAgent)) {
+        // 微信中：下载图片到相册，提示用户手动分享
+        const link = document.createElement('a');
+        link.href = imageDataUrl;
+        link.download = `coin-game-achievement-${highScore}.png`;
+        link.click();
+        
+        showNotification(currentLang === 'zh' ? '📸 图片已保存，请打开相册分享给微信好友！' : '📸 Image saved, please share via WeChat!');
+        return;
+    }
+    
+    // 其他移动端浏览器：使用 Web Share API 分享图片
     if (navigator.share && navigator.canShare) {
         try {
             const blob = await fetch(imageDataUrl).then(res => res.blob());
@@ -3455,7 +3491,7 @@ async function shareAchievement() {
         }
     }
     
-    // 回退方案：下载图片并复制链接
+    // 移动端回退方案：下载图片并复制链接
     const link = document.createElement('a');
     link.href = imageDataUrl;
     link.download = `coin-game-achievement-${highScore}.png`;
