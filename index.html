@@ -103,12 +103,18 @@
             object-fit: contain;
             position: relative;
             z-index: 2;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease-out, filter 0.2s ease-out;
+            /* 移动端性能优化 */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         /* 临时图标样式 */
         .catcher-character.temp-character {
-            animation: goldGlowFull 0.5s ease-in-out;
+            animation: goldGlowFull 0.5s ease-in-out forwards;
+            -webkit-animation: goldGlowFull 0.5s ease-in-out forwards;
         }
 
         /* 全身金光效果 */
@@ -116,14 +122,32 @@
             0% {
                 filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
                 transform: scale(1);
+                -webkit-transform: scale(1);
             }
             50% {
                 filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.9));
                 transform: scale(1.05);
+                -webkit-transform: scale(1.05);
             }
             100% {
                 filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
                 transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @-webkit-keyframes goldGlowFull {
+            0% {
+                filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
+                -webkit-transform: scale(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.9));
+                -webkit-transform: scale(1.05);
+            }
+            100% {
+                filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
+                -webkit-transform: scale(1);
             }
         }
 
@@ -2296,11 +2320,11 @@
                 <!-- 模式标签双标签组合展示 -->
                 <div class="result-tag mode-tag" id="workDaysModeTag">
                     <span class="tag-icon">🐴</span>
-                    <span class="tag-label">标准牛马</span>
+                    <span class="tag-label">双休牛马</span>
                 </div>
                 <div class="result-tag mode-tag" id="workHoursModeTag">
-                    <span class="tag-icon">🐴</span>
-                    <span class="tag-label">标准牛马</span>
+                    <span class="tag-icon">⏰</span>
+                    <span class="tag-label">标配工时</span>
                 </div>
             </div>
             
@@ -3215,6 +3239,27 @@
             setTimeout(() => popup.remove(), 1000);
         }
 
+        // 预加载游戏图片
+        const preloadedImages = {};
+        function preloadGameImages() {
+            const imagesToLoad = [
+                'images/catcher-idle.png',
+                'images/catcher-catch.png'
+            ];
+            
+            imagesToLoad.forEach(src => {
+                const img = new Image();
+                img.onload = () => {
+                    preloadedImages[src] = true;
+                };
+                img.onerror = () => {
+                    console.log('图片加载失败，将使用默认效果');
+                    preloadedImages[src] = true; // 标记为已加载（即使失败）
+                };
+                img.src = src;
+            });
+        }
+
         // 临时切换图标并显示金光效果
         let isGoldenCharacterActive = false;
         function showTemporaryGoldenCharacter() {
@@ -3226,10 +3271,17 @@
             const goldenSrc = 'images/catcher-catch.png';
 
             characterImages.forEach(img => {
-                // 保存原始src
-                img.dataset.originalSrc = img.src;
-                // 切换到金色图标
-                img.src = goldenSrc;
+                // 保存原始src - 使用getAttribute确保获取正确路径
+                if (!img.dataset.originalSrc) {
+                    // 第一次保存原始路径
+                    img.dataset.originalSrc = originalSrc;
+                }
+                // 切换到金色图标 - 强制刷新图片
+                img.setAttribute('src', goldenSrc);
+                // 强制重新渲染
+                img.style.display = 'none';
+                img.offsetHeight; // 触发重绘
+                img.style.display = '';
                 // 添加金光效果类
                 img.classList.add('temp-character');
             });
@@ -3237,7 +3289,12 @@
             // 0.5秒后恢复原始图标
             setTimeout(() => {
                 characterImages.forEach(img => {
-                    img.src = img.dataset.originalSrc || originalSrc;
+                    // 恢复原始图片
+                    img.setAttribute('src', img.dataset.originalSrc || originalSrc);
+                    // 强制重新渲染
+                    img.style.display = 'none';
+                    img.offsetHeight; // 触发重绘
+                    img.style.display = '';
                     img.classList.remove('temp-character');
                 });
                 isGoldenCharacterActive = false;
@@ -3274,6 +3331,9 @@
 
         // 开始小游戏
         function startGame() {
+            // 确保图片已预加载
+            preloadGameImages();
+            
             gameActive = true;
             caughtCoinsCount = 0;
             gameCoins = [];
@@ -4059,9 +4119,9 @@
             } else if (workDays === 4) {
                 daysLabel = { icon: '✨', text: '准自由', class: 'mode-days-4' };
             } else if (workDays === 5) {
-                daysLabel = { icon: '🐴', text: '标准牛马', class: 'mode-days-5' };
+                daysLabel = { icon: '🐴', text: '双休牛马', class: 'mode-days-5' };
             } else if (workDays === 6) {
-                daysLabel = { icon: '📦', text: '大小周', class: 'mode-days-6' };
+                daysLabel = { icon: '📦', text: '单休牛马', class: 'mode-days-6' };
             } else if (workDays === 7) {
                 daysLabel = { icon: '🔥', text: '终极牛马', class: 'mode-days-7' };
             }
@@ -4075,7 +4135,7 @@
             } else if (workHours <= 6) {
                 hoursLabel = { icon: '🕶️', text: '弹性牛马', class: 'mode-hours-3' };
             } else if (workHours <= 8) {
-                hoursLabel = { icon: '🐴', text: '标准牛马', class: 'mode-hours-4' };
+                hoursLabel = { icon: '⏰', text: '标配工时', class: 'mode-hours-4' };
             } else if (workHours <= 10) {
                 hoursLabel = { icon: '⏰', text: '加班牛马', class: 'mode-hours-5' };
             } else if (workHours <= 12) {
@@ -4180,31 +4240,37 @@
 
         // 通知队列 - 注意：新通知添加到数组开头，显示在顶部
         const notifications = [];
-        const NOTIFICATION_GAP = 15;
-        const NOTIFICATION_HEIGHT = 60; // 估算的通知高度
+        const NOTIFICATION_GAP = 20; // 增加通知间距
+        const NOTIFICATION_HEIGHT = 70; // 增加估算的通知高度
 
         // 显示通知
         function showNotification(message) {
             const notification = document.createElement('div');
             
+            // 检测是否是移动端
+            const isMobile = window.innerWidth <= 768;
+            
             // 初始位置在视口外上方（隐藏状态）
             notification.style.cssText = `
                 position: fixed;
-                top: -100px;
+                top: -120px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: linear-gradient(135deg, #ffd700, #ff9500);
                 color: #1a1a2e;
-                padding: 15px 30px;
-                border-radius: 10px;
+                padding: 12px 24px;
+                border-radius: 12px;
                 font-weight: bold;
-                z-index: 1000;
-                box-shadow: 0 5px 20px rgba(255, 215, 0, 0.7);
-                border: 2px solid #ff9500;
-                max-width: 80%;
+                z-index: 9999;
+                box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7);
+                border: 3px solid #fff;
+                max-width: ${isMobile ? '85%' : '70%'};
+                width: fit-content;
                 word-wrap: break-word;
                 opacity: 0;
-                transition: top 0.3s ease, opacity 0.3s ease;
+                transition: top 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+                text-align: center;
+                line-height: 1.5;
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
@@ -4245,6 +4311,8 @@
             notifications.forEach((notification, index) => {
                 const targetTop = 20 + index * (NOTIFICATION_HEIGHT + NOTIFICATION_GAP);
                 notification.style.top = targetTop + 'px';
+                // 所有设备都居中显示
+                notification.style.left = '50%';
             });
         }
 
@@ -4878,6 +4946,9 @@ async function shareAchievement() {
 
         // 初始化
         function init() {
+            // 预加载游戏图片
+            preloadGameImages();
+            
             // 获取工作天数和工作小时输入框
             const workDaysInput = document.getElementById('workDays');
             const workHoursInput = document.getElementById('workHours');
@@ -5126,6 +5197,11 @@ async function shareAchievement() {
             localStorage.setItem('workDays', document.getElementById('workDays').value);
             localStorage.setItem('workHours', document.getElementById('workHours').value);
             localStorage.setItem('activeUnit', activeUnit);
+        });
+
+        // 窗口大小变化时更新通知位置
+        window.addEventListener('resize', () => {
+            updateNotificationsPosition();
         });
 
         init();
