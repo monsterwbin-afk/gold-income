@@ -4238,19 +4238,39 @@
             }
         }
 
-        // 通知队列 - 注意：新通知添加到数组开头，显示在顶部
+        // 通知队列系统 - 最多同时显示3条消息
         const notifications = [];
-        const NOTIFICATION_GAP = 20; // 增加通知间距
-        const NOTIFICATION_HEIGHT = 70; // 增加估算的通知高度
+        const messageQueue = [];
+        const NOTIFICATION_GAP = 20;
+        const NOTIFICATION_HEIGHT = 70;
+        const NOTIFICATION_DISPLAY_TIME = 4500;
+        const NOTIFICATION_PUSH_DELAY = 600;
+        const MAX_VISIBLE_NOTIFICATIONS = 3;
 
-        // 显示通知
+        // 显示通知（加入队列）
         function showNotification(message) {
-            const notification = document.createElement('div');
+            messageQueue.push(message);
+            processNotificationQueue();
+        }
+
+        // 处理通知队列
+        function processNotificationQueue() {
+            if (notifications.length >= MAX_VISIBLE_NOTIFICATIONS || messageQueue.length === 0) {
+                return;
+            }
+            const message = messageQueue.shift();
+            displayNotification(message);
             
-            // 检测是否是移动端
+            if (messageQueue.length > 0 && notifications.length < MAX_VISIBLE_NOTIFICATIONS) {
+                setTimeout(processNotificationQueue, NOTIFICATION_PUSH_DELAY);
+            }
+        }
+
+        // 实际显示通知
+        function displayNotification(message) {
+            const notification = document.createElement('div');
             const isMobile = window.innerWidth <= 768;
             
-            // 初始位置在视口外上方（隐藏状态）
             notification.style.cssText = `
                 position: fixed;
                 top: -120px;
@@ -4275,35 +4295,30 @@
             notification.textContent = message;
             document.body.appendChild(notification);
             
-            // 先让所有现有通知往下挪（为新通知腾出顶部位置）
-            notifications.forEach((existingNotification, index) => {
+            notifications.forEach((existingNotification) => {
                 const currentTop = parseFloat(existingNotification.style.top) || 20;
                 existingNotification.style.top = (currentTop + NOTIFICATION_HEIGHT + NOTIFICATION_GAP) + 'px';
             });
             
-            // 添加新通知到数组开头
             notifications.unshift(notification);
             
-            // 新通知滑入到顶部位置
             requestAnimationFrame(() => {
                 notification.style.opacity = '1';
                 notification.style.top = '20px';
             });
 
-            // 设置自动消失
             setTimeout(() => {
                 notification.style.opacity = '0';
                 setTimeout(() => {
-                    // 从数组中移除
                     const index = notifications.indexOf(notification);
                     if (index > -1) {
                         notifications.splice(index, 1);
                     }
                     notification.remove();
-                    // 更新剩余通知的位置
                     updateNotificationsPosition();
+                    processNotificationQueue();
                 }, 300);
-            }, 3000);
+            }, NOTIFICATION_DISPLAY_TIME);
         }
 
         // 更新所有通知位置
@@ -4311,7 +4326,6 @@
             notifications.forEach((notification, index) => {
                 const targetTop = 20 + index * (NOTIFICATION_HEIGHT + NOTIFICATION_GAP);
                 notification.style.top = targetTop + 'px';
-                // 所有设备都居中显示
                 notification.style.left = '50%';
             });
         }
