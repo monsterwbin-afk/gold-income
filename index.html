@@ -786,6 +786,45 @@
             100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
+        /* 牛马类型选择按钮 */
+        .worker-type-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .worker-type-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            min-width: 150px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            color: #ffd700;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(255,215,0,0.25);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .worker-type-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,215,0,0.35);
+            background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,149,0,0.12));
+        }
+
+        .worker-type-btn.selected {
+            background: linear-gradient(135deg, rgba(255,215,0,0.35), rgba(255,149,0,0.25));
+            box-shadow: 0 0 30px rgba(255,215,0,0.5), inset 0 0 20px rgba(255,215,0,0.15);
+        }
+
         .input-group {
             margin-bottom: 30px;
             position: relative;
@@ -1812,20 +1851,35 @@
     
     <div class="container">
         <header>
-            <h1 id="mainTitle">💰 美妙收入掉金币</h1>
-            <p class="subtitle" id="subtitle">打工人，看看你的时间值多少钱</p>
+            <h1 id="mainTitle">💰 牛马金币计算器</h1>
+            <p class="subtitle" id="subtitle"></p>
             <button class="lang-switch" id="langSwitch">English</button>
         </header>
 
         <div class="input-section">
+            <div class="worker-type-section">
+                <button class="worker-type-btn" id="stableWorkerBtn">🐂 我是稳定牛马</button>
+                <button class="worker-type-btn" id="freeWorkerBtn">🦄 我是自由牛马</button>
+            </div>
+
             <div class="input-group">
-                <label class="input-label" id="incomeLabel">请输入您的月薪</label>
-                <input type="number" class="income-input" id="monthlyIncome" placeholder="输入您的月薪" min="0">
+                <label class="input-label" id="incomeLabel">请输入牛马月薪</label>
+                <input type="number" class="income-input" id="monthlyIncome" placeholder="输入牛马月薪" min="0">
             </div>
             
             <div class="input-group">
                 <label class="input-label" id="passiveLabel">请输入您的每月被动收入</label>
                 <input type="number" class="income-input" id="passiveIncome" placeholder="输入每月被动收入" min="0">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="workDaysLabel">每周牛马工作天数</label>
+                <input type="number" class="income-input" id="workDays" placeholder="5" min="1" max="7" value="5" step="1">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="workHoursLabel">每日牛马工时</label>
+                <input type="number" class="income-input" id="workHours" placeholder="8" min="0.5" max="24" value="8" step="0.5">
             </div>
             
             <div class="goal-section">
@@ -2047,6 +2101,7 @@
         let activeUnit = 'second';
         let coins = [];
         let unlockedAchievements = new Set();
+        let isInitializing = true; // 标记是否正在初始化
         let history = JSON.parse(localStorage.getItem('incomeHistory') || '[]');
         let currentLang = 'zh';
         let dropInterval = null;
@@ -2073,11 +2128,39 @@
         // 翻译数据
         const translations = {
             zh: {
-                mainTitle: '💰 美妙收入掉金币',
-                subtitle: '打工人，看看你的时间值多少钱',
-                incomeLabel: '请输入您的月薪',
+                mainTitle: '💰 牛马金币计算器',
+                subtitles: [
+                    '打工人专属的时薪账单',
+                    '你的每一分钟，都明码标价',
+                    '今天又挣了多少工分？',
+                    '算完这笔账，我沉默了',
+                    '你的1分钟，可能还没一个钢镚值钱',
+                    '不上班就没钱，上班也没多少钱',
+                    '原来我的青春，就值这个价？',
+                    '时薪一算，奶茶都不香了',
+                    '比工资条更扎心的，是这个数字',
+                    '牛马一生，总得知道自己几斤几两',
+                    '打工这事，一分钱一分货',
+                    '别问理想，先算时薪',
+                    '月薪是老板画的饼，时薪才是你的命',
+                    '摸鱼一分钟，亏了多少自己看',
+                    '辛苦了，今天的你也闪闪发光',
+                    '每一分钱，都是你应得的勋章',
+                    '你的时间，远不止这个数字',
+                    '算完这笔，对自己好一点'
+                ],
+                incomeLabel: '请输入牛马月薪',
                 goalLabel: '🎯 月收入目标',
                 passiveLabel: '请输入您的每月被动收入',
+                workDaysLabel: '每周牛马工作天数',
+                workHoursLabel: '每日牛马工时',
+                passiveLabelOptions: [
+                    '当牛做马竟然也有被动收入？大佬请输入',
+                    '躺着也能赚钱？我不信，除非你输入看看',
+                    '被动收入多一块，离自由近一步，请输入',
+                    '没有也没关系，不丢人',
+                    '你的"不劳而获"部分，请老实交代'
+                ],
                 liveStatusTitle: '🪙 实时金币掉落状态',
                 walletLabel: '已累计金额：',
                 coinUnit: '',
@@ -2120,6 +2203,47 @@
                 gameInfoTip: '移动鼠标控制小人接住金币',
                 gameInfoCaught: '已接金币：',
                 gameInfoUnit: '枚',
+                workDaysPrompts: {
+                    0: '0天？那你就是纯躺赚大佬，去隔壁填被动收入吧',
+                    1: '每周工作1天？你这不是打工，是来体验生活的吧？',
+                    2: '每周工作2天，剩下的5天都在盼着那2天别来。',
+                    3: '做三休四，你已经是很多人羡慕的对象了。',
+                    4: '每周4天班，接近国际先进水平，继续保持。',
+                    5: '标准的996逃兵，稳定的双休牛马。',
+                    6: '单休是一种什么样的体验？就是还没休息够就又上班了。',
+                    7: '一周7天全勤，你是劳模，也是顶级牛马，致敬。',
+                    over7: '一周只有7天，你非要工作{days}天？你是平行宇宙的牛马吗？'
+                },
+                workHoursPrompts: {
+                    0: '0小时？你不工作吗？那这收入是天上掉下来的？',
+                    0.5: '每天半小时？你这班上的，跟做慈善似的。',
+                    1: '每天1小时，你的工作内容主要是打卡吧？',
+                    2: '2小时够干啥？开个会就没了。',
+                    3: '3小时，刚好够开个会+摸鱼一会儿。',
+                    4: '4小时，上午上班下午自由，理想生活。',
+                    5: '5小时，比半天多那么一点点，尴尬的时长。',
+                    6: '6小时，有些公司管这叫‘弹性工作制’。',
+                    7: '7小时，差1小时就标准了，这1小时是给你吃午饭的。',
+                    8: '8小时，标准牛马配置，不增不减。',
+                    9: '9小时……去掉午休刚好8小时？你被套路了。',
+                    10: '10小时，你已经比标准牛马多干了25%。',
+                    11: '11小时，除了工作你还有生活吗？',
+                    12: '12小时，醒着的一半时间都在打工，致敬。',
+                    13: '13小时，你确定不是住在公司？',
+                    14: '14小时，你的床应该搬到工位旁边。',
+                    15: '15小时，你这是在挑战人类极限。',
+                    16: '16小时工作，8小时睡觉？数学上可行，实际上要命。',
+                    17: '17小时，剩下的7小时请务必用来睡觉。',
+                    18: '18小时，你不是在打工，你是在燃烧生命。',
+                    19: '19小时，你真的需要这份工作吗？',
+                    20: '20小时，机器人都要充电，你不用吗？',
+                    21: '21小时，你是靠什么活着的？咖啡还是执念？',
+                    22: '22小时，睡觉只是你的一个过场动画。',
+                    23: '23小时，你确定你是人类？',
+                    24: '24小时全勤？你是AI吧？不用睡觉的吗？',
+                    over24: '一天只有24小时，你工作{hours}小时？不睡觉了？命不要了？',
+                    notHalfMultiple: '工时只支持0.5的倍数哦，比如7.5、8.0、8.5，请重新输入'
+                },
                 achievementIdle: '无所事事',
                 achievementBored: '闲得发慌',
                 achievementFart: '闲出屁',
@@ -2144,11 +2268,80 @@
                 achievementDoubtDesc: '怀疑人生是不是来摸鱼的'
             },
             en: {
-                mainTitle: '💰 Beautiful Income Coin Drop',
-                subtitle: 'Worker, see how much your time is worth',
+                mainTitle: '💰 Bullshit Coin Calculator',
+                subtitles: [
+                    'Hourly bill for workers',
+                    'Every minute of yours is priced',
+                    'How many work points did you earn today?',
+                    'Calculated this, I fell silent',
+                    'Your 1 minute might not be worth a coin',
+                    'No work means no money, but work doesn\'t pay much either',
+                    'So my youth is worth this price?',
+                    'After calculating hourly rate, bubble tea doesn\'t taste good anymore',
+                    'More heartbreaking than payslip, is this number',
+                    'In a worker\'s life, you gotta know your worth',
+                    'Working, one cent one product',
+                    'Stop asking about dreams, calculate hourly rate first',
+                    'Monthly salary is the boss\'s pie, hourly rate is your fate',
+                    'One minute of slacking, see how much you lost',
+                    'Hard work, you\'re shining today too',
+                    'Every penny is your deserved medal',
+                    'Your time is worth far more than this number',
+                    'After calculating this, be kind to yourself'
+                ],
                 incomeLabel: 'Please enter your monthly income',
                 goalLabel: '🎯 Monthly income goal',
                 passiveLabel: 'Please enter your monthly passive income',
+                workDaysLabel: 'Weekly work days',
+                workHoursLabel: 'Daily work hours',
+                passiveLabelOptions: [
+                    'Surprised you have passive income? Boss, please enter',
+                    'Making money while lying down? I don\'t believe it unless you show me',
+                    'One more dollar of passive income, one step closer to freedom, please enter',
+                    'It\'s okay if you don\'t have any, nothing to be ashamed of',
+                    'Your "unearned income" part, please be honest'
+                ],
+                workDaysPrompts: {
+                    0: '0 days? Then you\'re a pure passive income boss, go fill in the passive income section',
+                    1: 'Working 1 day a week? That\'s not work, that\'s experiencing life.',
+                    2: 'Working 2 days a week, spending the other 5 days dreading those 2 days.',
+                    3: 'Work 3, rest 4, you\'re already the envy of many.',
+                    4: '4 days a week, close to international advanced level, keep it up.',
+                    5: 'Standard 996 deserter, stable weekend worker.',
+                    6: 'What\'s it like to work 6 days? You haven\'t rested enough before you have to go back to work.',
+                    7: 'Full-time 7 days a week, you\'re a model worker and also a top-tier worker, salute.',
+                    over7: 'There are only 7 days in a week, you insist on working {days} days? Are you from a parallel universe?'
+                },
+                workHoursPrompts: {
+                    0: '0 hours? You don\'t work? Then where does this income come from?',
+                    0.5: 'Half an hour a day? Your job is like charity work.',
+                    1: '1 hour a day, your job is mostly clocking in, right?',
+                    2: '2 hours? Not even enough for a meeting.',
+                    3: '3 hours, just enough for a meeting + some slacking.',
+                    4: '4 hours, work in the morning, free in the afternoon, ideal life.',
+                    5: '5 hours, just a little more than half-day, awkward duration.',
+                    6: '6 hours, some companies call this \'flexible work hours\'.',
+                    7: '7 hours, just 1 hour short of standard, that 1 hour is for your lunch.',
+                    8: '8 hours, standard worker configuration, no more, no less.',
+                    9: '9 hours... minus lunch break is exactly 8? You got played.',
+                    10: '10 hours, you\'re already working 25% more than standard.',
+                    11: '11 hours, do you have any life besides work?',
+                    12: '12 hours, half your waking time is working, salute.',
+                    13: '13 hours, are you sure you don\'t live at the company?',
+                    14: '14 hours, your bed should be moved next to your desk.',
+                    15: '15 hours, you\'re challenging human limits.',
+                    16: '16 hours of work, 8 hours of sleep? Mathematically possible, practically deadly.',
+                    17: '17 hours, please use the remaining 7 hours for sleeping.',
+                    18: '18 hours, you\'re not working, you\'re burning your life.',
+                    19: '19 hours, do you really need this job?',
+                    20: '20 hours, even robots need to recharge, don\'t you?',
+                    21: '21 hours, what keeps you alive? Coffee or obsession?',
+                    22: '22 hours, sleep is just a cutscene for you.',
+                    23: '23 hours, are you sure you\'re human?',
+                    24: 'Full-time 24 hours? Are you an AI? Don\'t you need to sleep?',
+                    over24: 'There are only 24 hours in a day, you work {hours} hours? No sleep? Don\'t you value your life?',
+                    notHalfMultiple: 'Work hours only support multiples of 0.5, like 7.5, 8.0, 8.5, please re-enter'
+                },
                 liveStatusTitle: '🪙 Real-time Coin Drop Status',
                 walletLabel: 'Total Accumulated: ',
                 coinUnit: '',
@@ -3006,17 +3199,39 @@
 
         // 计算各时间段收入
         function calculateIncome(monthly) {
-            // 如果传入的参数为0，使用当前计算的总收入
-            const totalMonthly = monthly > 0 ? monthly : getTotalMonthlyIncome();
-            const daysPerMonth = 30;
-            const hoursPerDay = 24;
-            const daysPerWeek = 7;
+            // 获取工作天数和工时
+            const workDaysInput = document.getElementById('workDays');
+            const workHoursInput = document.getElementById('workHours');
+            const workDays = workDaysInput ? parseFloat(workDaysInput.value) || 5 : 5;
+            const workHours = workHoursInput ? parseFloat(workHoursInput.value) || 8 : 8;
 
-            const dayIncome = totalMonthly / daysPerMonth;
-            const hourIncome = dayIncome / hoursPerDay;
-            const minuteIncome = hourIncome / 60;
-            const secondIncome = minuteIncome / 60;
-            const weekIncome = dayIncome * daysPerWeek;
+            let monthIncome, weekIncome, dayIncome, hourIncome, minuteIncome, secondIncome;
+
+            if (monthlyIncome > 0) {
+                // 有月薪，正常计算
+                monthIncome = monthlyIncome + passiveIncome;
+                weekIncome = monthIncome / 4.333;
+                dayIncome = weekIncome / workDays;
+                hourIncome = dayIncome / workHours;
+                minuteIncome = hourIncome / 60;
+                secondIncome = minuteIncome / 60;
+            } else if (passiveIncome > 0) {
+                // 只有被动收入
+                monthIncome = passiveIncome;
+                weekIncome = monthIncome / 4.333;
+                dayIncome = monthIncome / 30;
+                hourIncome = dayIncome / 24;
+                minuteIncome = hourIncome / 60;
+                secondIncome = minuteIncome / 60;
+            } else {
+                // 都没有
+                monthIncome = 0;
+                weekIncome = 0;
+                dayIncome = 0;
+                hourIncome = 0;
+                minuteIncome = 0;
+                secondIncome = 0;
+            }
 
             return {
                 second: secondIncome,
@@ -3024,7 +3239,7 @@
                 hour: hourIncome,
                 day: dayIncome,
                 week: weekIncome,
-                month: totalMonthly  // 使用总收入（月薪+被动收入）
+                month: monthIncome
             };
         }
 
@@ -3180,14 +3395,25 @@
                         const achievementName = currentLang === 'zh' ? 
                             element.querySelector('.achievement-name').textContent : 
                             'Achievement Unlocked!';
-                        showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
+                        
+                        // 如果正在初始化，不显示成就通知
+                        if (!isInitializing) {
+                            // 延迟显示成就通知，避免与其他提示挤在一起
+                            setTimeout(() => {
+                                showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
+                            }, 2000); // 延迟2秒显示
+                        }
                     }
                 } else {
-                    // 如果条件不再满足，移除解锁状态
+                    // 如果条件不再满足，不移除解锁状态，成就应该是永久的
+                    // 之前的代码会移除，这会导致成就可能重复解锁
+                    // 注释掉这部分代码
+                    /*
                     if (unlockedAchievements.has(ach.id)) {
                         unlockedAchievements.delete(ach.id);
                         element.classList.remove('unlocked');
                     }
+                    */
                 }
             });
 
@@ -3220,9 +3446,16 @@
             }, 3000);
         }
 
+        // 通知队列 - 注意：新通知添加到数组开头，显示在顶部
+        const notifications = [];
+        const NOTIFICATION_GAP = 15;
+        const NOTIFICATION_HEIGHT = 60; // 估算的通知高度
+
         // 显示通知
         function showNotification(message) {
             const notification = document.createElement('div');
+            
+            // 先设置初始位置，但还不添加到DOM
             notification.style.cssText = `
                 position: fixed;
                 top: 20px;
@@ -3234,16 +3467,51 @@
                 border-radius: 10px;
                 font-weight: bold;
                 z-index: 1000;
-                animation: slideDown 0.3s ease;
                 box-shadow: 0 5px 20px rgba(255, 215, 0, 0.7);
                 border: 2px solid #ff9500;
+                max-width: 80%;
+                word-wrap: break-word;
+                opacity: 0;
+                transition: all 0.3s ease;
             `;
             notification.textContent = message;
+            
+            // 让所有现有的通知往下挪
+            for (let i = 0; i < notifications.length; i++) {
+                const currentNotification = notifications[i];
+                const currentTop = parseFloat(currentNotification.style.top) || 20;
+                currentNotification.style.transition = 'top 0.3s ease';
+                currentNotification.style.top = (currentTop + NOTIFICATION_HEIGHT + NOTIFICATION_GAP) + 'px';
+            }
+            
+            // 添加新通知到DOM和队列开头
             document.body.appendChild(notification);
+            notifications.unshift(notification);
+            
+            // 让新通知淡入
+            requestAnimationFrame(() => {
+                notification.style.opacity = '1';
+            });
 
+            // 设置自动消失
             setTimeout(() => {
-                notification.style.animation = 'slideUp 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
+                notification.style.opacity = '0';
+                notification.style.top = '-100px';
+                setTimeout(() => {
+                    // 从队列中移除
+                    const index = notifications.indexOf(notification);
+                    if (index > -1) {
+                        notifications.splice(index, 1);
+                    }
+                    // 让这个通知下面的所有通知往上移
+                    for (let i = index; i < notifications.length; i++) {
+                        const currentNotification = notifications[i];
+                        const currentTop = parseFloat(currentNotification.style.top) || 20;
+                        currentNotification.style.transition = 'top 0.3s ease';
+                        currentNotification.style.top = (currentTop - NOTIFICATION_HEIGHT - NOTIFICATION_GAP) + 'px';
+                    }
+                    notification.remove();
+                }, 300);
             }, 3000);
         }
 
@@ -3251,12 +3519,12 @@
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideDown {
-                from { transform: translateX(-50%) translateY(-100%); }
-                to { transform: translateX(-50%) translateY(0); }
+                from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
             }
             @keyframes slideUp {
-                from { transform: translateX(-50%) translateY(0); }
-                to { transform: translateX(-50%) translateY(-100%); }
+                from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
             }
         `;
         document.head.appendChild(style);
@@ -3516,12 +3784,22 @@ async function shareAchievement() {
             
             // 主标题区域
             safeUpdate('mainTitle', t.mainTitle);
-            safeUpdate('subtitle', t.subtitle);
+            // 随机选择一个副标题
+            const randomSubtitle = t.subtitles[Math.floor(Math.random() * t.subtitles.length)];
+            safeUpdate('subtitle', randomSubtitle);
             
             // 输入区域
             safeUpdate('incomeLabel', t.incomeLabel);
             safeUpdate('goalLabel', t.goalLabel);
-            safeUpdate('passiveLabel', t.passiveLabel);
+            // 随机选择被动收入标签
+            if (t.passiveLabelOptions) {
+                const randomPassiveLabel = t.passiveLabelOptions[Math.floor(Math.random() * t.passiveLabelOptions.length)] + '（牛马被动收入）';
+                safeUpdate('passiveLabel', randomPassiveLabel);
+            } else {
+                safeUpdate('passiveLabel', t.passiveLabel);
+            }
+            safeUpdate('workDaysLabel', t.workDaysLabel);
+            safeUpdate('workHoursLabel', t.workHoursLabel);
             safeUpdate('goalTip', t.goalTip);
             safeUpdate('monthlyIncome', t.incomePlaceholder, 'placeholder');
             safeUpdate('incomeGoal', t.goalPlaceholder, 'placeholder');
@@ -3640,12 +3918,109 @@ async function shareAchievement() {
         // 事件监听
         const monthlyInput = document.getElementById('monthlyIncome');
         const passiveInput = document.getElementById('passiveIncome');
+        const workDaysInput = document.getElementById('workDays');
+        const workHoursInput = document.getElementById('workHours');
         const goalInput = document.getElementById('incomeGoal');
         const unitCards = document.querySelectorAll('.unit-card');
         const shareBtn = document.getElementById('shareBtn');
         const langSwitch = document.getElementById('langSwitch');
         const cancelDeleteBtn = document.getElementById('cancelDelete');
         const clearAllHistoryBtn = document.getElementById('clearAllHistoryBtn');
+
+        // 工作天数输入监听 - 使用input事件实时更新并立即显示提示
+        workDaysInput.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            const t = translations[currentLang];
+            let validWorkDays = null;
+            
+            if (isNaN(value)) {
+                return;
+            }
+
+            // 验证是否为整数
+            if (value !== Math.floor(value)) {
+                // 不是整数，只保留整数部分
+                e.target.value = Math.round(value);
+                return;
+            }
+
+            // 异常情况
+            if (value <= 0) {
+                showNotification(t.workDaysPrompts[0]);
+                e.target.value = 5;
+                localStorage.setItem('workDays', 5);
+                validWorkDays = 5;
+            } else if (value > 7) {
+                showNotification(t.workDaysPrompts.over7.replace('{days}', value));
+                e.target.value = 7;
+                localStorage.setItem('workDays', 7);
+                validWorkDays = 7;
+            } else if (value >= 1 && value <= 7) {
+                validWorkDays = value;
+                localStorage.setItem('workDays', value);
+                // 立即显示对应天数的梗
+                showNotification(t.workDaysPrompts[value]);
+            }
+
+            // 只要有有效值就立即更新
+            if (validWorkDays !== null) {
+                // 重置所有单位的开始时间
+                Object.keys(unitStates).forEach(unit => {
+                    unitStates[unit].startTime = Date.now();
+                });
+                const income = calculateIncome(0);
+                updateDisplay(income);
+                startRealTimeCoinDrop();
+            }
+        });
+
+        // 工作小时输入监听 - 使用input事件实时更新并立即显示提示
+        workHoursInput.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            const t = translations[currentLang];
+            let validWorkHours = null;
+            
+            if (isNaN(value)) {
+                return;
+            }
+
+            // 验证是否为0.5的倍数
+            if (Math.round(value * 2) / 2 !== value) {
+                showNotification(t.workHoursPrompts.notHalfMultiple);
+                // 四舍五入到最近的0.5
+                e.target.value = Math.round(value * 2) / 2;
+                return;
+            }
+
+            // 异常情况
+            if (value <= 0) {
+                showNotification(t.workHoursPrompts[0]);
+                e.target.value = 8;
+                localStorage.setItem('workHours', 8);
+                validWorkHours = 8;
+            } else if (value > 24) {
+                showNotification(t.workHoursPrompts.over24.replace('{hours}', value));
+                e.target.value = 24;
+                localStorage.setItem('workHours', 24);
+                validWorkHours = 24;
+            } else if (value >= 0.5 && value <= 24) {
+                validWorkHours = value;
+                localStorage.setItem('workHours', value);
+                // 立即显示对应工时的梗
+                showNotification(t.workHoursPrompts[value]);
+            }
+
+            // 只要有有效值就立即更新
+            if (validWorkHours !== null) {
+                // 重置所有单位的开始时间
+                Object.keys(unitStates).forEach(unit => {
+                    unitStates[unit].startTime = Date.now();
+                });
+                const income = calculateIncome(0);
+                updateDisplay(income);
+                startRealTimeCoinDrop();
+            }
+        });
 
         monthlyInput.addEventListener('input', (e) => {
             const value = parseFloat(e.target.value);
@@ -3773,6 +4148,29 @@ async function shareAchievement() {
 
         // 初始化
         function init() {
+            // 获取工作天数和工作小时输入框
+            const workDaysInput = document.getElementById('workDays');
+            const workHoursInput = document.getElementById('workHours');
+
+            // 牛马类型按钮事件
+            const stableWorkerBtn = document.getElementById('stableWorkerBtn');
+            const freeWorkerBtn = document.getElementById('freeWorkerBtn');
+
+            stableWorkerBtn.addEventListener('click', function() {
+                stableWorkerBtn.classList.add('selected');
+                freeWorkerBtn.classList.remove('selected');
+                // 稳定牛马，不需要任何操作
+            });
+
+            freeWorkerBtn.addEventListener('click', function() {
+                freeWorkerBtn.classList.add('selected');
+                stableWorkerBtn.classList.remove('selected');
+                showNotification(currentLang === 'zh' ? '🦄 我也想当个自由牛马，加速开发中！' : '🦄 I want to be a free worker, under development!');
+            });
+
+            // 默认选中稳定牛马
+            stableWorkerBtn.classList.add('selected');
+
             // 加载保存的语言偏好
             const savedLang = localStorage.getItem('preferredLang');
             if (savedLang) {
@@ -3850,6 +4248,18 @@ async function shareAchievement() {
                 passiveInput.value = savedPassive;
             }
 
+            // 加载保存的工作天数
+            const savedWorkDays = parseFloat(localStorage.getItem('workDays') || '5');
+            if (savedWorkDays >= 1 && savedWorkDays <= 7) {
+                workDaysInput.value = savedWorkDays;
+            }
+
+            // 加载保存的工作小时
+            const savedWorkHours = parseFloat(localStorage.getItem('workHours') || '8');
+            if (savedWorkHours >= 0.5 && savedWorkHours <= 24) {
+                workHoursInput.value = savedWorkHours;
+            }
+
             // 如果有收入，显示收入计算
             if (savedIncome > 0 || savedPassive > 0) {
                 const income = calculateIncome(0); // 使用计算后的总收入
@@ -3857,9 +4267,97 @@ async function shareAchievement() {
                 startRealTimeCoinDrop();
             }
 
-            // 欢迎提示
+            // 欢迎提示 - 根据时间显示不同内容
             setTimeout(() => {
-                showNotification(currentLang === 'zh' ? '💰 欢迎来到美妙收入掉金币！' : '💰 Welcome to Beautiful Income Coin Drop!');
+                let welcomeMessage;
+                if (currentLang === 'zh') {
+                    const hour = new Date().getHours();
+                    let messages;
+                    
+                    if (hour >= 6 && hour < 9) {
+                        // 早上6-9点
+                        messages = [
+                            '早起的牛马有工分挣',
+                            '牛马的一天从算账开始',
+                            '今日任务：算完账，继续搬砖',
+                            '欢迎来到，没有困难的工作，只有勇敢的牛马',
+                            '你的牛马身份已确认，请开始搬砖',
+                            '牛马交易所今日开盘，请查看行情'
+                        ];
+                    } else if (hour >= 9 && hour < 12) {
+                        // 早上9点-12点前
+                        messages = [
+                            '又是当牛做马的一天，请查收今日工分',
+                            '你的牛马身份已确认，请开始搬砖',
+                            '看看今天要搬多少砖，才能早日退休',
+                            '加油，今天的付出是为了以后不再当牛马',
+                            '欢迎查收你的"时薪羞辱"报告',
+                            '滴！牛马卡，余额请自行查看'
+                        ];
+                    } else if (hour >= 12 && hour < 14) {
+                        // 中午12-14点
+                        messages = [
+                            '午休了吗？算完去吃饭',
+                            '对自己好一点，休息休息',
+                            '不管你赚多少，今天也要好好吃饭',
+                            '欢迎查收你的"时薪羞辱"报告'
+                        ];
+                    } else if (hour >= 14 && hour < 18) {
+                        // 14-18点
+                        messages = [
+                            '算完这笔，你就是更清醒的牛马',
+                            '欢迎回来，对自己好一点',
+                            '欢迎查收你的"时薪羞辱"报告',
+                            '牛马金币+1+1+1+1',
+                            '看看今天要搬多少砖，才能早日退休',
+                            '加油，今天的付出是为了以后不再当牛马'
+                        ];
+                    } else if (hour >= 18 && hour < 22) {
+                        // 晚上18-22点
+                        messages = [
+                            '下班了吗？还在加班？',
+                            '累了吗？算完这笔，休息一下',
+                            '牛马辛苦了，记得吃晚饭',
+                            '早起的牛马有工分挣，晚睡的牛马有加班费'
+                        ];
+                    } else {
+                        // 深夜22点后到早上6点前
+                        messages = [
+                            '这个点了还在算时薪，早点睡',
+                            '别卷了，上床保命',
+                            '辛苦了，今天的你也闪闪发光',
+                            '你的时间，远不止这个数字'
+                        ];
+                    }
+                    
+                    welcomeMessage = '💰 ' + messages[Math.floor(Math.random() * messages.length)];
+                } else {
+                    welcomeMessage = '💰 Welcome to Bullshit Coin Calculator!';
+                }
+                showNotification(welcomeMessage);
+
+                // 显示工作天数和工时的提示
+                setTimeout(() => {
+                    const t = translations[currentLang];
+                    const currentWorkDays = parseFloat(workDaysInput.value) || 5;
+                    const currentWorkHours = parseFloat(workHoursInput.value) || 8;
+                    
+                    // 显示工作天数提示
+                    if (currentWorkDays >= 1 && currentWorkDays <= 7) {
+                        showNotification(t.workDaysPrompts[currentWorkDays]);
+                    }
+                    
+                    // 显示工时提示（再延迟一下）
+                    setTimeout(() => {
+                        if (currentWorkHours >= 0.5 && currentWorkHours <= 24) {
+                            showNotification(t.workHoursPrompts[currentWorkHours]);
+                        }
+                        // 所有初始化通知显示完毕后，标记初始化完成
+                        setTimeout(() => {
+                            isInitializing = false;
+                        }, 3500);
+                    }, 1500);
+                }, 1500);
             }, 500);
         }
 
@@ -3868,6 +4366,8 @@ async function shareAchievement() {
             localStorage.setItem('totalCollectedMoney', totalCollectedMoney);
             localStorage.setItem('monthlyIncome', monthlyIncome);
             localStorage.setItem('passiveIncome', passiveIncome);
+            localStorage.setItem('workDays', document.getElementById('workDays').value);
+            localStorage.setItem('workHours', document.getElementById('workHours').value);
             localStorage.setItem('activeUnit', activeUnit);
         });
 
