@@ -1112,6 +1112,101 @@
             font-weight: bold;
         }
 
+        /* 📊 收入结果展示区域 */
+        .income-result-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.15));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(255,215,0,0.2);
+        }
+
+        .result-tags-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .result-tag {
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,149,0,0.3));
+            border: 2px solid rgba(255,215,0,0.5);
+            border-radius: 10px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .result-tag .tag-icon {
+            font-size: 1.5em;
+        }
+
+        .result-tag .tag-label {
+            color: #ffd700;
+            font-size: 1em;
+        }
+
+        .passive-ratio-tag {
+            background: linear-gradient(135deg, rgba(100,200,100,0.3), rgba(50,150,50,0.3));
+            border-color: rgba(100,200,100,0.5);
+        }
+
+        .passive-ratio-tag .tag-label {
+            color: #90EE90;
+        }
+
+        .result-main-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-quote {
+            font-size: 1.1em;
+            color: #ffd700;
+            line-height: 1.6;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .result-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .result-detail-item .detail-icon {
+            font-size: 1.3em;
+        }
+
+        .result-detail-item .detail-label {
+            color: #aaa;
+            font-size: 0.95em;
+        }
+
+        .result-detail-item .detail-value {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-left: auto;
+        }
+
         /* 成就系统 */
         .achievements-section {
             margin-bottom: 30px;
@@ -1956,6 +2051,50 @@
         </div>
 
 
+        <!-- 📊 收入结果展示区域 -->
+        <div class="income-result-section" id="incomeResultSection">
+            <div class="result-tags-container">
+                <div class="result-tag" id="salaryTag">
+                    <span class="tag-icon" id="salaryTagIcon">🐴</span>
+                    <span class="tag-label" id="salaryTagLabel">打工</span>
+                </div>
+                <div class="result-tag" id="passiveTag">
+                    <span class="tag-icon" id="passiveTagIcon">🛌</span>
+                    <span class="tag-label" id="passiveTagLabel">被动</span>
+                </div>
+                <div class="result-tag passive-ratio-tag" id="passiveRatioTag">
+                    <span class="tag-icon">📊</span>
+                    <span class="tag-label" id="passiveRatioLabel">被动占0%</span>
+                </div>
+            </div>
+            
+            <div class="result-main-display" id="resultMainDisplay">
+                <div class="result-quote" id="resultQuote">💬 “请输入您的收入，开始计算”</div>
+            </div>
+            
+            <div class="result-details">
+                <div class="result-detail-item">
+                    <span class="detail-icon">💼</span>
+                    <span class="detail-label" id="salaryDetailLabel">月薪：</span>
+                    <span class="detail-value" id="salaryDetailValue">¥0</span>
+                </div>
+                <div class="result-detail-item">
+                    <span class="detail-icon">🛌</span>
+                    <span class="detail-label" id="passiveDetailLabel">被动：</span>
+                    <span class="detail-value" id="passiveDetailValue">¥0</span>
+                </div>
+                <div class="result-detail-item">
+                    <span class="detail-icon">💰</span>
+                    <span class="detail-label" id="totalDetailLabel">月总收入：</span>
+                    <span class="detail-value" id="totalDetailValue">¥0</span>
+                </div>
+                <div class="result-detail-item">
+                    <span class="detail-icon">⏰</span>
+                    <span class="detail-label" id="hourlyDetailLabel">时薪：</span>
+                    <span class="detail-value" id="hourlyDetailValue">¥0</span>
+                </div>
+            </div>
+        </div>
 
         <div class="achievements-section">
             <h2 class="achievements-title" id="achievementsTitle">🏆 收入成就系统</h2>
@@ -3446,6 +3585,201 @@
             }, 3000);
         }
 
+        // 月薪分级通知
+        function showSalaryLevelNotification(amount) {
+            if (amount <= 0) return;
+            
+            let level;
+            if (amount === 0) {
+                level = { label: '🫥 空气牛马', message: '月薪0元？你是来人间凑数的吗？' };
+            } else if (amount <= 1000) {
+                level = { label: '🌱 萌芽牛马', message: '月薪不过千，生存全靠一口仙气。' };
+            } else if (amount <= 3000) {
+                level = { label: '🥚 温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' };
+            } else if (amount <= 5000) {
+                level = { label: '🍚 基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' };
+            } else if (amount <= 8000) {
+                level = { label: '🐴 标准牛马', message: '全国牛马平均水平，不丢人也不光荣。' };
+            } else if (amount <= 12000) {
+                level = { label: '📈 进阶牛马', message: '比上不足比下有余，偶尔敢点外卖加个鸡腿。' };
+            } else if (amount <= 18000) {
+                level = { label: '🏠 小资牛马', message: '可以考虑房租之外存点钱了。' };
+            } else if (amount <= 25000) {
+                level = { label: '🚗 中产牛马', message: '月薪近两万，终于敢跟亲戚说在大城市还行。' };
+            } else if (amount <= 40000) {
+                level = { label: '✈️ 高端牛马', message: '这个月薪，回老家可以横着走。' };
+            } else if (amount <= 60000) {
+                level = { label: '👑 牛马之王', message: '你是牛马圈的天花板，普通打工人仰望的存在。' };
+            } else if (amount <= 100000) {
+                level = { label: '🚀 牛马传说', message: '月薪六万以上，你已经不是牛马了，是开牛马场的人。' };
+            } else {
+                level = { label: '🏆 资本家预备役', message: '月薪十万，你该开个公司雇牛马了。' };
+            }
+            
+            showNotification(`${level.label} ${level.message}`);
+            updateIncomeResultDisplay();
+        }
+
+        // 被动收入分级通知
+        function showPassiveIncomeLevelNotification(amount) {
+            if (amount > 0) {
+                let level;
+                if (amount <= 500) {
+                    level = { label: '🌱 萌芽被动', message: '刚起步，至少话费有人帮你交了。' };
+                } else if (amount <= 1000) {
+                    level = { label: '📶 信号级被动', message: '能覆盖水电煤，算是有个信号了。' };
+                } else if (amount <= 2000) {
+                    level = { label: '☕ 咖啡自由', message: '伙食费或咖啡自由，有点小确幸。' };
+                } else if (amount <= 5000) {
+                    level = { label: '🏠 房租覆盖', message: '被动收入能cover房租，你已经比50%的牛马强。' };
+                } else if (amount <= 10000) {
+                    level = { label: '🕊️ 底气被动', message: '被动收入够基本生活，有资格跟烂工作说不。' };
+                } else if (amount <= 20000) {
+                    level = { label: '🚪 半只脚踏出', message: '月入过万还不怎么用干活？你是来拉仇恨的。' };
+                } else {
+                    level = { label: '🤴 资本家本家', message: '被动月入两万+，你来这个网站是视察民情的吧？' };
+                }
+                
+                showNotification(`${level.label} ${level.message}`);
+            }
+            // 无论金额多少都更新显示
+            updateIncomeResultDisplay();
+        }
+
+        // 更新收入结果展示区域
+        function updateIncomeResultDisplay() {
+            const totalIncome = monthlyIncome + passiveIncome;
+            
+            // 获取月薪标签
+            let salaryLevel = getSalaryLevel(monthlyIncome);
+            document.getElementById('salaryTagIcon').textContent = salaryLevel.icon;
+            document.getElementById('salaryTagLabel').textContent = salaryLevel.label;
+            
+            // 获取被动收入标签
+            let passiveLevel = getPassiveLevel(passiveIncome);
+            document.getElementById('passiveTagIcon').textContent = passiveLevel.icon;
+            document.getElementById('passiveTagLabel').textContent = passiveLevel.label;
+            
+            // 获取被动收入占比
+            let passiveRatio = 0;
+            if (totalIncome > 0) {
+                passiveRatio = Math.round((passiveIncome / totalIncome) * 100);
+            }
+            document.getElementById('passiveRatioLabel').textContent = `被动占${passiveRatio}%`;
+            
+            // 获取月总收入标签
+            let totalLevel = getTotalLevel(totalIncome);
+            document.getElementById('resultQuote').textContent = `💬 "${totalLevel.message}"`;
+            
+            // 更新详细信息
+            document.getElementById('salaryDetailValue').textContent = `¥${monthlyIncome.toLocaleString()}`;
+            document.getElementById('passiveDetailValue').textContent = `¥${passiveIncome.toLocaleString()}`;
+            document.getElementById('totalDetailValue').textContent = `¥${totalIncome.toLocaleString()}`;
+            
+            // 计算时薪
+            let hourlyRate = 0;
+            if (totalIncome > 0) {
+                if (monthlyIncome > 0) {
+                    // 有月薪时按正常计算
+                    const workDays = parseFloat(document.getElementById('workDays').value) || 5;
+                    const workHours = parseFloat(document.getElementById('workHours').value) || 8;
+                    const weeklyIncome = totalIncome / 4.333;
+                    const dailyIncome = weeklyIncome / workDays;
+                    hourlyRate = dailyIncome / workHours;
+                } else {
+                    // 只有被动收入时，24小时均摊
+                    hourlyRate = totalIncome / 30 / 24;
+                }
+            }
+            document.getElementById('hourlyDetailValue').textContent = `¥${hourlyRate.toFixed(2)}`;
+            
+            // 如果只有被动收入，显示"躺赚时薪"
+            if (monthlyIncome === 0 && passiveIncome > 0) {
+                document.getElementById('hourlyDetailLabel').textContent = '躺赚时薪：';
+            } else {
+                document.getElementById('hourlyDetailLabel').textContent = '时薪：';
+            }
+        }
+
+        // 获取月薪等级信息
+        function getSalaryLevel(amount) {
+            if (amount === 0) {
+                return { icon: '🫥', label: '空气牛马' };
+            } else if (amount <= 1000) {
+                return { icon: '🌱', label: '萌芽牛马' };
+            } else if (amount <= 3000) {
+                return { icon: '🥚', label: '温饱牛马' };
+            } else if (amount <= 5000) {
+                return { icon: '🍚', label: '基础牛马' };
+            } else if (amount <= 8000) {
+                return { icon: '🐴', label: '标准牛马' };
+            } else if (amount <= 12000) {
+                return { icon: '📈', label: '进阶牛马' };
+            } else if (amount <= 18000) {
+                return { icon: '🏠', label: '小资牛马' };
+            } else if (amount <= 25000) {
+                return { icon: '🚗', label: '中产牛马' };
+            } else if (amount <= 40000) {
+                return { icon: '✈️', label: '高端牛马' };
+            } else if (amount <= 60000) {
+                return { icon: '👑', label: '牛马之王' };
+            } else if (amount <= 100000) {
+                return { icon: '🚀', label: '牛马传说' };
+            } else {
+                return { icon: '🏆', label: '资本家预备役' };
+            }
+        }
+
+        // 获取被动收入等级信息
+        function getPassiveLevel(amount) {
+            if (amount === 0) {
+                return { icon: '🐴', label: '纯牛马' };
+            } else if (amount <= 500) {
+                return { icon: '🌱', label: '萌芽被动' };
+            } else if (amount <= 1000) {
+                return { icon: '📶', label: '信号级被动' };
+            } else if (amount <= 2000) {
+                return { icon: '☕', label: '咖啡自由' };
+            } else if (amount <= 5000) {
+                return { icon: '🏠', label: '房租覆盖' };
+            } else if (amount <= 10000) {
+                return { icon: '🕊️', label: '底气被动' };
+            } else if (amount <= 20000) {
+                return { icon: '🚪', label: '半只脚踏出' };
+            } else {
+                return { icon: '🤴', label: '资本家本家' };
+            }
+        }
+
+        // 获取月总收入等级信息
+        function getTotalLevel(amount) {
+            if (amount === 0) {
+                return { icon: '🫥', label: '空气牛马', message: '总收入0元？你是来人间凑数的吗？' };
+            } else if (amount <= 1000) {
+                return { icon: '🌱', label: '萌芽牛马', message: '总收入不过千，生存全靠一口仙气。' };
+            } else if (amount <= 3000) {
+                return { icon: '🥚', label: '温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' };
+            } else if (amount <= 5000) {
+                return { icon: '🍚', label: '基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' };
+            } else if (amount <= 8000) {
+                return { icon: '🐴', label: '标准牛马', message: '总收入全国平均水平，不丢人也不光荣。' };
+            } else if (amount <= 12000) {
+                return { icon: '📈', label: '进阶牛马', message: '比上不足比下有余，偶尔敢加个鸡腿。' };
+            } else if (amount <= 18000) {
+                return { icon: '🏠', label: '小资牛马', message: '可以考虑房租之外存点钱了。' };
+            } else if (amount <= 25000) {
+                return { icon: '🚗', label: '中产牛马', message: '总收入近两万，终于敢说在大城市还行。' };
+            } else if (amount <= 40000) {
+                return { icon: '✈️', label: '高端牛马', message: '这个总收入，回老家可以横着走。' };
+            } else if (amount <= 60000) {
+                return { icon: '👑', label: '牛马之王', message: '你是牛马圈的天花板，打工人仰望的存在。' };
+            } else if (amount <= 100000) {
+                return { icon: '🚀', label: '牛马传说', message: '总收入六万以上，你不是牛马了，是开牛马场的。' };
+            } else {
+                return { icon: '🏆', label: '资本家预备役', message: '总收入十万，你该开个公司雇牛马了。' };
+            }
+        }
+
         // 通知队列 - 注意：新通知添加到数组开头，显示在顶部
         const notifications = [];
         const NOTIFICATION_GAP = 15;
@@ -3455,10 +3789,10 @@
         function showNotification(message) {
             const notification = document.createElement('div');
             
-            // 先设置初始位置，但还不添加到DOM
+            // 初始位置在视口外上方（隐藏状态）
             notification.style.cssText = `
                 position: fixed;
-                top: 20px;
+                top: -100px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: linear-gradient(135deg, #ffd700, #ff9500);
@@ -3472,47 +3806,48 @@
                 max-width: 80%;
                 word-wrap: break-word;
                 opacity: 0;
-                transition: all 0.3s ease;
+                transition: top 0.3s ease, opacity 0.3s ease;
             `;
             notification.textContent = message;
-            
-            // 让所有现有的通知往下挪
-            for (let i = 0; i < notifications.length; i++) {
-                const currentNotification = notifications[i];
-                const currentTop = parseFloat(currentNotification.style.top) || 20;
-                currentNotification.style.transition = 'top 0.3s ease';
-                currentNotification.style.top = (currentTop + NOTIFICATION_HEIGHT + NOTIFICATION_GAP) + 'px';
-            }
-            
-            // 添加新通知到DOM和队列开头
             document.body.appendChild(notification);
+            
+            // 先让所有现有通知往下挪（为新通知腾出顶部位置）
+            notifications.forEach((existingNotification, index) => {
+                const currentTop = parseFloat(existingNotification.style.top) || 20;
+                existingNotification.style.top = (currentTop + NOTIFICATION_HEIGHT + NOTIFICATION_GAP) + 'px';
+            });
+            
+            // 添加新通知到数组开头
             notifications.unshift(notification);
             
-            // 让新通知淡入
+            // 新通知滑入到顶部位置
             requestAnimationFrame(() => {
                 notification.style.opacity = '1';
+                notification.style.top = '20px';
             });
 
             // 设置自动消失
             setTimeout(() => {
                 notification.style.opacity = '0';
-                notification.style.top = '-100px';
                 setTimeout(() => {
-                    // 从队列中移除
+                    // 从数组中移除
                     const index = notifications.indexOf(notification);
                     if (index > -1) {
                         notifications.splice(index, 1);
                     }
-                    // 让这个通知下面的所有通知往上移
-                    for (let i = index; i < notifications.length; i++) {
-                        const currentNotification = notifications[i];
-                        const currentTop = parseFloat(currentNotification.style.top) || 20;
-                        currentNotification.style.transition = 'top 0.3s ease';
-                        currentNotification.style.top = (currentTop - NOTIFICATION_HEIGHT - NOTIFICATION_GAP) + 'px';
-                    }
                     notification.remove();
+                    // 更新剩余通知的位置
+                    updateNotificationsPosition();
                 }, 300);
             }, 3000);
+        }
+
+        // 更新所有通知位置
+        function updateNotificationsPosition() {
+            notifications.forEach((notification, index) => {
+                const targetTop = 20 + index * (NOTIFICATION_HEIGHT + NOTIFICATION_GAP);
+                notification.style.top = targetTop + 'px';
+            });
         }
 
         // 添加动画样式
@@ -4033,6 +4368,9 @@ async function shareAchievement() {
                 const income = calculateIncome(0); // 使用计算后的总收入
                 updateDisplay(income);
                 startRealTimeCoinDrop();
+                
+                // 显示月薪分级梗
+                showSalaryLevelNotification(value);
             }
         });
 
@@ -4048,6 +4386,9 @@ async function shareAchievement() {
                 const income = calculateIncome(0); // 使用计算后的总收入
                 updateDisplay(income);
                 startRealTimeCoinDrop();
+                
+                // 显示被动收入分级梗
+                showPassiveIncomeLevelNotification(value);
             }
         });
 
@@ -4265,6 +4606,7 @@ async function shareAchievement() {
                 const income = calculateIncome(0); // 使用计算后的总收入
                 updateDisplay(income);
                 startRealTimeCoinDrop();
+                updateIncomeResultDisplay(); // 更新结果展示区域
             }
 
             // 欢迎提示 - 根据时间显示不同内容
@@ -4336,28 +4678,50 @@ async function shareAchievement() {
                 }
                 showNotification(welcomeMessage);
 
-                // 显示工作天数和工时的提示
-                setTimeout(() => {
-                    const t = translations[currentLang];
-                    const currentWorkDays = parseFloat(workDaysInput.value) || 5;
-                    const currentWorkHours = parseFloat(workHoursInput.value) || 8;
-                    
-                    // 显示工作天数提示
-                    if (currentWorkDays >= 1 && currentWorkDays <= 7) {
-                        showNotification(t.workDaysPrompts[currentWorkDays]);
-                    }
-                    
-                    // 显示工时提示（再延迟一下）
-                    setTimeout(() => {
-                        if (currentWorkHours >= 0.5 && currentWorkHours <= 24) {
-                            showNotification(t.workHoursPrompts[currentWorkHours]);
-                        }
-                        // 所有初始化通知显示完毕后，标记初始化完成
+                // 创建通知队列（只包含有内容的通知）
+                const notificationQueue = [];
+                const t = translations[currentLang];
+                
+                // 添加月薪分级提示（如有）
+                if (monthlyIncome > 0) {
+                    notificationQueue.push(() => showSalaryLevelNotification(monthlyIncome));
+                }
+                
+                // 添加被动收入分级提示（如有）
+                if (passiveIncome > 0) {
+                    notificationQueue.push(() => showPassiveIncomeLevelNotification(passiveIncome));
+                }
+                
+                // 添加工作天数提示
+                const currentWorkDays = parseFloat(workDaysInput.value) || 5;
+                if (currentWorkDays >= 1 && currentWorkDays <= 7) {
+                    notificationQueue.push(() => showNotification(t.workDaysPrompts[currentWorkDays]));
+                }
+                
+                // 添加工时提示
+                const currentWorkHours = parseFloat(workHoursInput.value) || 8;
+                if (currentWorkHours >= 0.5 && currentWorkHours <= 24) {
+                    notificationQueue.push(() => showNotification(t.workHoursPrompts[currentWorkHours]));
+                }
+                
+                // 依次显示队列中的通知
+                let index = 0;
+                const showNextNotification = () => {
+                    if (index < notificationQueue.length) {
+                        notificationQueue[index]();
+                        index++;
+                        setTimeout(showNextNotification, 800); // 每个通知间隔800ms
+                    } else {
+                        // 所有通知显示完毕后，更新结果展示区域并标记初始化完成
                         setTimeout(() => {
+                            updateIncomeResultDisplay();
                             isInitializing = false;
                         }, 3500);
-                    }, 1500);
-                }, 1500);
+                    }
+                };
+                
+                // 延迟1.5秒后开始显示队列中的通知
+                setTimeout(showNextNotification, 1500);
             }, 500);
         }
 
