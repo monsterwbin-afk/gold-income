@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
+    <title>关于牛马金币计算器</title>
     <style>
         * {
             margin: 0;
@@ -249,9 +249,12 @@
     </div>
     <div class="about-container">
         <div class="about-card">
-            <h1 class="about-title" id="aboutTitle">关于我们</h1>
-            <p class="about-text" id="aboutText1">在我的网站上，您可以免费使用此薪资计算和游玩金币小游戏，金币的掉落希望让你繁忙的工作中感受到愉悦，希望您能达到理想中的薪酬收入。</p>
-            <p class="about-text" id="aboutText2">如果您对我的网页有任何疑问或建议，请随时通过 monster.wbin（at）gmail（dot）com 联系我，感谢您的使用。</p>
+            <h1 class="about-title" id="aboutTitle">关于牛马金币计算器</h1>
+            <p class="about-text" id="aboutText1">这个网站诞生于一个灵魂拷问：<br>"我这一小时，到底值几个钱？"</p>
+            <p class="about-text" id="aboutText2">算完之后，沉默了。<br>于是做了这个计算器，帮同样迷茫的牛马们算清自己的价码。</p>
+            <p class="about-text" id="aboutText3">顺便做了个接金币小游戏，让金币从屏幕掉下来的时候，<br>至少那一刻，你是开心的。</p>
+            <p class="about-text" id="aboutText4">希望你算完这笔账之后，<br>要么更清醒地搬砖，<br>要么更坚定地向前。</p>
+            <p class="about-text" id="aboutText5">📮 想骂我、夸我、或者有Bug要报：<br>monster.wbin（at）gmail（dot）com<br>（邮件标题请写"牛马来信"，我会优先看）</p>
             <a class="return-btn" id="returnBtn" href="index.html">返回首页</a>
         </div>
     </div>
@@ -259,18 +262,24 @@
         let currentLang = 'zh';
         const translations = {
             zh: {
-                aboutTitle: '关于我们',
-                aboutText1: '在我的网站上，您可以免费使用此薪资计算和游玩金币小游戏，金币的掉落希望让你繁忙的工作中感受到愉悦，希望您能达到理想中的薪酬收入。',
-                aboutText2: '如果您对我的网页有任何疑问或建议，请随时通过 monster.wbin（at）gmail（dot）com 联系我，感谢您的使用。',
+                aboutTitle: '关于牛马金币计算器',
+                aboutText1: '这个网站诞生于一个灵魂拷问：\n"我这一小时，到底值几个钱？"',
+                aboutText2: '算完之后，沉默了。\n于是做了这个计算器，帮同样迷茫的牛马们算清自己的价码。',
+                aboutText3: '顺便做了个接金币小游戏，让金币从屏幕掉下来的时候，\n至少那一刻，你是开心的。',
+                aboutText4: '希望你算完这笔账之后，\n要么更清醒地搬砖，\n要么更坚定地向前。',
+                aboutText5: '📮 想骂我、夸我、或者有Bug要报：\nmonster.wbin（at）gmail（dot）com\n（邮件标题请写"牛马来信"，我会优先看）',
                 returnBtn: '返回首页',
                 langSwitch: 'English',
                 aboutNav: '关于',
                 privacyNav: '隐私'
             },
             en: {
-                aboutTitle: 'About Us',
-                aboutText1: 'On my website, you can freely use this salary calculator and play the gold coin mini-game. The falling gold coins hope to bring you joy amidst your busy work, and I hope you achieve your ideal salary income.',
-                aboutText2: 'If you have any questions or suggestions about my website, please feel free to contact me at monster.wbin (at) gmail (dot) com. Thank you for using it.',
+                aboutTitle: 'About Niuma Gold Calculator',
+                aboutText1: 'This website was born from a soul-searching question:\n"How much is this hour of mine really worth?"',
+                aboutText2: 'After calculating, I fell silent.\nSo I made this calculator to help fellow "niuma" (workhorses) figure out their true worth.',
+                aboutText3: 'I also added a coin-catching mini-game.\nWhen gold coins fall from the screen,\nat least in that moment, you are happy.',
+                aboutText4: 'I hope after calculating this bill,\nyou either work more clearly,\nor move forward more firmly.',
+                aboutText5: '📮 Want to scold me, praise me, or report a bug:\nmonster.wbin (at) gmail (dot)com\n(Please write "Niuma Letter" in the email subject, I will prioritize it)',
                 returnBtn: 'Return Home',
                 langSwitch: '中文',
                 aboutNav: 'About',
@@ -281,8 +290,11 @@
         function updateLanguageContent() {
             const t = translations[currentLang];
             document.getElementById('aboutTitle').textContent = t.aboutTitle;
-            document.getElementById('aboutText1').textContent = t.aboutText1;
-            document.getElementById('aboutText2').textContent = t.aboutText2;
+            document.getElementById('aboutText1').innerHTML = t.aboutText1.replace(/\n/g, '<br>');
+            document.getElementById('aboutText2').innerHTML = t.aboutText2.replace(/\n/g, '<br>');
+            document.getElementById('aboutText3').innerHTML = t.aboutText3.replace(/\n/g, '<br>');
+            document.getElementById('aboutText4').innerHTML = t.aboutText4.replace(/\n/g, '<br>');
+            document.getElementById('aboutText5').innerHTML = t.aboutText5.replace(/\n/g, '<br>');
             const aboutNav = document.getElementById('aboutNav');
             const privacyNav = document.getElementById('privacyNav');
             const returnBtn = document.getElementById('returnBtn');

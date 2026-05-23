@@ -645,6 +645,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            position: relative;
+            z-index: 100; /* 低于通知的 z-index: 1000 */
         }
 
         .game-toggle-btn:hover {
@@ -710,13 +712,27 @@
 
         h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        h1 .emoji {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: initial;
+            background-clip: text;
+            text-shadow: none;
+        }
+        
+        h1 .title-text {
             background: linear-gradient(135deg, #ffd700, #ffed4a, #ff9500, #ffd700);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-            margin-bottom: 10px;
             animation: titleGlow 3s ease-in-out infinite;
         }
 
@@ -726,9 +742,13 @@
         }
 
         .subtitle {
-            color: #b8b8b8;
             font-size: 1.1em;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, #ffd700, #ffed4a, #ff9500);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         /* 语言切换按钮 */
@@ -1115,11 +1135,43 @@
         /* 📊 收入结果展示区域 */
         .income-result-section {
             background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.15));
-            border: 2px solid rgba(255,215,0,0.3);
+            border: 3px solid #ffd700;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(255,215,0,0.2);
+            box-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.5),
+                0 0 40px rgba(255, 215, 0, 0.3),
+                0 0 60px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            animation: resultGlow 2s ease-in-out infinite alternate;
+        }
+        
+        .income-result-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,215,0,0.15), transparent);
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes resultGlow {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(255, 215, 0, 0.5),
+                    0 0 40px rgba(255, 215, 0, 0.3),
+                    0 0 60px rgba(255, 215, 0, 0.2);
+            }
+            100% {
+                box-shadow: 
+                    0 0 30px rgba(255, 215, 0, 0.8),
+                    0 0 60px rgba(255, 215, 0, 0.5),
+                    0 0 90px rgba(255, 215, 0, 0.3);
+            }
         }
 
         .result-tags-container {
@@ -1141,6 +1193,20 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
+        
+        @keyframes tagGlow {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 15px rgba(255, 215, 0, 0.4),
+                    inset 0 0 10px rgba(255, 215, 0, 0.1);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 30px rgba(255, 215, 0, 0.8),
+                    0 0 50px rgba(255, 215, 0, 0.4),
+                    inset 0 0 15px rgba(255, 215, 0, 0.2);
+            }
+        }
 
         .result-tag .tag-icon {
             font-size: 1.5em;
@@ -1158,6 +1224,88 @@
 
         .passive-ratio-tag .tag-label {
             color: #90EE90;
+        }
+
+        /* 模式标签配色 */
+        .mode-tag.mode-days-1 {
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,149,0,0.3));
+            border-color: rgba(255,215,0,0.5);
+        }
+
+        .mode-tag.mode-days-2 {
+            background: linear-gradient(135deg, rgba(135,206,235,0.3), rgba(70,130,180,0.3));
+            border-color: rgba(135,206,235,0.5);
+        }
+
+        .mode-tag.mode-days-3 {
+            background: linear-gradient(135deg, rgba(144,238,144,0.3), rgba(50,205,50,0.3));
+            border-color: rgba(144,238,144,0.5);
+        }
+
+        .mode-tag.mode-days-4 {
+            background: linear-gradient(135deg, rgba(0,206,209,0.3), rgba(32,178,170,0.3));
+            border-color: rgba(0,206,209,0.5);
+        }
+
+        .mode-tag.mode-days-5 {
+            background: linear-gradient(135deg, rgba(128,128,128,0.3), rgba(169,169,169,0.3));
+            border-color: rgba(128,128,128,0.5);
+        }
+
+        .mode-tag.mode-days-6 {
+            background: linear-gradient(135deg, rgba(255,165,0,0.3), rgba(255,140,0,0.3));
+            border-color: rgba(255,165,0,0.5);
+        }
+
+        .mode-tag.mode-days-7 {
+            background: linear-gradient(135deg, rgba(255,69,0,0.3), rgba(220,20,60,0.3));
+            border-color: rgba(255,69,0,0.5);
+        }
+
+        .mode-tag.mode-hours-1 {
+            background: linear-gradient(135deg, rgba(255,182,193,0.3), rgba(255,105,180,0.3));
+            border-color: rgba(255,182,193,0.5);
+        }
+
+        .mode-tag.mode-hours-2 {
+            background: linear-gradient(135deg, rgba(144,238,144,0.3), rgba(50,205,50,0.3));
+            border-color: rgba(144,238,144,0.5);
+        }
+
+        .mode-tag.mode-hours-3 {
+            background: linear-gradient(135deg, rgba(135,206,235,0.3), rgba(70,130,180,0.3));
+            border-color: rgba(135,206,235,0.5);
+        }
+
+        .mode-tag.mode-hours-4 {
+            background: linear-gradient(135deg, rgba(128,128,128,0.3), rgba(169,169,169,0.3));
+            border-color: rgba(128,128,128,0.5);
+        }
+
+        .mode-tag.mode-hours-5 {
+            background: linear-gradient(135deg, rgba(255,165,0,0.3), rgba(255,140,0,0.3));
+            border-color: rgba(255,165,0,0.5);
+        }
+        
+        /* .mode-tag 发光效果已取消 */
+
+        .mode-tag.mode-hours-6 {
+            background: linear-gradient(135deg, rgba(255,140,0,0.3), rgba(255,69,0,0.3));
+            border-color: rgba(255,140,0,0.5);
+        }
+
+        .mode-tag.mode-hours-7 {
+            background: linear-gradient(135deg, rgba(255,69,0,0.3), rgba(220,20,60,0.3));
+            border-color: rgba(255,69,0,0.5);
+        }
+
+        .mode-tag.mode-hours-8 {
+            background: linear-gradient(135deg, rgba(139,0,0,0.3), rgba(178,34,34,0.3));
+            border-color: rgba(139,0,0,0.5);
+        }
+
+        .mode-tag .tag-label {
+            color: #ffd700;
         }
 
         .result-main-display {
@@ -1214,13 +1362,31 @@
 
         .achievements-title {
             text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .achievements-title .title-emoji {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: initial;
+            background-clip: text;
+        }
+        
+        .achievements-title .title-text {
             background: linear-gradient(135deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            font-weight: bold;
+        }
+
+        .achievements-section {
+            position: relative;
+            z-index: 10;
         }
 
         .achievements-grid {
@@ -1228,6 +1394,8 @@
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 11;
         }
 
         .achievement {
@@ -1239,6 +1407,8 @@
             transition: all 0.3s ease;
             opacity: 0.5;
             box-shadow: inset 0 0 20px rgba(255,215,0,0.05);
+            position: relative;
+            z-index: 12;
         }
 
         .achievement.unlocked {
@@ -1253,15 +1423,28 @@
         .achievement-icon {
             font-size: 2em;
             margin-bottom: 10px;
+            color: unset !important;
+            -webkit-text-fill-color: unset !important;
+            position: relative;
+            z-index: 100;
         }
 
         .achievement-name {
             font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .achievement-name .name-emoji {
+            color: initial;
+            -webkit-text-fill-color: initial;
+            background-clip: text;
+        }
+        
+        .achievement-name .name-text {
             background: linear-gradient(135deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: bold;
         }
 
         /* 接金币游戏成就专用样式 */
@@ -1275,13 +1458,26 @@
 
         .game-achievements-title {
             text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .game-achievements-title .title-emoji {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: initial;
+            background-clip: text;
+        }
+        
+        .game-achievements-title .title-text {
             background: linear-gradient(135deg, #ff6b9d, #ff4d8a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            font-weight: bold;
         }
 
         /* 当前成就显示区域 */
@@ -1600,11 +1796,27 @@
 
         .simulation-title {
             text-align: center;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .simulation-title .title-emoji {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: initial;
+            background-clip: text;
+        }
+        
+        .simulation-title .title-text {
             background: linear-gradient(135deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 1.5em;
+        }
+        
+        .simulation-title {
             margin-bottom: 20px;
             font-weight: bold;
         }
@@ -1778,10 +1990,25 @@
 
         .history-title {
             text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .history-title .title-emoji {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: initial;
+            background-clip: text;
+        }
+        
+        .history-title .title-text {
             background: linear-gradient(135deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+        
+        .history-title {
             font-size: 1.5em;
             font-weight: bold;
             flex: 1;
@@ -1924,9 +2151,9 @@
 <body>
     <!-- 小游戏控制面板 -->
     <div class="game-controls">
-        <button class="game-toggle-btn" id="gameToggleBtn">🎮 开始接金币游戏</button>
+        <button class="game-toggle-btn" id="gameToggleBtn">🎮 开始摸鱼游戏</button>
         <div class="game-info" id="gameInfo">
-            <h3>接金币小游戏</h3>
+            <h3>摸鱼小游戏</h3>
             <p>移动鼠标控制小人接住金币</p>
             <p>已接金币：<strong id="caughtCoinsCount">0</strong> 枚</p>
         </div>
@@ -1946,7 +2173,7 @@
     
     <div class="container">
         <header>
-            <h1 id="mainTitle">💰 牛马金币计算器</h1>
+            <h1><span class="emoji">💰</span><span class="title-text" id="mainTitle">牛马金币计算器</span></h1>
             <p class="subtitle" id="subtitle"></p>
             <button class="lang-switch" id="langSwitch">English</button>
         </header>
@@ -2066,6 +2293,15 @@
                     <span class="tag-icon">📊</span>
                     <span class="tag-label" id="passiveRatioLabel">被动占0%</span>
                 </div>
+                <!-- 模式标签双标签组合展示 -->
+                <div class="result-tag mode-tag" id="workDaysModeTag">
+                    <span class="tag-icon">🐴</span>
+                    <span class="tag-label">标准牛马</span>
+                </div>
+                <div class="result-tag mode-tag" id="workHoursModeTag">
+                    <span class="tag-icon">🐴</span>
+                    <span class="tag-label">标准牛马</span>
+                </div>
             </div>
             
             <div class="result-main-display" id="resultMainDisplay">
@@ -2097,50 +2333,62 @@
         </div>
 
         <div class="achievements-section">
-            <h2 class="achievements-title" id="achievementsTitle">🏆 收入成就系统</h2>
+            <h2 class="achievements-title"><span class="title-emoji">🏆</span><span class="title-text" id="achievementsTitle">收入成就系统</span></h2>
             <div class="achievements-grid">
-                <div class="achievement" data-achievement="month-new">
-                    <div class="achievement-icon">🌱</div>
-                    <div class="achievement-name" id="monthNewName">月薪新人<br>月薪>3000</div>
+                <div class="achievement" data-achievement="warm-bull">
+                    <span class="achievement-icon" style="color: #654321;">🍚</span>
+                    <div class="achievement-name"><span class="name-emoji">🌱</span><span class="name-text" id="warmBullName">温饱牛马<br>月总收入>3000</span></div>
+                </div>
+                <div class="achievement" data-achievement="formal-bull">
+                    <span class="achievement-icon" style="color: #8B4513;">🐴</span>
+                    <div class="achievement-name"><span class="name-emoji">🐴</span><span class="name-text" id="formalBullName">正式牛马<br>月总收入>5000</span></div>
+                </div>
+                <div class="achievement" data-achievement="hour-warm">
+                    <span class="achievement-icon" style="color: #8B4513;">☕</span>
+                    <div class="achievement-name"><span class="name-emoji">⏰</span><span class="name-text" id="hourWarmName">时薪温饱<br>时薪>20</span></div>
+                </div>
+                <div class="achievement" data-achievement="hour-master">
+                    <span class="achievement-icon" style="color: #00CED1;">💎</span>
+                    <div class="achievement-name"><span class="name-emoji">💎</span><span class="name-text" id="hourMasterName">时薪大佬<br>时薪>100</span></div>
                 </div>
                 <div class="achievement" data-achievement="day-hundred">
-                    <div class="achievement-icon">💯</div>
-                    <div class="achievement-name" id="dayHundredName">日入过百<br>日薪>100</div>
+                    <span class="achievement-icon" style="color: #FFD700;">💯</span>
+                    <div class="achievement-name"><span class="name-emoji">🌅</span><span class="name-text" id="dayHundredName">日薪过百<br>日薪>100</span></div>
                 </div>
-                <div class="achievement" data-achievement="hour-king">
-                    <div class="achievement-icon">👑</div>
-                    <div class="achievement-name" id="hourKingName">时薪王者<br>时薪>100</div>
+                <div class="achievement" data-achievement="day-free">
+                    <span class="achievement-icon" style="color: #FF6347;">🛒</span>
+                    <div class="achievement-name"><span class="name-emoji">🛒</span><span class="name-text" id="dayFreeName">日薪自由<br>日薪>500</span></div>
                 </div>
-                <div class="achievement" data-achievement="income-elite">
-                    <div class="achievement-icon">⭐</div>
-                    <div class="achievement-name" id="incomeEliteName">收入精英<br>月薪>10000</div>
+                <div class="achievement" data-achievement="passive-start">
+                    <span class="achievement-icon" style="color: #228B22;">🌱</span>
+                    <div class="achievement-name"><span class="name-emoji">🌱</span><span class="name-text" id="passiveStartName">有点被动<br>被动收入>0</span></div>
                 </div>
-            </div>
-        </div>
-
-        <!-- 接金币游戏成就栏目 -->
-        <div class="game-achievements-section">
-            <h2 class="game-achievements-title" id="gameAchievementsTitle">🎮 接金币游戏成就</h2>
-            
-            <!-- 当前成就显示区域 -->
-            <div class="current-achievement-display" id="currentAchievementDisplay">
-                <div class="current-achievement-icon" id="currentAchievementIcon">😐</div>
-                <div class="current-achievement-info">
-                    <div class="current-achievement-name" id="currentAchievementName">无所事事</div>
-                    <div class="current-achievement-coins" id="currentAchievementCoins">0 金币</div>
-                    <div class="current-achievement-desc" id="currentAchievementDesc">刚开始踏上摸鱼之旅</div>
+                <div class="achievement" data-achievement="passive-rent">
+                    <span class="achievement-icon" style="color: #8B4513;">🏠</span>
+                    <div class="achievement-name"><span class="name-emoji">🏠</span><span class="name-text" id="passiveRentName">躺着交租<br>被动收入>2000</span></div>
                 </div>
-                <button class="high-score-btn" id="highScoreBtn">🏆 <span id="highScoreBtnText">最高成就</span></button>
-            </div>
-            
-            <div class="game-achievements-grid" id="gameAchievementsGrid">
-                <!-- 成就将通过JavaScript动态生成 -->
+                <div class="achievement" data-achievement="extreme-bull">
+                    <span class="achievement-icon" style="color: #FFFFFF;">💀</span>
+                    <div class="achievement-name"><span class="name-emoji">🔥</span><span class="name-text" id="extremeBullName">极限牛马<br>每日工时≥12</span></div>
+                </div>
+                <div class="achievement" data-achievement="god-bull">
+                    <span class="achievement-icon" style="color: #20B2AA;">🧘</span>
+                    <div class="achievement-name"><span class="name-emoji">🧘</span><span class="name-text" id="godBullName">神仙牛马<br>每周工作≤2天</span></div>
+                </div>
+                <div class="achievement" data-achievement="year-million">
+                    <span class="achievement-icon" style="color: #FFD700;">🏆</span>
+                    <div class="achievement-name"><span class="name-emoji">💰</span><span class="name-text" id="yearMillionName">年入百万<br>年薪≥100万</span></div>
+                </div>
+                <div class="achievement" data-achievement="perfect-slacker">
+                    <span class="achievement-icon" style="color: #1E90FF;">🎣</span>
+                    <div class="achievement-name"><span class="name-emoji">🎯</span><span class="name-text" id="perfectSlackerName">完美摸鱼<br>时薪<20且被动>月薪</span></div>
+                </div>
             </div>
         </div>
 
         <!-- 长期积累效果栏目 -->
         <div class="simulation-section">
-            <h2 class="simulation-title" id="simulationTitle">📈 长期积累效果</h2>
+            <h2 class="simulation-title"><span class="title-emoji">📈</span><span class="title-text" id="simulationTitle">长期积累效果</span></h2>
             <div class="simulation-grid">
                 <div class="simulation-item">
                     <div class="simulation-period" id="monthSimLabel">1个月积累</div>
@@ -2161,9 +2409,29 @@
             </div>
         </div>
 
+        <!-- 接金币游戏成就栏目 -->
+        <div class="game-achievements-section">
+            <h2 class="game-achievements-title"><span class="title-emoji">🎮</span><span class="title-text" id="gameAchievementsTitle">摸鱼游戏成就</span></h2>
+            
+            <!-- 当前成就显示区域 -->
+            <div class="current-achievement-display" id="currentAchievementDisplay">
+                <div class="current-achievement-icon" id="currentAchievementIcon">😐</div>
+                <div class="current-achievement-info">
+                    <div class="current-achievement-name" id="currentAchievementName">还没开工</div>
+                    <div class="current-achievement-coins" id="currentAchievementCoins">0 金币</div>
+                    <div class="current-achievement-desc" id="currentAchievementDesc">摸鱼？先打开游戏再说</div>
+                </div>
+                <button class="high-score-btn" id="highScoreBtn">🏆 <span id="highScoreBtnText">最高成就</span></button>
+            </div>
+            
+            <div class="game-achievements-grid" id="gameAchievementsGrid">
+                <!-- 成就将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
         <div class="history-section">
             <div class="history-header">
-                <h2 class="history-title" id="historyTitle">📊 历史记录</h2>
+                <h2 class="history-title"><span class="title-emoji">📊</span><span class="title-text" id="historyTitle">历史记录</span></h2>
                 <button class="clear-all-btn" id="clearAllHistoryBtn">🗑️ 清除全部</button>
             </div>
             <div class="history-list" id="historyList">
@@ -2203,9 +2471,9 @@
             <div class="high-score-display">
                 <div class="high-score-icon" id="highScoreIcon">😐</div>
                 <div class="high-score-info">
-                    <div class="high-score-name" id="highScoreName">无所事事</div>
+                    <div class="high-score-name" id="highScoreName">还没开工</div>
                     <div class="high-score-coins" id="highScoreCoins">0 金币</div>
-                    <div class="high-score-desc" id="highScoreDesc">刚开始踏上摸鱼之旅</div>
+                    <div class="high-score-desc" id="highScoreDesc">摸鱼？先打开游戏再说</div>
                 </div>
             </div>
             <button class="high-score-close-btn" id="highScoreCloseBtn">关闭</button>
@@ -2254,6 +2522,7 @@
         let audioContext = null;
         let gameCoins = []; // 小游戏专用的金币数组
         let gameAnimationId = null;
+        let updateCatcherPosition = false;
         
         // 为每个单位单独维护起始时间和累积金额
         let unitStates = {
@@ -2267,7 +2536,7 @@
         // 翻译数据
         const translations = {
             zh: {
-                mainTitle: '💰 牛马金币计算器',
+                mainTitle: '牛马金币计算器',
                 subtitles: [
                     '打工人专属的时薪账单',
                     '你的每一分钟，都明码标价',
@@ -2308,19 +2577,27 @@
                 hourLabel: '每小时收入',
                 dayLabel: '每日收入',
                 weekLabel: '每周收入',
-                achievementsTitle: '🏆 收入成就系统',
-                monthNewName: '月薪新人<br>月薪>3000',
-                dayHundredName: '日入过百<br>日薪>100',
-                hourKingName: '时薪王者<br>时薪>100',
-                incomeEliteName: '收入精英<br>月薪>10000',
-                simulationTitle: '📈 长期积累效果',
+                achievementsTitle: '收入成就系统',
+                warmBullName: '温饱牛马<br>月总收入>3000',
+                formalBullName: '正式牛马<br>月总收入>5000',
+                hourWarmName: '时薪温饱<br>时薪>20',
+                hourMasterName: '时薪大佬<br>时薪>100',
+                dayHundredName: '日薪过百<br>日薪>100',
+                dayFreeName: '日薪自由<br>日薪>500',
+                passiveStartName: '有点被动<br>被动收入>0',
+                passiveRentName: '躺着交租<br>被动收入>2000',
+                extremeBullName: '极限牛马<br>每日工时≥12',
+                godBullName: '神仙牛马<br>每周工作≤2天',
+                yearMillionName: '年入百万<br>年薪≥100万',
+                perfectSlackerName: '完美摸鱼<br>时薪<20且被动>月薪',
+                simulationTitle: '长期积累效果',
                 monthSimLabel: '1个月积累',
                 quarterSimLabel: '3个月积累',
                 halfYearSimLabel: '半年积累',
                 yearSimLabel: '1年积累',
-                historyTitle: '📊 历史记录',
+                historyTitle: '历史记录',
                 noHistoryText: '暂无历史记录',
-                shareBtn: '📤 分享我的接金币游戏成就',
+                shareBtn: '📤 分享我的摸鱼游戏成就',
                 aboutBtn: '关于我们',
                 privacyBtn: '隐私政策',
                 incomePlaceholder: '输入您的月薪',
@@ -2330,15 +2607,15 @@
                 statusTextInitial: '请先输入月薪以开始实时掉落',
                 deleteSingle: '🗑️',
                 clearAllBtn: '🗑️ 清除全部',
-                gameToggleStart: '🎮 开始接金币游戏',
-                gameToggleStop: '🛑 停止接金币游戏',
-                gameAchievementsTitle: '🎮 接金币游戏成就',
+                gameToggleStart: '🎮 开始摸鱼游戏',
+                gameToggleStop: '🛑 停止摸鱼游戏',
+                gameAchievementsTitle: '摸鱼游戏成就',
                 currentAchievementLabel: '当前成就',
                 coinUnitText: '金币',
                 highScoreBtnText: '最高成就',
                 highScoreTitle: '历史最高成就',
                 highScoreCloseBtn: '关闭',
-                gameInfoTitle: '接金币小游戏',
+                gameInfoTitle: '摸鱼小游戏',
                 gameInfoTip: '移动鼠标控制小人接住金币',
                 gameInfoCaught: '已接金币：',
                 gameInfoUnit: '枚',
@@ -2383,31 +2660,43 @@
                     over24: '一天只有24小时，你工作{hours}小时？不睡觉了？命不要了？',
                     notHalfMultiple: '工时只支持0.5的倍数哦，比如7.5、8.0、8.5，请重新输入'
                 },
-                achievementIdle: '无所事事',
-                achievementBored: '闲得发慌',
-                achievementFart: '闲出屁',
-                achievementFoot: '闲得抠脚',
-                achievementMushroom: '闲出蘑菇',
-                achievementMoldy: '闲到发霉',
-                achievementNothing: '闲得没事干',
-                achievementSky: '闲出天际',
-                achievementEgg: '闲得蛋疼',
-                achievementYipi: '闲得一批',
-                achievementDoubt: '闲到怀疑人生',
-                achievementIdleDesc: '刚开始踏上摸鱼之旅',
-                achievementBoredDesc: '时间太多，开始发慌',
-                achievementFartDesc: '摸鱼达到初步境界',
-                achievementFootDesc: '抠脚都能接住金币',
-                achievementMushroomDesc: '蘑菇都长出来了',
-                achievementMoldyDesc: '时间长出了霉菌',
-                achievementNothingDesc: '已经闲到无所事事',
-                achievementSkyDesc: '摸鱼已经超越地球',
-                achievementEggDesc: '蛋都闲得自己玩球',
-                achievementYipiDesc: '已经闲得开始散步',
-                achievementDoubtDesc: '怀疑人生是不是来摸鱼的'
+                achievementIdle: '还没开工',
+                achievementJiazhuang: '假装干活',
+                achievementDaishui: '带薪喝水',
+                achievementCesuo1: '厕所实习生',
+                achievementCesuo2: '厕所常驻',
+                achievementFadai: '带薪发呆',
+                achievementChajian: '茶水间交际',
+                achievementShoushou: '摸鱼熟手',
+                achievementLaomoyu: '老摸鱼人',
+                achievementBazhua: '摸鱼八爪鱼',
+                achievementJing: '摸鱼鲸',
+                achievementYouling: '摸鱼幽灵',
+                achievementHaizei: '摸鱼海贼王',
+                achievementJidong: '自动摸鱼机',
+                achievementHeidong: '摸鱼黑洞',
+                achievementXianren: '摸鱼仙人',
+                achievementDadi: '摸鱼之帝',
+                achievementIdleDesc: '摸鱼？先打开游戏再说',
+                achievementJiazhuangDesc: '手指刚离开键盘',
+                achievementDaishuiDesc: '起身倒了第一杯水',
+                achievementCesuo1Desc: '刚蹲进厕所，手机掏出来了',
+                achievementCesuo2Desc: '马桶上的时间，才是你的自由',
+                achievementFadaiDesc: '屏幕前眼神涣散，脑子已下班',
+                achievementChajianDesc: '和同事闲聊八卦，老板路过假装聊需求',
+                achievementShoushouDesc: 'Excel下面藏着游戏窗口',
+                achievementLaomoyuDesc: '摸鱼技巧已入化境，Alt+Tab快到有残影',
+                achievementBazhuaDesc: '同时摸鱼、追剧、吃零食、回微信',
+                achievementJingDesc: '体型巨大，沉不下去，老板已经发现但懒得说',
+                achievementYoulingDesc: '工位上空无一人，只有屏幕在闪',
+                achievementHaizeiDesc: '摸鱼界的传奇，新人膜拜的对象',
+                achievementJidongDesc: '身体在工位，灵魂已环游世界',
+                achievementHeidongDesc: '一切工作靠近你都会被吸入摸鱼深渊',
+                achievementXianrenDesc: '飞升了，物我两忘，摸鱼即工作，工作即摸鱼',
+                achievementDadiDesc: '你不是在摸鱼，摸鱼就是你——恭喜通关！'
             },
             en: {
-                mainTitle: '💰 Bullshit Coin Calculator',
+                mainTitle: 'Bullshit Coin Calculator',
                 subtitles: [
                     'Hourly bill for workers',
                     'Every minute of yours is priced',
@@ -2489,17 +2778,25 @@
                 hourLabel: 'Per Hour',
                 dayLabel: 'Per Day',
                 weekLabel: 'Per Week',
-                achievementsTitle: '🏆 Income Achievement System',
-                monthNewName: 'Monthly Newcomer<br>Monthly>3000',
+                achievementsTitle: 'Income Achievement System',
+                warmBullName: 'Basic Worker<br>Total>3000',
+                formalBullName: 'Official Worker<br>Total>5000',
+                hourWarmName: 'Hourly Basic<br>Hourly>20',
+                hourMasterName: 'Hourly Master<br>Hourly>100',
                 dayHundredName: 'Daily 100+<br>Daily>100',
-                hourKingName: 'Hourly King<br>Hourly>100',
-                incomeEliteName: 'Income Elite<br>Monthly>10000',
-                simulationTitle: '📈 Long-term Accumulation',
+                dayFreeName: 'Daily Free<br>Daily>500',
+                passiveStartName: 'Passive Start<br>Passive>0',
+                passiveRentName: 'Passive Rent<br>Passive>2000',
+                extremeBullName: 'Extreme Worker<br>Hours≥12',
+                godBullName: 'God Worker<br>Days≤2',
+                yearMillionName: 'Million Year<br>Year≥1M',
+                perfectSlackerName: 'Perfect Slacker<br>Hourly<20 & Passive>Monthly',
+                simulationTitle: 'Long-term Accumulation',
                 monthSimLabel: '1 Month Accumulation',
                 quarterSimLabel: '3 Months Accumulation',
                 halfYearSimLabel: '6 Months Accumulation',
                 yearSimLabel: '1 Year Accumulation',
-                historyTitle: '📊 History Records',
+                historyTitle: 'History Records',
                 noHistoryText: 'No history records',
                 shareBtn: '📤 Share My Coin Game Achievement',
                 aboutBtn: 'About',
@@ -2513,7 +2810,7 @@
                 clearAllBtn: '🗑️ Clear All',
                 gameToggleStart: '🎮 Start Coin Game',
                 gameToggleStop: '🛑 Stop Coin Game',
-                gameAchievementsTitle: '🎮 Coin Game Achievements',
+                gameAchievementsTitle: 'Coin Game Achievements',
                 currentAchievementLabel: 'Current Achievement',
                 coinUnitText: 'coins',
                 highScoreBtnText: 'Best Record',
@@ -2523,29 +2820,41 @@
                 gameInfoTip: 'Move mouse to control character to catch coins',
                 gameInfoCaught: 'Coins caught: ',
                 gameInfoUnit: '',
-                achievementIdle: 'Idle',
-                achievementBored: 'So Bored',
-                achievementFart: 'Farting Around',
-                achievementFoot: 'Foot Picking',
-                achievementMushroom: 'Mushroom Growing',
-                achievementMoldy: 'Getting Moldy',
-                achievementNothing: 'Nothing to Do',
-                achievementSky: 'Beyond the Sky',
-                achievementEgg: 'Egg Pain',
-                achievementYipi: 'Super Idle',
-                achievementDoubt: 'Doubting Life',
-                achievementIdleDesc: 'Just started the fishing journey',
-                achievementBoredDesc: 'Too much time, getting anxious',
-                achievementFartDesc: 'Reached initial fishing realm',
-                achievementFootDesc: 'Can catch coins while picking feet',
-                achievementMushroomDesc: 'Mushrooms are growing',
-                achievementMoldyDesc: 'Mold growing over time',
-                achievementNothingDesc: 'Already idle to the max',
-                achievementSkyDesc: 'Fishing beyond Earth',
-                achievementEggDesc: 'Eggs playing ball by themselves',
-                achievementYipiDesc: 'Started walking aimlessly',
-                achievementDoubtDesc: 'Wondering if life is just fishing'
-            }
+                achievementIdle: 'Not Started',
+                achievementJiazhuang: 'Pretending to Work',
+                achievementDaishui: 'Paid Water Break',
+                achievementCesuo1: 'Toilet Intern',
+                achievementCesuo2: 'Toilet Resident',
+                achievementFadai: 'Paid Daydreaming',
+                achievementChajian: 'Tea Room Social',
+                achievementShoushou: 'Pro Slacker',
+                achievementLaomoyu: 'Veteran Slacker',
+                achievementBazhua: 'Octopus Slacker',
+                achievementJing: 'Slacker Whale',
+                achievementYouling: 'Slacker Ghost',
+                achievementHaizei: 'Slacker Pirate King',
+                achievementJidong: 'Auto Slacker',
+                achievementHeidong: 'Slacker Black Hole',
+                achievementXianren: 'Slacker Immortal',
+                achievementDadi: 'Emperor of Slackers',
+                achievementIdleDesc: 'Start the game first',
+                achievementJiazhuangDesc: 'Fingers just left the keyboard',
+                achievementDaishuiDesc: 'Stand up for first cup of water',
+                achievementCesuo1Desc: 'Just entered toilet, phone out',
+                achievementCesuo2Desc: 'Time on toilet is your freedom',
+                achievementFadaiDesc: 'Staring blankly, mind off work',
+                achievementChajianDesc: 'Chatting gossip, fake work talk',
+                achievementShoushouDesc: 'Game hidden under Excel',
+                achievementLaomoyuDesc: 'Master of Alt+Tab',
+                achievementBazhuaDesc: 'Multitasking slacker',
+                achievementJingDesc: 'Too big to sink',
+                achievementYoulingDesc: 'Empty desk, flashing screen',
+                achievementHaizeiDesc: 'Legend of slacking',
+                achievementJidongDesc: 'Body at desk, soul roaming',
+                achievementHeidongDesc: 'Everything sucked into slacking',
+                achievementXianrenDesc: 'Transcended, slacking is work',
+                achievementDadiDesc: 'You are slacking itself - Congratulations!'
+            },
         };
 
         // 画布设置
@@ -2687,34 +2996,46 @@
             oscillator.stop(audioContext.currentTime + 0.2);
         }
 
-        // 称号系统 - 中文称号到翻译键的映射
+        // 称号系统 - 中文称号到翻译键的映射（已更新为新成就）
         const titles = {
             0: 'achievementIdle',
-            10: 'achievementBored',
-            30: 'achievementFart',
-            60: 'achievementFoot',
-            100: 'achievementMushroom',
-            150: 'achievementMoldy',
-            300: 'achievementNothing',
-            450: 'achievementSky',
-            600: 'achievementEgg',
-            750: 'achievementYipi',
-            1000: 'achievementDoubt'
+            10: 'achievementJiazhuang',
+            30: 'achievementDaishui',
+            60: 'achievementCesuo1',
+            100: 'achievementCesuo2',
+            150: 'achievementFadai',
+            250: 'achievementChajian',
+            400: 'achievementShoushou',
+            600: 'achievementLaomoyu',
+            900: 'achievementBazhua',
+            1300: 'achievementJing',
+            1800: 'achievementYouling',
+            2500: 'achievementHaizei',
+            3500: 'achievementJidong',
+            5000: 'achievementHeidong',
+            7500: 'achievementXianren',
+            10000: 'achievementDadi'
         };
 
         // 接金币游戏成就数据
         const coinGameAchievements = [
-            { coins: 0, title: '无所事事', icon: '😐', description: '刚开始踏上摸鱼之旅' },
-            { coins: 10, title: '闲得发慌', icon: '😰', description: '时间太多，开始发慌' },
-            { coins: 30, title: '闲出屁', icon: '💨', description: '摸鱼达到初步境界' },
-            { coins: 60, title: '闲得抠脚', icon: '🦶', description: '抠脚都能接住金币' },
-            { coins: 100, title: '闲出蘑菇', icon: '🍄', description: '蘑菇都长出来了' },
-            { coins: 150, title: '闲到发霉', icon: '🍞', description: '时间长出了霉菌' },
-            { coins: 300, title: '闲得没事干', icon: '😴', description: '已经闲到无所事事' },
-            { coins: 450, title: '闲出天际', icon: '🌌', description: '摸鱼已经超越地球' },
-            { coins: 600, title: '闲得蛋疼', icon: '⚽', description: '蛋都闲得自己玩球' },
-            { coins: 750, title: '闲得一批', icon: '🚶', description: '已经闲得开始散步' },
-            { coins: 1000, title: '闲到怀疑人生', icon: '🤯', description: '怀疑人生是不是来摸鱼的' }
+            { coins: 0, title: '还没开工', icon: '😐', description: '摸鱼？先打开游戏再说' },
+            { coins: 10, title: '假装干活', icon: '⌨️', description: '手指刚离开键盘' },
+            { coins: 30, title: '带薪喝水', icon: '🥤', description: '起身倒了第一杯水' },
+            { coins: 60, title: '厕所实习生', icon: '🧻', description: '刚蹲进厕所，手机掏出来了' },
+            { coins: 100, title: '厕所常驻', icon: '🚽', description: '马桶上的时间，才是你的自由' },
+            { coins: 150, title: '带薪发呆', icon: '💤', description: '屏幕前眼神涣散，脑子已下班' },
+            { coins: 250, title: '茶水间交际', icon: '🍵', description: '和同事闲聊八卦，老板路过假装聊需求' },
+            { coins: 400, title: '摸鱼熟手', icon: '🎣', description: 'Excel下面藏着游戏窗口' },
+            { coins: 600, title: '老摸鱼人', icon: '🐟', description: '摸鱼技巧已入化境，Alt+Tab快到有残影' },
+            { coins: 900, title: '摸鱼八爪鱼', icon: '🐙', description: '同时摸鱼、追剧、吃零食、回微信' },
+            { coins: 1300, title: '摸鱼鲸', icon: '🐋', description: '体型巨大，沉不下去，老板已经发现但懒得说' },
+            { coins: 1800, title: '摸鱼幽灵', icon: '👻', description: '工位上空无一人，只有屏幕在闪' },
+            { coins: 2500, title: '摸鱼海贼王', icon: '🏴‍☠️', description: '摸鱼界的传奇，新人膜拜的对象' },
+            { coins: 3500, title: '自动摸鱼机', icon: '🤖', description: '身体在工位，灵魂已环游世界' },
+            { coins: 5000, title: '摸鱼黑洞', icon: '🌀', description: '一切工作靠近你都会被吸入摸鱼深渊' },
+            { coins: 7500, title: '摸鱼仙人', icon: '🧘', description: '飞升了，物我两忘，摸鱼即工作，工作即摸鱼' },
+            { coins: 10000, title: '摸鱼之帝', icon: '👑', description: '你不是在摸鱼，摸鱼就是你——恭喜通关！' }
         ];
 
         // 获取当前称号（支持多语言）
@@ -2927,6 +3248,16 @@
         function gameAnimate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
+            // 在动画循环中更新小人位置（避免touchmove频繁DOM操作）
+            if (updateCatcherPosition) {
+                const catcherContainer = document.getElementById('catcherContainer');
+                if (catcherContainer) {
+                    catcherContainer.style.left = catcherX + 'px';
+                    catcherContainer.style.top = catcherY + 'px';
+                }
+                updateCatcherPosition = false;
+            }
+            
             // 移除已接住或已消失的金币
             gameCoins = gameCoins.filter(coin => coin.opacity > 0 && !coin.caught);
             
@@ -2961,9 +3292,9 @@
             document.getElementById('caughtCoinsCount').textContent = '0';
             document.getElementById('caughtCoinsCounter').textContent = '0';
             
-            // 重置称号为"无所事事"
+            // 重置称号为"还没开工"
             const titleBadge = document.getElementById('titleBadge');
-            titleBadge.textContent = currentLang === 'en' ? t.achievementIdle : '无所事事';
+            titleBadge.textContent = t.achievementIdle;
             titleBadge.style.display = 'block';
             
             // 显示小人初始位置
@@ -3107,19 +3438,21 @@
             e.preventDefault();
 
             const touch = e.touches[0];
-            const catcherContainer = document.getElementById('catcherContainer');
-            if (!catcherContainer) return;
 
-            // 将小人移动到触摸位置（底部对齐）
-            catcherX = touch.clientX - CATCHER_WIDTH / 2;
-            catcherY = touch.clientY - CATCHER_HEIGHT;
+            // 将小人移动到触摸位置（底部对齐）- 只更新变量，不操作DOM
+            let newX = touch.clientX - CATCHER_WIDTH / 2;
+            let newY = touch.clientY - CATCHER_HEIGHT;
 
             // 限制小人不出屏幕
-            catcherX = Math.max(0, Math.min(window.innerWidth - CATCHER_WIDTH, catcherX));
-            catcherY = Math.max(0, Math.min(window.innerHeight - CATCHER_HEIGHT, catcherY));
+            newX = Math.max(0, Math.min(window.innerWidth - CATCHER_WIDTH, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - CATCHER_HEIGHT, newY));
 
-            catcherContainer.style.left = catcherX + 'px';
-            catcherContainer.style.top = catcherY + 'px';
+            // 只在位置变化时更新
+            if (newX !== catcherX || newY !== catcherY) {
+                catcherX = newX;
+                catcherY = newY;
+                updateCatcherPosition = true;
+            }
         }, { passive: false });
 
         document.addEventListener('touchend', function(e) {
@@ -3515,49 +3848,55 @@
             updateCoinCount();
         }
 
-        // 检查成就
+        // 检查成就 - 根据当前输入值动态显示
         function checkAchievements(income) {
+            const currentPassiveIncome = passiveIncome;
+            const totalMonthly = income.month;
+            const yearlyIncome = totalMonthly * 12;
+            const workDays = parseFloat(document.getElementById('workDays').value) || 5;
+            const workHours = parseFloat(document.getElementById('workHours').value) || 8;
+            
             const achievements = [
-                { id: 'month-new', condition: income.month >= 3000 },
+                { id: 'warm-bull', condition: totalMonthly >= 3000 },
+                { id: 'formal-bull', condition: totalMonthly >= 5000 },
+                { id: 'hour-warm', condition: income.hour >= 20 },
+                { id: 'hour-master', condition: income.hour >= 100 },
                 { id: 'day-hundred', condition: income.day >= 100 },
-                { id: 'hour-king', condition: income.hour >= 100 },
-                { id: 'income-elite', condition: income.month >= 10000 }
+                { id: 'day-free', condition: income.day >= 500 },
+                { id: 'passive-start', condition: currentPassiveIncome > 0 },
+                { id: 'passive-rent', condition: currentPassiveIncome >= 2000 },
+                { id: 'extreme-bull', condition: workHours >= 12 },
+                { id: 'god-bull', condition: workDays <= 2 },
+                { id: 'year-million', condition: yearlyIncome >= 1000000 },
+                { id: 'perfect-slacker', condition: income.hour < 20 && currentPassiveIncome > monthlyIncome }
             ];
 
             achievements.forEach(ach => {
                 const element = document.querySelector(`[data-achievement="${ach.id}"]`);
-                if (ach.condition) {
-                    if (!unlockedAchievements.has(ach.id)) {
-                        unlockedAchievements.add(ach.id);
-                        element.classList.add('unlocked');
-                        createCoinRain(10); // 解锁成就时大量金币掉落
-                        const achievementName = currentLang === 'zh' ? 
-                            element.querySelector('.achievement-name').textContent : 
-                            'Achievement Unlocked!';
-                        
-                        // 如果正在初始化，不显示成就通知
-                        if (!isInitializing) {
-                            // 延迟显示成就通知，避免与其他提示挤在一起
-                            setTimeout(() => {
-                                showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
-                            }, 2000); // 延迟2秒显示
+                if (element) {
+                    if (ach.condition) {
+                        if (!unlockedAchievements.has(ach.id)) {
+                            unlockedAchievements.add(ach.id);
+                            element.classList.add('unlocked');
+                            createCoinRain(10);
+                            const achievementName = currentLang === 'zh' ? 
+                                element.querySelector('.achievement-name').textContent.split('<br>')[0] : 
+                                'Achievement Unlocked!';
+                            
+                            if (!isInitializing) {
+                                setTimeout(() => {
+                                    showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
+                                }, 2000);
+                            }
+                        }
+                    } else {
+                        if (unlockedAchievements.has(ach.id)) {
+                            unlockedAchievements.delete(ach.id);
+                            element.classList.remove('unlocked');
                         }
                     }
-                } else {
-                    // 如果条件不再满足，不移除解锁状态，成就应该是永久的
-                    // 之前的代码会移除，这会导致成就可能重复解锁
-                    // 注释掉这部分代码
-                    /*
-                    if (unlockedAchievements.has(ach.id)) {
-                        unlockedAchievements.delete(ach.id);
-                        element.classList.remove('unlocked');
-                    }
-                    */
                 }
             });
-
-            // 保存解锁状态
-            localStorage.setItem('unlockedAchievements', JSON.stringify([...unlockedAchievements]));
         }
 
         // 检查目标
@@ -3591,7 +3930,7 @@
             
             let level;
             if (amount === 0) {
-                level = { label: '🫥 空气牛马', message: '月薪0元？你是来人间凑数的吗？' };
+                level = { label: '💨 空气牛马', message: '月薪0元？你是来人间凑数的吗？' };
             } else if (amount <= 1000) {
                 level = { label: '🌱 萌芽牛马', message: '月薪不过千，生存全靠一口仙气。' };
             } else if (amount <= 3000) {
@@ -3699,12 +4038,71 @@
             } else {
                 document.getElementById('hourlyDetailLabel').textContent = '时薪：';
             }
+            
+            // 更新模式标签
+            updateModeLabels();
+        }
+        
+        // 更新模式标签
+        function updateModeLabels() {
+            const workDays = parseInt(document.getElementById('workDays').value) || 5;
+            const workHours = parseFloat(document.getElementById('workHours').value) || 8;
+            
+            // 工作天数标签
+            let daysLabel = { icon: '', text: '', class: '' };
+            if (workDays === 1) {
+                daysLabel = { icon: '🧘', text: '神仙模式', class: 'mode-days-1' };
+            } else if (workDays === 2) {
+                daysLabel = { icon: '🎈', text: '体验生活', class: 'mode-days-2' };
+            } else if (workDays === 3) {
+                daysLabel = { icon: '😎', text: '半躺模式', class: 'mode-days-3' };
+            } else if (workDays === 4) {
+                daysLabel = { icon: '✨', text: '准自由', class: 'mode-days-4' };
+            } else if (workDays === 5) {
+                daysLabel = { icon: '🐴', text: '标准牛马', class: 'mode-days-5' };
+            } else if (workDays === 6) {
+                daysLabel = { icon: '📦', text: '大小周', class: 'mode-days-6' };
+            } else if (workDays === 7) {
+                daysLabel = { icon: '🔥', text: '终极牛马', class: 'mode-days-7' };
+            }
+            
+            // 工作小时标签
+            let hoursLabel = { icon: '', text: '', class: '' };
+            if (workHours <= 2) {
+                hoursLabel = { icon: '🎗️', text: '慈善上班', class: 'mode-hours-1' };
+            } else if (workHours <= 4) {
+                hoursLabel = { icon: '☕', text: '半日闲', class: 'mode-hours-2' };
+            } else if (workHours <= 6) {
+                hoursLabel = { icon: '🕶️', text: '弹性牛马', class: 'mode-hours-3' };
+            } else if (workHours <= 8) {
+                hoursLabel = { icon: '🐴', text: '标准牛马', class: 'mode-hours-4' };
+            } else if (workHours <= 10) {
+                hoursLabel = { icon: '⏰', text: '加班牛马', class: 'mode-hours-5' };
+            } else if (workHours <= 12) {
+                hoursLabel = { icon: '💼', text: '996预备', class: 'mode-hours-6' };
+            } else if (workHours <= 16) {
+                hoursLabel = { icon: '🔥', text: '极限牛马', class: 'mode-hours-7' };
+            } else {
+                hoursLabel = { icon: '💀', text: '拿命换钱', class: 'mode-hours-8' };
+            }
+            
+            // 更新工作天数标签
+            const daysModeElement = document.getElementById('workDaysModeTag');
+            daysModeElement.className = `result-tag mode-tag ${daysLabel.class}`;
+            daysModeElement.querySelector('.tag-icon').textContent = daysLabel.icon;
+            daysModeElement.querySelector('.tag-label').textContent = daysLabel.text;
+            
+            // 更新工作小时标签
+            const hoursModeElement = document.getElementById('workHoursModeTag');
+            hoursModeElement.className = `result-tag mode-tag ${hoursLabel.class}`;
+            hoursModeElement.querySelector('.tag-icon').textContent = hoursLabel.icon;
+            hoursModeElement.querySelector('.tag-label').textContent = hoursLabel.text;
         }
 
         // 获取月薪等级信息
         function getSalaryLevel(amount) {
             if (amount === 0) {
-                return { icon: '🫥', label: '空气牛马' };
+                return { icon: '💨', label: '空气牛马' };
             } else if (amount <= 1000) {
                 return { icon: '🌱', label: '萌芽牛马' };
             } else if (amount <= 3000) {
@@ -4037,7 +4435,7 @@ async function shareAchievement() {
     
     const pageUrl = 'https://monsterwbin-afk.github.io/gold-income/';
     const text = currentLang === 'zh' ? 
-        `我在接金币游戏中取得了 ${highScore} 金币的历史最高分！\n成就：${highAchievement.title}\n快来挑战吧！\n${pageUrl}` :
+        `我在摸鱼游戏中取得了 ${highScore} 金币的历史最高分！\n成就：${highAchievement.title}\n快来挑战吧！\n${pageUrl}` :
         `I achieved ${highScore} coins in Coin Catching Game!\nAchievement: ${highAchievement.title}\nCome challenge!\n${pageUrl}`;
     
     const isMobile = isMobileDevice();
@@ -4046,7 +4444,7 @@ async function shareAchievement() {
     if (!isMobile) {
         if (navigator.share) {
             navigator.share({
-                title: currentLang === 'zh' ? '接金币游戏成就分享' : 'Coin Game Achievement',
+                title: currentLang === 'zh' ? '摸鱼游戏成就分享' : 'Coin Game Achievement',
                 text: text,
                 url: pageUrl
             });
@@ -4067,7 +4465,7 @@ async function shareAchievement() {
             const blob = await fetch(imageDataUrl).then(res => res.blob());
             const file = new File([blob], 'achievement.png', { type: 'image/png' });
             const shareData = {
-                title: currentLang === 'zh' ? '接金币游戏成就分享' : 'Coin Game Achievement',
+                title: currentLang === 'zh' ? '摸鱼游戏成就分享' : 'Coin Game Achievement',
                 text: text,
                 url: pageUrl,
                 files: [file]
@@ -4154,10 +4552,18 @@ async function shareAchievement() {
             
             // 收入成就系统区域
             safeUpdate('achievementsTitle', t.achievementsTitle);
-            safeUpdate('monthNewName', t.monthNewName, 'innerHTML');
+            safeUpdate('warmBullName', t.warmBullName, 'innerHTML');
+            safeUpdate('formalBullName', t.formalBullName, 'innerHTML');
+            safeUpdate('hourWarmName', t.hourWarmName, 'innerHTML');
+            safeUpdate('hourMasterName', t.hourMasterName, 'innerHTML');
             safeUpdate('dayHundredName', t.dayHundredName, 'innerHTML');
-            safeUpdate('hourKingName', t.hourKingName, 'innerHTML');
-            safeUpdate('incomeEliteName', t.incomeEliteName, 'innerHTML');
+            safeUpdate('dayFreeName', t.dayFreeName, 'innerHTML');
+            safeUpdate('passiveStartName', t.passiveStartName, 'innerHTML');
+            safeUpdate('passiveRentName', t.passiveRentName, 'innerHTML');
+            safeUpdate('extremeBullName', t.extremeBullName, 'innerHTML');
+            safeUpdate('godBullName', t.godBullName, 'innerHTML');
+            safeUpdate('yearMillionName', t.yearMillionName, 'innerHTML');
+            safeUpdate('perfectSlackerName', t.perfectSlackerName, 'innerHTML');
             
             // 长期积累效果区域
             safeUpdate('simulationTitle', t.simulationTitle);
@@ -4198,26 +4604,6 @@ async function shareAchievement() {
                 }
             }
             
-            // 更新接金币游戏成就数据
-            const achievementKeys = [
-                { zh: '无所事事', enKey: 'achievementIdle', zhDesc: '刚开始踏上摸鱼之旅', enDescKey: 'achievementIdleDesc' },
-                { zh: '闲得发慌', enKey: 'achievementBored', zhDesc: '时间太多，开始发慌', enDescKey: 'achievementBoredDesc' },
-                { zh: '闲出屁', enKey: 'achievementFart', zhDesc: '摸鱼达到初步境界', enDescKey: 'achievementFartDesc' },
-                { zh: '闲得抠脚', enKey: 'achievementFoot', zhDesc: '抠脚都能接住金币', enDescKey: 'achievementFootDesc' },
-                { zh: '闲出蘑菇', enKey: 'achievementMushroom', zhDesc: '蘑菇都长出来了', enDescKey: 'achievementMushroomDesc' },
-                { zh: '闲到发霉', enKey: 'achievementMoldy', zhDesc: '时间长出了霉菌', enDescKey: 'achievementMoldyDesc' },
-                { zh: '闲得没事干', enKey: 'achievementNothing', zhDesc: '已经闲到无所事事', enDescKey: 'achievementNothingDesc' },
-                { zh: '闲出天际', enKey: 'achievementSky', zhDesc: '摸鱼已经超越地球', enDescKey: 'achievementSkyDesc' },
-                { zh: '闲得蛋疼', enKey: 'achievementEgg', zhDesc: '蛋都闲得自己玩球', enDescKey: 'achievementEggDesc' },
-                { zh: '闲得一批', enKey: 'achievementYipi', zhDesc: '已经闲得开始散步', enDescKey: 'achievementYipiDesc' },
-                { zh: '闲到怀疑人生', enKey: 'achievementDoubt', zhDesc: '怀疑人生是不是来摸鱼的', enDescKey: 'achievementDoubtDesc' }
-            ];
-            
-            achievementKeys.forEach((key, index) => {
-                coinGameAchievements[index].title = currentLang === 'en' ? t[key.enKey] : key.zh;
-                coinGameAchievements[index].description = currentLang === 'en' ? t[key.enDescKey] : key.zhDesc;
-            });
-            
             // 重新渲染成就卡片，使用当前游戏中的金币数
             initCoinGameAchievements(caughtCoinsCount);
             
@@ -4229,9 +4615,8 @@ async function shareAchievement() {
             // 更新titleBadge显示
             if (currentAchievementName) {
                 const titleBadge = document.getElementById('titleBadge');
-                const achievementMatch = achievementKeys.find(k => k.zh === currentAchievementName);
-                if (titleBadge && achievementMatch) {
-                    titleBadge.textContent = currentLang === 'en' ? t[achievementMatch.enKey] : currentAchievementName;
+                if (titleBadge) {
+                    titleBadge.textContent = currentAchievementName;
                 }
             }
             
@@ -4306,6 +4691,8 @@ async function shareAchievement() {
                 const income = calculateIncome(0);
                 updateDisplay(income);
                 startRealTimeCoinDrop();
+                // 更新模式标签
+                updateModeLabels();
             }
         });
 
@@ -4354,6 +4741,8 @@ async function shareAchievement() {
                 const income = calculateIncome(0);
                 updateDisplay(income);
                 startRealTimeCoinDrop();
+                // 更新模式标签
+                updateModeLabels();
             }
         });
 
@@ -4550,13 +4939,14 @@ async function shareAchievement() {
 
             // 加载解锁的成就
             const savedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements') || '[]');
-            savedAchievements.forEach(ach => {
-                unlockedAchievements.add(ach);
-                const element = document.querySelector(`[data-achievement="${ach}"]`);
-                if (element) {
-                    element.classList.add('unlocked');
-                }
-            });
+            // 不加载保存的成就状态，成就应该根据当前输入值动态显示
+            // savedAchievements.forEach(ach => {
+            //     unlockedAchievements.add(ach);
+            //     const element = document.querySelector(`[data-achievement="${ach}"]`);
+            //     if (element) {
+            //         element.classList.add('unlocked');
+            //     }
+            // });
 
             // 初始化接金币游戏成就系统
             initCoinGameAchievements();
@@ -4606,8 +4996,11 @@ async function shareAchievement() {
                 const income = calculateIncome(0); // 使用计算后的总收入
                 updateDisplay(income);
                 startRealTimeCoinDrop();
-                updateIncomeResultDisplay(); // 更新结果展示区域
             }
+            
+            // 更新结果展示区域和模式标签
+            updateIncomeResultDisplay();
+            updateModeLabels();
 
             // 欢迎提示 - 根据时间显示不同内容
             setTimeout(() => {
