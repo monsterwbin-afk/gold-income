@@ -870,7 +870,7 @@
         }
 
         .input-group {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
@@ -881,7 +881,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: block;
             font-weight: bold;
         }
@@ -910,6 +910,35 @@
 
         .income-input::placeholder {
             color: #666;
+        }
+
+        .input-message {
+            margin-top: 8px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.15));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 8px;
+            font-size: 1.2em;
+            color: #ffd700;
+            text-align: center;
+            font-weight: bold;
+            opacity: 0;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255,215,0,0.1);
+        }
+
+        .input-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .input-message.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
         /* 目标设定 */
@@ -1697,6 +1726,420 @@
             box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
         }
 
+        /* 摸鱼结算弹窗 */
+        .game-over-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            backdrop-filter: blur(5px);
+        }
+
+        .game-over-modal.active {
+            display: flex;
+        }
+
+        .game-over-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #ffd700;
+            border-radius: 25px;
+            padding: 30px;
+            min-width: 380px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+            animation: modalPop 0.3s ease;
+        }
+
+        .game-over-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .game-over-icon {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+            animation: gameIconBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes gameIconBounce {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .game-over-header h3 {
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .game-over-stats {
+            margin-bottom: 25px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 1.1em;
+        }
+
+        .stat-row.highlight {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 149, 0, 0.15));
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 5px;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .game-over-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            margin: 15px 0;
+        }
+
+        .game-over-quotes {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 149, 0, 0.08));
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quote-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .quote-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote-icon {
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+
+        .quote-prefix {
+            color: #ffd700;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .quote-text {
+            color: #ddd;
+            line-height: 1.5;
+        }
+
+        .game-over-easter {
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.15), rgba(147, 112, 219, 0.15));
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .game-over-easter.active {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: easterGlow 0.5s ease;
+        }
+
+        @keyframes easterGlow {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .easter-icon {
+            font-size: 1.5em;
+            animation: easterSpin 2s ease-in-out infinite;
+        }
+
+        @keyframes easterSpin {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .easter-text {
+            color: #ff69b4;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .game-over-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .game-over-btn {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            border: none;
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .game-over-btn.close {
+            background: linear-gradient(135deg, #3a3a5c, #2a2a4c);
+            color: #ffd700;
+            border: 2px solid #ffd700;
+        }
+
+        .game-over-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .game-over-btn.close:hover {
+            background: linear-gradient(135deg, #4a4a6c, #3a3a5c);
+        }
+
+        .game-over-btn.share {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .game-over-btn.share:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+
+        /* 分享弹窗 */
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .share-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+        }
+
+        .share-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .share-icon {
+            font-size: 2em;
+        }
+
+        .share-header h3 {
+            color: #ffd700;
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .share-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .share-option:hover {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,149,0,0.2));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .share-option-icon {
+            font-size: 1.8em;
+        }
+
+        .share-option-text {
+            color: #ffd700;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .share-cancel-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        /* 分享图片卡片 */
+        .share-image-container {
+            position: fixed;
+            left: -9999px;
+            top: 0;
+        }
+
+        .share-image-card {
+            width: 400px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 4px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        .share-image-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .share-image-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .share-image-stats {
+            margin-bottom: 25px;
+        }
+
+        .share-image-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(255,215,0,0.3);
+        }
+
+        .share-image-stat:last-child {
+            border-bottom: none;
+        }
+
+        .share-image-stat.highlight {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.15));
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px solid rgba(255,215,0,0.4);
+        }
+
+        .share-image-stat-label {
+            color: #ffcc00;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .share-image-stat-value {
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .share-image-quotes {
+            background: rgba(255,215,0,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .share-image-quote {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .share-image-quote:last-child {
+            margin-bottom: 0;
+        }
+
+        .share-image-quote-icon {
+            font-size: 1.3em;
+        }
+
+        .share-image-quote-text {
+            color: #fff;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .share-image-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px dashed rgba(255,215,0,0.4);
+        }
+
+        .share-image-cta {
+            color: #ffd700;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .share-image-url {
+            color: #ffcc00;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 480px) {
+            .game-over-content {
+                min-width: 90%;
+                padding: 20px;
+            }
+
+            .game-over-buttons {
+                flex-direction: column;
+            }
+        }
+
         .game-achievements-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -2204,28 +2647,32 @@
 
         <div class="input-section">
             <div class="worker-type-section">
-                <button class="worker-type-btn" id="stableWorkerBtn">🐂 我是稳定牛马</button>
-                <button class="worker-type-btn" id="freeWorkerBtn">🦄 我是自由牛马</button>
+                <button class="worker-type-btn" id="stableWorkerBtn"></button>
+                <button class="worker-type-btn" id="freeWorkerBtn"></button>
             </div>
 
             <div class="input-group">
                 <label class="input-label" id="incomeLabel">请输入牛马月薪</label>
                 <input type="number" class="income-input" id="monthlyIncome" placeholder="输入牛马月薪" min="0">
+                <div class="input-message" id="monthlyIncomeMessage"></div>
             </div>
             
             <div class="input-group">
                 <label class="input-label" id="passiveLabel">请输入您的每月被动收入</label>
                 <input type="number" class="income-input" id="passiveIncome" placeholder="输入每月被动收入" min="0">
+                <div class="input-message" id="passiveIncomeMessage"></div>
             </div>
 
             <div class="input-group">
                 <label class="input-label" id="workDaysLabel">每周牛马工作天数</label>
                 <input type="number" class="income-input" id="workDays" placeholder="5" min="1" max="7" value="5" step="1">
+                <div class="input-message" id="workDaysMessage"></div>
             </div>
 
             <div class="input-group">
                 <label class="input-label" id="workHoursLabel">每日牛马工时</label>
                 <input type="number" class="income-input" id="workHours" placeholder="8" min="0.5" max="24" value="8" step="0.5">
+                <div class="input-message" id="workHoursMessage"></div>
             </div>
             
             <div class="goal-section">
@@ -2504,6 +2951,115 @@
         </div>
     </div>
 
+    <!-- 摸鱼结算弹窗 -->
+    <div class="game-over-modal" id="gameOverModal">
+        <div class="game-over-content">
+            <div class="game-over-header">
+                <span class="game-over-icon">🎮</span>
+                <h3 id="gameOverTitle">摸鱼结算单</h3>
+            </div>
+            <div class="game-over-stats">
+                <div class="stat-row">
+                    <span class="stat-label">⏱️ <span id="gameOverDurationLabel">摸鱼时长</span></span>
+                    <span class="stat-value" id="gameOverDuration">0分0秒</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">💰 <span id="gameOverHourlyLabel">你的时薪</span></span>
+                    <span class="stat-value" id="gameOverHourly">¥0.00</span>
+                </div>
+                <div class="game-over-divider"></div>
+                <div class="stat-row highlight">
+                    <span class="stat-label">🧮 <span id="gameOverProfitLabel">本次白嫖</span></span>
+                    <span class="stat-value" id="gameOverProfit">¥0.00</span>
+                </div>
+            </div>
+            <div class="game-over-quotes">
+                <div class="quote-row">
+                    <span class="quote-icon">💬</span>
+                    <span class="quote-prefix" id="gameOverBossPrefix">老板：</span>
+                    <span class="quote-text" id="gameOverBossQuote">“这点小钱，就当给你买了颗糖。”</span>
+                </div>
+                <div class="quote-row">
+                    <span class="quote-icon">🐴</span>
+                    <span class="quote-prefix" id="gameOverPlayerPrefix">你：</span>
+                    <span class="quote-text" id="gameOverPlayerQuote">“刚蹲下就起来了，厕所白上了。”</span>
+                </div>
+            </div>
+            <div class="game-over-easter" id="gameOverEaster">
+                <span class="easter-icon">🎉</span>
+                <span class="easter-text" id="gameOverEasterText">随机彩蛋：“老板刚好路过你工位，但你切屏够快！”</span>
+            </div>
+            <div class="game-over-buttons">
+                <button class="game-over-btn replay" id="gameOverReplayBtn">🔄 <span id="gameOverReplayText">再摸一局</span></button>
+                <button class="game-over-btn share" id="gameOverShareBtn">📤 <span id="gameOverShareText">分享战报</span></button>
+                <button class="game-over-btn close" id="gameOverCloseBtn">📊 <span id="gameOverCloseText">回去算账</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分享选项弹窗 -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-content">
+            <div class="share-header">
+                <span class="share-icon">📤</span>
+                <h3 id="shareTitle">分享到</h3>
+            </div>
+            <div class="share-options">
+                <button class="share-option" id="shareImageBtn">
+                    <span class="share-option-icon">📸</span>
+                    <span class="share-option-text" id="shareImageText">保存战绩图片</span>
+                </button>
+                <button class="share-option" id="shareTextBtn">
+                    <span class="share-option-icon">📋</span>
+                    <span class="share-option-text" id="shareTextText">复制炫耀文案</span>
+                </button>
+            </div>
+            <div class="share-cancel-btn">
+                <button class="game-over-btn close" id="shareCancelBtn">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片生成区域（隐藏，用于生成分享图片） -->
+    <div class="share-image-container" id="shareImageContainer" style="display: none;">
+        <div class="share-image-card">
+            <div class="share-image-header">
+                <span class="share-image-title">🐴 牛马金币计算器</span>
+            </div>
+            <div class="share-image-stats">
+                <div class="share-image-stat">
+                    <span class="share-image-stat-label">⏱️ 摸鱼时长：</span>
+                    <span class="share-image-stat-value" id="shareImageDuration">0分0秒</span>
+                </div>
+                <div class="share-image-stat">
+                    <span class="share-image-stat-label">💰 时薪：</span>
+                    <span class="share-image-stat-value" id="shareImageHourly">¥0.00</span>
+                </div>
+                <div class="share-image-stat highlight">
+                    <span class="share-image-stat-label">🧮 白嫖老板：</span>
+                    <span class="share-image-stat-value" id="shareImageProfit">¥0.00</span>
+                </div>
+            </div>
+            <div class="share-image-quotes">
+                <div class="share-image-quote">
+                    <span class="share-image-quote-icon">💬</span>
+                    <span class="share-image-quote-text" id="shareImageBossQuote">老板：“这点小钱，就当给你买了颗糖。</span>
+                </div>
+                <div class="share-image-quote">
+                    <span class="share-image-quote-icon">🐴</span>
+                    <span class="share-image-quote-text" id="shareImagePlayerQuote">你：“刚蹲下就起来了，厕所白上了。”</span>
+                </div>
+            </div>
+            <div class="share-image-footer">
+                <div class="share-image-cta">📊 你也来测测你的时薪？</div>
+                <div class="share-image-url" id="shareImageUrl">👉 网站网址</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- html2canvas library -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
     <script>
         // 创建金币粒子背景
         function createCoinParticles() {
@@ -2541,6 +3097,7 @@
         // 小游戏相关变量
         let gameActive = false;
         let caughtCoinsCount = 0;
+        let gameStartTime = 0; // 游戏开始时间
         let catcherX = 0;
         let catcherY = 0;
         let audioContext = null;
@@ -2633,6 +3190,28 @@
                 clearAllBtn: '🗑️ 清除全部',
                 gameToggleStart: '🎮 开始摸鱼游戏',
                 gameToggleStop: '🛑 停止摸鱼游戏',
+                firstGameTip: '累了吧？来摸会儿鱼',
+                stableWorkerBtn: '🐂 我是稳定牛马',
+                freeWorkerBtn: '🦄 我是自由牛马',
+                salaryDetailLabel: '月薪：',
+                passiveDetailLabel: '被动：',
+                totalDetailLabel: '月总收入：',
+                hourlyDetailLabel: '时薪：',
+                lazyHourlyDetailLabel: '躺赚时薪：',
+                totalLevels: {
+                    0: { icon: '🫥', label: '空气牛马', message: '总收入0元？你是来人间凑数的吗？' },
+                    1000: { icon: '🌱', label: '萌芽牛马', message: '总收入不过千，生存全靠一口仙气。' },
+                    3000: { icon: '🥚', label: '温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' },
+                    5000: { icon: '🍚', label: '基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' },
+                    8000: { icon: '🐴', label: '标准牛马', message: '总收入全国平均水平，不丢人也不光荣。' },
+                    12000: { icon: '📈', label: '进阶牛马', message: '比上不足比下有余，偶尔敢加个鸡腿。' },
+                    18000: { icon: '🏠', label: '小资牛马', message: '可以考虑房租之外存点钱了。' },
+                    25000: { icon: '🚗', label: '中产牛马', message: '总收入近两万，终于敢说在大城市还行。' },
+                    40000: { icon: '✈️', label: '高端牛马', message: '这个总收入，回老家可以横着走。' },
+                    60000: { icon: '👑', label: '牛马之王', message: '你是牛马圈的天花板，打工人仰望的存在。' },
+                    100000: { icon: '🚀', label: '牛马传说', message: '总收入六万以上，你不是牛马了，是开牛马场的。' },
+                    max: { icon: '🏆', label: '资本家预备役', message: '总收入十万，你该开个公司雇牛马了。' }
+                },
                 gameAchievementsTitle: '摸鱼游戏成就',
                 currentAchievementLabel: '当前成就',
                 coinUnitText: '金币',
@@ -2643,6 +3222,42 @@
                 gameInfoTip: '移动鼠标控制小人接住金币',
                 gameInfoCaught: '已接金币：',
                 gameInfoUnit: '枚',
+                gameOverTitle: '摸鱼结算单',
+                gameOverDurationLabel: '摸鱼时长',
+                gameOverHourlyLabel: '你的时薪',
+                gameOverProfitLabel: '本次白嫖',
+                gameOverBossPrefix: '老板：',
+                gameOverPlayerPrefix: '你：',
+                gameOverReplayText: '再摸一局',
+                gameOverCloseText: '回去算账',
+                gameOverEasterPrefix: '随机彩蛋：',
+                bossQuotes: {
+                    0: '“这点小钱，就当给你买了颗糖。”',
+                    1: '“还行，够你买瓶水了。”',
+                    3: '“今天的咖啡，我请了。”',
+                    5: '“一顿早饭钱被你摸走了。”',
+                    10: '“你这是带薪吃了个午餐啊！”',
+                    20: '“今天的电费反正是你赚的。”',
+                    30: '“你的时薪不低啊，摸这么久？”',
+                    50: '“老板我有点心疼了。”',
+                    100: '“你这一局，等于老板白雇你半天。”',
+                    200: '“老板已破产，你赢了。”'
+                },
+                playerQuotes: {
+                    0: '“刚蹲下就起来了，厕所白上了。”',
+                    1: '“标准的带薪拉屎时长。”',
+                    3: '“这根烟抽得值。”',
+                    5: '“一场无效会议的摸鱼量。”',
+                    10: '“你已经不是摸鱼了，是摸鲨鱼。”',
+                    20: '“老板在找你，但我假装没看到。”',
+                    30: '“你是把工位搬到了游戏里？”'
+                },
+                easterEggs: [
+                    '“老板刚好路过你工位，但你切屏够快！”',
+                    '“同事以为你在做报表，其实在接金币。”',
+                    '“恭喜！你被评选为‘今日最佳摸鱼人’。”',
+                    '“别玩了，老板在后面站了3分钟了。”'
+                ],
                 workDaysPrompts: {
                     0: '0天？那你就是纯躺赚大佬，去隔壁填被动收入吧',
                     1: '每周工作1天？你这不是打工，是来体验生活的吧？',
@@ -2720,9 +3335,9 @@
                 achievementDadiDesc: '你不是在摸鱼，摸鱼就是你——恭喜通关！'
             },
             en: {
-                mainTitle: 'Bullshit Coin Calculator',
+                mainTitle: 'Wage Slave Coin Calculator',
                 subtitles: [
-                    'Hourly bill for workers',
+                    'Hourly bill for wage slaves',
                     'Every minute of yours is priced',
                     'How many work points did you earn today?',
                     'Calculated this, I fell silent',
@@ -2731,7 +3346,7 @@
                     'So my youth is worth this price?',
                     'After calculating hourly rate, bubble tea doesn\'t taste good anymore',
                     'More heartbreaking than payslip, is this number',
-                    'In a worker\'s life, you gotta know your worth',
+                    'In a wage slave\'s life, you gotta know your worth',
                     'Working, one cent one product',
                     'Stop asking about dreams, calculate hourly rate first',
                     'Monthly salary is the boss\'s pie, hourly rate is your fate',
@@ -2759,9 +3374,9 @@
                     2: 'Working 2 days a week, spending the other 5 days dreading those 2 days.',
                     3: 'Work 3, rest 4, you\'re already the envy of many.',
                     4: '4 days a week, close to international advanced level, keep it up.',
-                    5: 'Standard 996 deserter, stable weekend worker.',
+                    5: 'Standard 996 deserter, stable weekend wage slave.',
                     6: 'What\'s it like to work 6 days? You haven\'t rested enough before you have to go back to work.',
-                    7: 'Full-time 7 days a week, you\'re a model worker and also a top-tier worker, salute.',
+                    7: 'Full-time 7 days a week, you\'re a model wage slave and also a top-tier wage slave, salute.',
                     over7: 'There are only 7 days in a week, you insist on working {days} days? Are you from a parallel universe?'
                 },
                 workHoursPrompts: {
@@ -2774,7 +3389,7 @@
                     5: '5 hours, just a little more than half-day, awkward duration.',
                     6: '6 hours, some companies call this \'flexible work hours\'.',
                     7: '7 hours, just 1 hour short of standard, that 1 hour is for your lunch.',
-                    8: '8 hours, standard worker configuration, no more, no less.',
+                    8: '8 hours, standard wage slave configuration, no more, no less.',
                     9: '9 hours... minus lunch break is exactly 8? You got played.',
                     10: '10 hours, you\'re already working 25% more than standard.',
                     11: '11 hours, do you have any life besides work?',
@@ -2803,18 +3418,61 @@
                 dayLabel: 'Per Day',
                 weekLabel: 'Per Week',
                 achievementsTitle: 'Income Achievement System',
-                warmBullName: 'Basic Worker<br>Total>3000',
-                formalBullName: 'Official Worker<br>Total>5000',
+                warmBullName: 'Basic Wage Slave<br>Total>3000',
+                formalBullName: 'Official Wage Slave<br>Total>5000',
                 hourWarmName: 'Hourly Basic<br>Hourly>20',
                 hourMasterName: 'Hourly Master<br>Hourly>100',
                 dayHundredName: 'Daily 100+<br>Daily>100',
                 dayFreeName: 'Daily Free<br>Daily>500',
                 passiveStartName: 'Passive Start<br>Passive>0',
                 passiveRentName: 'Passive Rent<br>Passive>2000',
-                extremeBullName: 'Extreme Worker<br>Hours≥12',
-                godBullName: 'God Worker<br>Days≤2',
+                extremeBullName: 'Extreme Wage Slave<br>Hours≥12',
+                godBullName: 'God Wage Slave<br>Days≤2',
                 yearMillionName: 'Million Year<br>Year≥1M',
                 perfectSlackerName: 'Perfect Slacker<br>Hourly<20 & Passive>Monthly',
+                salaryLevels: {
+                    0: { icon: '💨', label: 'Air Wage Slave', message: 'Monthly income $0? Are you here to make up the numbers?' },
+                    1000: { icon: '🌱', label: 'Sprout Wage Slave', message: 'Monthly income under $1000, surviving on thin air.' },
+                    3000: { icon: '🥚', label: 'Basic Wage Slave', message: 'Just enough to eat, every penny counts.' },
+                    5000: { icon: '🍚', label: 'Standard Wage Slave', message: 'Not starving, not rich, just stable poverty.' },
+                    8000: { icon: '🐴', label: 'Average Wage Slave', message: 'National average level, nothing to brag about.' },
+                    12000: { icon: '📈', label: 'Advanced Wage Slave', message: 'Above average, can afford extra treats.' },
+                    18000: { icon: '🏠', label: 'Comfortable Wage Slave', message: 'Can save after paying rent.' },
+                    25000: { icon: '🚗', label: 'Middle-class Wage Slave', message: 'Monthly nearly $25k, can hold head up in big city.' },
+                    40000: { icon: '✈️', label: 'High-end Wage Slave', message: 'This income, can strut back home.' },
+                    60000: { icon: '👑', label: 'Wage Slave King', message: 'You are the ceiling of wage slaves.' },
+                    100000: { icon: '🚀', label: 'Wage Slave Legend', message: 'Monthly over $60k, you own the ranch.' },
+                    max: { icon: '🏆', label: 'Capitalist-in-Training', message: 'Monthly $100k+, time to hire wage slaves.' }
+                },
+                passiveLevels: {
+                    0: { icon: '🐴', label: 'Pure Wage Slave' },
+                    500: { icon: '🌱', label: 'Sprout Passive', message: 'Just started, at least phone bill covered.' },
+                    1000: { icon: '📶', label: 'Signal Passive', message: 'Covers utilities, got a signal.' },
+                    2000: { icon: '☕', label: 'Coffee Freedom', message: 'Coffee or food freedom, small happiness.' },
+                    5000: { icon: '🏠', label: 'Rent Cover', message: 'Passive covers rent, better than 50%.' },
+                    10000: { icon: '🕊️', label: 'Confident Passive', message: 'Covers basic life, can say no to bad jobs.' },
+                    20000: { icon: '🚪', label: 'Halfway Out', message: '$10k/month without working much? Showing off.' },
+                    max: { icon: '🤴', label: 'Capitalist', message: 'Passive $20k+, here to inspect the masses?' }
+                },
+                workDaysLabels: {
+                    1: { icon: '🧘', text: 'God Mode' },
+                    2: { icon: '🎈', text: 'Life Experience' },
+                    3: { icon: '😎', text: 'Half-slack Mode' },
+                    4: { icon: '✨', text: 'Almost Free' },
+                    5: { icon: '🐴', text: 'Weekend Wage Slave' },
+                    6: { icon: '📦', text: 'Single-day Off' },
+                    7: { icon: '🔥', text: 'Ultimate Wage Slave' }
+                },
+                workHoursLabels: {
+                    1: { icon: '🎗️', text: 'Charity Work' },
+                    2: { icon: '☕', text: 'Half-day Off' },
+                    3: { icon: '🕶️', text: 'Flexible Hours' },
+                    4: { icon: '⏰', text: 'Standard Hours' },
+                    5: { icon: '⏰', text: 'Overtime Wage Slave' },
+                    6: { icon: '💼', text: '996 Prep' },
+                    7: { icon: '🔥', text: 'Extreme Wage Slave' },
+                    8: { icon: '💀', text: 'Life for Money' }
+                },
                 simulationTitle: 'Long-term Accumulation',
                 monthSimLabel: '1 Month Accumulation',
                 quarterSimLabel: '3 Months Accumulation',
@@ -2832,8 +3490,30 @@
                 statusTextInitial: 'Please enter monthly income to start real-time coin drop',
                 clearHistoryBtn: '🗑️ Clear All',
                 clearAllBtn: '🗑️ Clear All',
-                gameToggleStart: '🎮 Start Coin Game',
-                gameToggleStop: '🛑 Stop Coin Game',
+                gameToggleStart: '🎮 Start Slacking',
+                gameToggleStop: '🛑 Stop Slacking',
+                firstGameTip: 'Tired? Let\'s catch some coins!',
+                stableWorkerBtn: '🐂 I am Stable Wage Slave',
+                freeWorkerBtn: '🦄 I am Free Wage Slave',
+                salaryDetailLabel: 'Monthly: ',
+                passiveDetailLabel: 'Passive: ',
+                totalDetailLabel: 'Total: ',
+                hourlyDetailLabel: 'Hourly: ',
+                lazyHourlyDetailLabel: 'Lazy Hourly: ',
+                totalLevels: {
+                    0: { icon: '🫥', label: 'Air Wage Slave', message: 'Total income $0? Are you here to make up the numbers?' },
+                    1000: { icon: '🌱', label: 'Sprout Wage Slave', message: 'Total income under $1000, surviving on thin air.' },
+                    3000: { icon: '🥚', label: 'Basic Wage Slave', message: 'Just enough to eat, every penny counts.' },
+                    5000: { icon: '🍚', label: 'Standard Wage Slave', message: 'Not starving, not rich, just stable poverty.' },
+                    8000: { icon: '🐴', label: 'Average Wage Slave', message: 'National average level, nothing to brag about.' },
+                    12000: { icon: '📈', label: 'Advanced Wage Slave', message: 'Above average, can afford extra treats.' },
+                    18000: { icon: '🏠', label: 'Comfortable Wage Slave', message: 'Can save after paying rent.' },
+                    25000: { icon: '🚗', label: 'Middle-class Wage Slave', message: 'Total nearly $25k, can hold head up in big city.' },
+                    40000: { icon: '✈️', label: 'High-end Wage Slave', message: 'This income, can strut back home.' },
+                    60000: { icon: '👑', label: 'Wage Slave King', message: 'You are the ceiling of wage slaves.' },
+                    100000: { icon: '🚀', label: 'Wage Slave Legend', message: 'Total over $60k, you own the ranch.' },
+                    max: { icon: '🏆', label: 'Capitalist-in-Training', message: 'Total $100k+, time to hire wage slaves.' }
+                },
                 gameAchievementsTitle: 'Coin Game Achievements',
                 currentAchievementLabel: 'Current Achievement',
                 coinUnitText: 'coins',
@@ -2844,6 +3524,42 @@
                 gameInfoTip: 'Move mouse to control character to catch coins',
                 gameInfoCaught: 'Coins caught: ',
                 gameInfoUnit: '',
+                gameOverTitle: 'Slacking Summary',
+                gameOverDurationLabel: 'Slacking Time',
+                gameOverHourlyLabel: 'Your Hourly Rate',
+                gameOverProfitLabel: 'Free Profit',
+                gameOverBossPrefix: 'Boss: ',
+                gameOverPlayerPrefix: 'You: ',
+                gameOverReplayText: 'Slack Again',
+                gameOverCloseText: 'Back to Work',
+                gameOverEasterPrefix: 'Bonus: ',
+                bossQuotes: {
+                    0: '“Just pocket change, buy yourself a candy.”',
+                    1: '“Not bad, enough for a bottle of water.”',
+                    3: '“I’ll buy your coffee today.”',
+                    5: '“You just slacked away a breakfast worth of money.”',
+                    10: '“That’s basically a paid lunch!”',
+                    20: '“At least you paid for the electricity today.”',
+                    30: '“Your hourly rate is quite high, how long have you been slacking?”',
+                    50: '“Boss is starting to feel the pain.”',
+                    100: '“This round is like half a day of free labor from you.”',
+                    200: '“Boss is bankrupt, you win.”'
+                },
+                playerQuotes: {
+                    0: '“Didn’t even have time to sit down, what a waste.”',
+                    1: '“Standard paid bathroom break duration.”',
+                    3: '“This cigarette was worth it.”',
+                    5: '“That’s like slacking through a useless meeting.”',
+                    10: '“You’re not just slacking, you’re deep sea fishing.”',
+                    20: '“Boss is looking for you, but I’m pretending not to see.”',
+                    30: '“Did you move your office into the game?”'
+                },
+                easterEggs: [
+                    '“Boss walked by your desk but you switched screens fast enough!”',
+                    '“Coworker thought you were making a report, actually catching coins.”',
+                    '“Congratulations! You’ve been named ‘Slacker of the Day’.”',
+                    '“Stop playing, boss has been standing behind you for 3 minutes.”'
+                ],
                 achievementIdle: 'Not Started',
                 achievementJiazhuang: 'Pretending to Work',
                 achievementDaishui: 'Paid Water Break',
@@ -3041,26 +3757,51 @@
             10000: 'achievementDadi'
         };
 
-        // 接金币游戏成就数据
-        const coinGameAchievements = [
-            { coins: 0, title: '还没开工', icon: '😐', description: '摸鱼？先打开游戏再说' },
-            { coins: 10, title: '假装干活', icon: '⌨️', description: '手指刚离开键盘' },
-            { coins: 30, title: '带薪喝水', icon: '🥤', description: '起身倒了第一杯水' },
-            { coins: 60, title: '厕所实习生', icon: '🧻', description: '刚蹲进厕所，手机掏出来了' },
-            { coins: 100, title: '厕所常驻', icon: '🚽', description: '马桶上的时间，才是你的自由' },
-            { coins: 150, title: '带薪发呆', icon: '💤', description: '屏幕前眼神涣散，脑子已下班' },
-            { coins: 250, title: '茶水间交际', icon: '🍵', description: '和同事闲聊八卦，老板路过假装聊需求' },
-            { coins: 400, title: '摸鱼熟手', icon: '🎣', description: 'Excel下面藏着游戏窗口' },
-            { coins: 600, title: '老摸鱼人', icon: '🐟', description: '摸鱼技巧已入化境，Alt+Tab快到有残影' },
-            { coins: 900, title: '摸鱼八爪鱼', icon: '🐙', description: '同时摸鱼、追剧、吃零食、回微信' },
-            { coins: 1300, title: '摸鱼鲸', icon: '🐋', description: '体型巨大，沉不下去，老板已经发现但懒得说' },
-            { coins: 1800, title: '摸鱼幽灵', icon: '👻', description: '工位上空无一人，只有屏幕在闪' },
-            { coins: 2500, title: '摸鱼海贼王', icon: '🏴‍☠️', description: '摸鱼界的传奇，新人膜拜的对象' },
-            { coins: 3500, title: '自动摸鱼机', icon: '🤖', description: '身体在工位，灵魂已环游世界' },
-            { coins: 5000, title: '摸鱼黑洞', icon: '🌀', description: '一切工作靠近你都会被吸入摸鱼深渊' },
-            { coins: 7500, title: '摸鱼仙人', icon: '🧘', description: '飞升了，物我两忘，摸鱼即工作，工作即摸鱼' },
-            { coins: 10000, title: '摸鱼之帝', icon: '👑', description: '你不是在摸鱼，摸鱼就是你——恭喜通关！' }
-        ];
+        // 接金币游戏成就数据（支持多语言）
+        const coinGameAchievementsData = {
+            zh: [
+                { coins: 0, title: '还没开工', icon: '😐', description: '摸鱼？先打开游戏再说' },
+                { coins: 10, title: '假装干活', icon: '⌨️', description: '手指刚离开键盘' },
+                { coins: 30, title: '带薪喝水', icon: '🥤', description: '起身倒了第一杯水' },
+                { coins: 60, title: '厕所实习生', icon: '🧻', description: '刚蹲进厕所，手机掏出来了' },
+                { coins: 100, title: '厕所常驻', icon: '🚽', description: '马桶上的时间，才是你的自由' },
+                { coins: 150, title: '带薪发呆', icon: '💤', description: '屏幕前眼神涣散，脑子已下班' },
+                { coins: 250, title: '茶水间交际', icon: '🍵', description: '和同事闲聊八卦，老板路过假装聊需求' },
+                { coins: 400, title: '摸鱼熟手', icon: '🎣', description: 'Excel下面藏着游戏窗口' },
+                { coins: 600, title: '老摸鱼人', icon: '🐟', description: '摸鱼技巧已入化境，Alt+Tab快到有残影' },
+                { coins: 900, title: '摸鱼八爪鱼', icon: '🐙', description: '同时摸鱼、追剧、吃零食、回微信' },
+                { coins: 1300, title: '摸鱼鲸', icon: '🐋', description: '体型巨大，沉不下去，老板已经发现但懒得说' },
+                { coins: 1800, title: '摸鱼幽灵', icon: '👻', description: '工位上空无一人，只有屏幕在闪' },
+                { coins: 2500, title: '摸鱼海贼王', icon: '🏴‍☠️', description: '摸鱼界的传奇，新人膜拜的对象' },
+                { coins: 3500, title: '自动摸鱼机', icon: '🤖', description: '身体在工位，灵魂已环游世界' },
+                { coins: 5000, title: '摸鱼黑洞', icon: '🌀', description: '一切工作靠近你都会被吸入摸鱼深渊' },
+                { coins: 7500, title: '摸鱼仙人', icon: '🧘', description: '飞升了，物我两忘，摸鱼即工作，工作即摸鱼' },
+                { coins: 10000, title: '摸鱼之帝', icon: '👑', description: '你不是在摸鱼，摸鱼就是你——恭喜通关！' }
+            ],
+            en: [
+                { coins: 0, title: 'Not Started', icon: '😐', description: 'Wage Slave? Start the game first' },
+                { coins: 10, title: 'Pretending to Work', icon: '⌨️', description: 'Fingers just left the keyboard' },
+                { coins: 30, title: 'Paid Water Break', icon: '🥤', description: 'Got up to pour first cup of water' },
+                { coins: 60, title: 'Toilet Intern', icon: '🧻', description: 'Just squatted in, phone already out' },
+                { coins: 100, title: 'Toilet Resident', icon: '🚽', description: 'Toilet time is your freedom' },
+                { coins: 150, title: 'Paid Daydreaming', icon: '💤', description: 'Glazed eyes, mind already clocked out' },
+                { coins: 250, title: 'Tea Room Social', icon: '🍵', description: 'Gossiping with colleagues, fake talk when boss passes' },
+                { coins: 400, title: 'Pro Wage Slave', icon: '🎣', description: 'Game window hidden under Excel' },
+                { coins: 600, title: 'Veteran Wage Slave', icon: '🐟', description: 'Alt+Tab faster than eye can see' },
+                { coins: 900, title: 'Octopus Wage Slave', icon: '🐙', description: 'Slacking, binging, snacking, texting simultaneously' },
+                { coins: 1300, title: 'Wage Slave Whale', icon: '🐋', description: 'Too big to sink, boss noticed but doesn\'t care' },
+                { coins: 1800, title: 'Wage Slave Ghost', icon: '👻', description: 'Desk empty, only screen flickering' },
+                { coins: 2500, title: 'Wage Slave Pirate King', icon: '🏴‍☠️', description: 'Legend of slacking, newbies look up to you' },
+                { coins: 3500, title: 'Auto Wage Slave', icon: '🤖', description: 'Body at desk, soul traveling the world' },
+                { coins: 5000, title: 'Wage Slave Black Hole', icon: '🌀', description: 'All work gets sucked into slacking abyss' },
+                { coins: 7500, title: 'Wage Slave Immortal', icon: '🧘', description: 'Transcended, slacking is work, work is slacking' },
+                { coins: 10000, title: 'Emperor of Wage Slaves', icon: '👑', description: 'You are not slacking, slacking is you——congratulations!' }
+            ]
+        };
+        
+        function getCoinGameAchievements() {
+            return coinGameAchievementsData[currentLang] || coinGameAchievementsData.zh;
+        }
 
         // 获取当前称号（支持多语言）
         function getCurrentTitle(coinCount) {
@@ -3083,7 +3824,7 @@
             
             achievementsGrid.innerHTML = '';
             
-            coinGameAchievements.forEach(achievement => {
+            getCoinGameAchievements().forEach(achievement => {
                 const achievementElement = document.createElement('div');
                 achievementElement.className = 'game-achievement';
                 achievementElement.dataset.coins = achievement.coins;
@@ -3115,8 +3856,8 @@
             const currentDesc = document.getElementById('currentAchievementDesc');
             
             // 获取当前最高成就
-            let currentAchievement = coinGameAchievements[0]; // 默认为"无所事事"
-            for (const achievement of coinGameAchievements) {
+            let currentAchievement = getCoinGameAchievements()[0]; // 默认为"无所事事"
+            for (const achievement of getCoinGameAchievements()) {
                 if (coinCount >= achievement.coins) {
                     currentAchievement = achievement;
                 }
@@ -3166,8 +3907,8 @@
             const descEl = document.getElementById('highScoreDesc');
 
             // 获取对应的成就
-            let achievement = coinGameAchievements[0];
-            for (const a of coinGameAchievements) {
+            let achievement = getCoinGameAchievements()[0];
+            for (const a of getCoinGameAchievements()) {
                 if (highScore >= a.coins) {
                     achievement = a;
                 }
@@ -3187,6 +3928,132 @@
         function closeHighScoreModal() {
             const modal = document.getElementById('highScoreModal');
             if (modal) modal.classList.remove('active');
+        }
+
+        // 当前结算数据
+        let currentGameData = {
+            duration: '',
+            hourlyRate: 0,
+            freeMoney: 0,
+            bossQuote: '',
+            playerQuote: '',
+            durationSeconds: 0
+        };
+
+        // 保存当前结算数据
+        function saveGameData(duration, hourlyRate, freeMoney, bossQuote, playerQuote, durationSeconds) {
+            currentGameData = {
+                duration: duration,
+                hourlyRate: hourlyRate,
+                freeMoney: freeMoney,
+                bossQuote: bossQuote,
+                playerQuote: playerQuote,
+                durationSeconds: durationSeconds
+            };
+        }
+
+        // 打开分享选项弹窗
+        function openShareModal() {
+            const modal = document.getElementById('shareModal');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        // 关闭分享选项弹窗
+        function closeShareModal() {
+            const modal = document.getElementById('shareModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 生成分享文案
+        function generateShareText() {
+            const websiteUrl = window.location.href;
+            const styles = [
+                {
+                    name: '扎心型',
+                    template: (data) => `摸鱼${data.duration}，白嫖老板¥${data.freeMoney.toFixed(2)}。今天的咖啡老板请了 ☕ 你也来算算你的时薪？${websiteUrl}`
+                },
+                {
+                    name: '炫耀型',
+                    template: (data) => `刚刚在牛马计算器接金币，时薪¥${data.hourlyRate.toFixed(2)}，一局白嫖¥${data.freeMoney.toFixed(2)} 💰 打工人必测 → ${websiteUrl}`
+                },
+                {
+                    name: '自嘲型',
+                    template: (data) => `带薪拉屎${data.duration}，净赚¥${data.freeMoney.toFixed(2)}。牛马计算器说我摸鱼已入门 🐴 你也来测 → ${websiteUrl}`
+                },
+                {
+                    name: '极简型',
+                    template: (data) => `摸鱼${data.duration} = ¥${data.freeMoney.toFixed(2)}，你的时薪值多少？${websiteUrl}`
+                }
+            ];
+
+            const randomIndex = Math.floor(Math.random() * styles.length);
+            return styles[randomIndex].template(currentGameData);
+        }
+
+        // 复制分享文案
+        async function copyShareText() {
+            const text = generateShareText();
+            try {
+                await navigator.clipboard.writeText(text);
+                showNotification(currentLang === 'zh' ? '✅ 复制成功！快去炫耀吧' : '✅ Copied successfully!');
+                closeShareModal();
+            } catch (err) {
+                // 备用复制方法
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification(currentLang === 'zh' ? '✅ 复制成功！快去炫耀吧' : '✅ Copied successfully!');
+                closeShareModal();
+            }
+        }
+
+        // 保存分享图片
+        async function saveShareImage() {
+            // 填充数据到图片生成区域
+            document.getElementById('shareImageDuration').textContent = currentGameData.duration;
+            document.getElementById('shareImageHourly').textContent = `¥${currentGameData.hourlyRate.toFixed(2)}`;
+            document.getElementById('shareImageProfit').textContent = `¥${currentGameData.freeMoney.toFixed(2)}`;
+            document.getElementById('shareImageBossQuote').textContent = `老板：${currentGameData.bossQuote}`;
+            document.getElementById('shareImagePlayerQuote').textContent = `你：${currentGameData.playerQuote}`;
+            document.getElementById('shareImageUrl').textContent = `👉 ${window.location.href}`;
+
+            const container = document.getElementById('shareImageContainer');
+            container.style.display = 'block';
+            container.style.left = '50%';
+            container.style.top = '50%';
+            container.style.transform = 'translate(-50%, -50%)';
+
+            try {
+                const canvas = await html2canvas(container, {
+                    backgroundColor: '#1a1a2e',
+                    scale: 2,
+                    useCORS: true
+                });
+
+                const link = document.createElement('a');
+                link.download = '牛马金币计算器-战绩.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                showNotification(currentLang === 'zh' ? '📸 图片保存成功！快去分享吧' : '📸 Image saved successfully!');
+                closeShareModal();
+            } catch (err) {
+                console.error('生成图片失败:', err);
+                showNotification(currentLang === 'zh' ? '❌ 图片生成失败，请重试' : '❌ Failed to generate image');
+            }
+
+            // 隐藏图片生成区域
+            container.style.display = 'none';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            container.style.transform = 'none';
         }
 
         // 更新称号显示
@@ -3337,6 +4204,7 @@
             gameActive = true;
             caughtCoinsCount = 0;
             gameCoins = [];
+            gameStartTime = Date.now();
             
             // 暂停收入金币掉落
             if (dropInterval) {
@@ -3362,11 +4230,127 @@
             catcherContainer.style.left = (window.innerWidth / 2 - 30) + 'px';
             catcherContainer.style.top = (window.innerHeight - 150) + 'px';
             
+            // 每次开始游戏都显示提示消息
+            setTimeout(() => {
+                showNotification(t.firstGameTip);
+            }, 500);
+            
             // 开始游戏金币掉落
             startGameCoinDrop();
             
             // 开始动画循环
             gameAnimate();
+        }
+
+        // 显示摸鱼结算弹窗
+        function showGameOverModal() {
+            const t = translations[currentLang];
+            const modal = document.getElementById('gameOverModal');
+            
+            // 计算游戏时长
+            const gameEndTime = Date.now();
+            const gameDurationMs = gameEndTime - gameStartTime;
+            const gameDurationSeconds = Math.floor(gameDurationMs / 1000);
+            const minutes = Math.floor(gameDurationSeconds / 60);
+            const seconds = gameDurationSeconds % 60;
+            
+            // 计算时薪
+            const income = calculateIncome(0);
+            const hourlyRate = income.hour;
+            
+            // 计算白嫖金额：游玩秒数 ÷ 3600 × 时薪
+            const freeMoney = (gameDurationSeconds / 3600) * hourlyRate;
+            
+            // 获取老板锐评
+            let bossQuote = '';
+            const bossQuotes = t.bossQuotes;
+            if (freeMoney < 1) {
+                bossQuote = bossQuotes['0'];
+            } else if (freeMoney < 3) {
+                bossQuote = bossQuotes['1'];
+            } else if (freeMoney < 5) {
+                bossQuote = bossQuotes['3'];
+            } else if (freeMoney < 10) {
+                bossQuote = bossQuotes['5'];
+            } else if (freeMoney < 20) {
+                bossQuote = bossQuotes['10'];
+            } else if (freeMoney < 30) {
+                bossQuote = bossQuotes['20'];
+            } else if (freeMoney < 50) {
+                bossQuote = bossQuotes['30'];
+            } else if (freeMoney < 100) {
+                bossQuote = bossQuotes['50'];
+            } else if (freeMoney < 200) {
+                bossQuote = bossQuotes['100'];
+            } else {
+                bossQuote = bossQuotes['200'];
+            }
+            
+            // 获取玩家自嘲
+            let playerQuote = '';
+            const playerQuotes = t.playerQuotes;
+            if (gameDurationSeconds < 60) {
+                playerQuote = playerQuotes['0'];
+            } else if (gameDurationSeconds < 180) {
+                playerQuote = playerQuotes['1'];
+            } else if (gameDurationSeconds < 300) {
+                playerQuote = playerQuotes['3'];
+            } else if (gameDurationSeconds < 600) {
+                playerQuote = playerQuotes['5'];
+            } else if (gameDurationSeconds < 1200) {
+                playerQuote = playerQuotes['10'];
+            } else if (gameDurationSeconds < 1800) {
+                playerQuote = playerQuotes['20'];
+            } else {
+                playerQuote = playerQuotes['30'];
+            }
+            
+            // 更新弹窗内容
+            document.getElementById('gameOverDuration').textContent = `${minutes}分${seconds}秒`;
+            document.getElementById('gameOverHourly').textContent = `¥${hourlyRate.toFixed(2)}`;
+            document.getElementById('gameOverProfit').textContent = `¥${freeMoney.toFixed(2)}`;
+            document.getElementById('gameOverBossQuote').textContent = bossQuote;
+            document.getElementById('gameOverPlayerQuote').textContent = playerQuote;
+            
+            // 随机彩蛋
+            const easterEggDiv = document.getElementById('gameOverEaster');
+            const randomValue = Math.random() * 100;
+            let easterEggText = '';
+            
+            if (randomValue < 1) {
+                // 1% 概率
+                const eggIndex = Math.random() < 0.5 ? 2 : 3;
+                easterEggText = t.gameOverEasterPrefix + t.easterEggs[eggIndex];
+                easterEggDiv.style.display = 'flex';
+            } else if (randomValue < 6) {
+                // 5% 概率
+                easterEggText = t.gameOverEasterPrefix + t.easterEggs[1];
+                easterEggDiv.style.display = 'flex';
+            } else if (randomValue < 16) {
+                // 10% 概率
+                easterEggText = t.gameOverEasterPrefix + t.easterEggs[0];
+                easterEggDiv.style.display = 'flex';
+            } else {
+                // 不显示彩蛋
+                easterEggDiv.style.display = 'none';
+            }
+            
+            if (easterEggText) {
+                document.getElementById('gameOverEasterText').textContent = easterEggText;
+            }
+            
+            // 保存当前结算数据
+            saveGameData(
+                `${minutes}分${seconds}秒`,
+                hourlyRate,
+                freeMoney,
+                bossQuote,
+                playerQuote,
+                gameDurationSeconds
+            );
+            
+            // 显示弹窗
+            modal.style.display = 'flex';
         }
 
         // 停止小游戏
@@ -3422,6 +4406,9 @@
                     localStorage.setItem('highestCoinAchievement', highestAchievement);
                 }
             }
+            
+            // 显示结算弹窗
+            showGameOverModal();
             
             // 恢复收入金币掉落
             startRealTimeCoinDrop();
@@ -3751,8 +4738,8 @@
                 // 只有被动收入
                 monthIncome = passiveIncome;
                 weekIncome = monthIncome / 4.333;
-                dayIncome = monthIncome / 30;
-                hourIncome = dayIncome / 24;
+                dayIncome = weekIncome / workDays;
+                hourIncome = dayIncome / workHours;
                 minuteIncome = hourIncome / 60;
                 secondIncome = minuteIncome / 60;
             } else {
@@ -3931,6 +4918,9 @@
                 { id: 'perfect-slacker', condition: income.hour < 20 && currentPassiveIncome > monthlyIncome }
             ];
 
+            // 收集新解锁的成就
+            const newUnlocked = [];
+            
             achievements.forEach(ach => {
                 const element = document.querySelector(`[data-achievement="${ach.id}"]`);
                 if (element) {
@@ -3943,11 +4933,7 @@
                                 element.querySelector('.achievement-name').textContent.split('<br>')[0] : 
                                 'Achievement Unlocked!';
                             
-                            if (!isInitializing) {
-                                setTimeout(() => {
-                                    showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${achievementName}` : `🎉 Achievement Unlocked: ${achievementName}`);
-                                }, 2000);
-                            }
+                            newUnlocked.push(achievementName);
                         }
                     } else {
                         if (unlockedAchievements.has(ach.id)) {
@@ -3957,6 +4943,16 @@
                     }
                 }
             });
+            
+            // 按顺序显示成就通知
+            if (newUnlocked.length > 0 && !isInitializing) {
+                let delay = 2000; // 初始延迟2秒
+                newUnlocked.forEach((name, index) => {
+                    setTimeout(() => {
+                        showNotification(currentLang === 'zh' ? `🎉 恭喜解锁成就：${name}` : `🎉 Achievement Unlocked: ${name}`);
+                    }, delay + index * 3000); // 每个成就间隔3秒
+                });
+            }
         }
 
         // 检查目标
@@ -3988,33 +4984,44 @@
         function showSalaryLevelNotification(amount) {
             if (amount <= 0) return;
             
+            const t = translations[currentLang];
             let level;
+            
             if (amount === 0) {
-                level = { label: '💨 空气牛马', message: '月薪0元？你是来人间凑数的吗？' };
+                level = currentLang === 'zh' ? { label: '💨 空气牛马', message: '月薪0元？你是来人间凑数的吗？' } : { label: '💨 Air Wage Slave', message: 'Monthly income $0? Are you here to make up the numbers?' };
             } else if (amount <= 1000) {
-                level = { label: '🌱 萌芽牛马', message: '月薪不过千，生存全靠一口仙气。' };
+                level = currentLang === 'zh' ? { label: '🌱 萌芽牛马', message: '月薪不过千，生存全靠一口仙气。' } : { label: '🌱 Sprout Wage Slave', message: 'Monthly income under $1000, surviving on thin air.' };
             } else if (amount <= 3000) {
-                level = { label: '🥚 温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' };
+                level = currentLang === 'zh' ? { label: '🥚 温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' } : { label: '🥚 Basic Wage Slave', message: 'Just enough to eat, every penny counts.' };
             } else if (amount <= 5000) {
-                level = { label: '🍚 基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' };
+                level = currentLang === 'zh' ? { label: '🍚 基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' } : { label: '🍚 Standard Wage Slave', message: 'Not starving, not rich, just stable poverty.' };
             } else if (amount <= 8000) {
-                level = { label: '🐴 标准牛马', message: '全国牛马平均水平，不丢人也不光荣。' };
+                level = currentLang === 'zh' ? { label: '🐴 标准牛马', message: '全国牛马平均水平，不丢人也不光荣。' } : { label: '🐴 Average Wage Slave', message: 'National average level, nothing to brag about.' };
             } else if (amount <= 12000) {
-                level = { label: '📈 进阶牛马', message: '比上不足比下有余，偶尔敢点外卖加个鸡腿。' };
+                level = currentLang === 'zh' ? { label: '📈 进阶牛马', message: '比上不足比下有余，偶尔敢点外卖加个鸡腿。' } : { label: '📈 Advanced Wage Slave', message: 'Above average, can afford extra treats.' };
             } else if (amount <= 18000) {
-                level = { label: '🏠 小资牛马', message: '可以考虑房租之外存点钱了。' };
+                level = currentLang === 'zh' ? { label: '🏠 小资牛马', message: '可以考虑房租之外存点钱了。' } : { label: '🏠 Comfortable Wage Slave', message: 'Can save after paying rent.' };
             } else if (amount <= 25000) {
-                level = { label: '🚗 中产牛马', message: '月薪近两万，终于敢跟亲戚说在大城市还行。' };
+                level = currentLang === 'zh' ? { label: '🚗 中产牛马', message: '月薪近两万，终于敢跟亲戚说在大城市还行。' } : { label: '🚗 Middle-class Wage Slave', message: 'Monthly nearly $25k, can hold head up in big city.' };
             } else if (amount <= 40000) {
-                level = { label: '✈️ 高端牛马', message: '这个月薪，回老家可以横着走。' };
+                level = currentLang === 'zh' ? { label: '✈️ 高端牛马', message: '这个月薪，回老家可以横着走。' } : { label: '✈️ High-end Wage Slave', message: 'This income, can strut back home.' };
             } else if (amount <= 60000) {
-                level = { label: '👑 牛马之王', message: '你是牛马圈的天花板，普通打工人仰望的存在。' };
+                level = currentLang === 'zh' ? { label: '👑 牛马之王', message: '你是牛马圈的天花板，普通打工人仰望的存在。' } : { label: '👑 Wage Slave King', message: 'You are the ceiling of wage slaves.' };
             } else if (amount <= 100000) {
-                level = { label: '🚀 牛马传说', message: '月薪六万以上，你已经不是牛马了，是开牛马场的人。' };
+                level = currentLang === 'zh' ? { label: '🚀 牛马传说', message: '月薪六万以上，你已经不是牛马了，是开牛马场的人。' } : { label: '🚀 Wage Slave Legend', message: 'Monthly over $60k, you own the ranch.' };
             } else {
-                level = { label: '🏆 资本家预备役', message: '月薪十万，你该开个公司雇牛马了。' };
+                level = currentLang === 'zh' ? { label: '🏆 资本家预备役', message: '月薪十万，你该开个公司雇牛马了。' } : { label: '🏆 Capitalist-in-Training', message: 'Monthly $100k+, time to hire wage slaves.' };
             }
             
+            // 在输入框下方显示消息
+            const messageEl = document.getElementById('monthlyIncomeMessage');
+            if (messageEl) {
+                messageEl.textContent = level.message;
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
+            }
+            
+            // 同时弹出消息通知
             showNotification(`${level.label} ${level.message}`);
             updateIncomeResultDisplay();
         }
@@ -4024,25 +5031,84 @@
             if (amount > 0) {
                 let level;
                 if (amount <= 500) {
-                    level = { label: '🌱 萌芽被动', message: '刚起步，至少话费有人帮你交了。' };
+                    level = currentLang === 'zh' ? { label: '🌱 萌芽被动', message: '刚起步，至少话费有人帮你交了。' } : { label: '🌱 Sprout Passive', message: 'Just started, at least phone bill covered.' };
                 } else if (amount <= 1000) {
-                    level = { label: '📶 信号级被动', message: '能覆盖水电煤，算是有个信号了。' };
+                    level = currentLang === 'zh' ? { label: '📶 信号级被动', message: '能覆盖水电煤，算是有个信号了。' } : { label: '📶 Signal Passive', message: 'Covers utilities, got a signal.' };
                 } else if (amount <= 2000) {
-                    level = { label: '☕ 咖啡自由', message: '伙食费或咖啡自由，有点小确幸。' };
+                    level = currentLang === 'zh' ? { label: '☕ 咖啡自由', message: '伙食费或咖啡自由，有点小确幸。' } : { label: '☕ Coffee Freedom', message: 'Coffee or food freedom, small happiness.' };
                 } else if (amount <= 5000) {
-                    level = { label: '🏠 房租覆盖', message: '被动收入能cover房租，你已经比50%的牛马强。' };
+                    level = currentLang === 'zh' ? { label: '🏠 房租覆盖', message: '被动收入能cover房租，你已经比50%的牛马强。' } : { label: '🏠 Rent Cover', message: 'Passive covers rent, better than 50%.' };
                 } else if (amount <= 10000) {
-                    level = { label: '🕊️ 底气被动', message: '被动收入够基本生活，有资格跟烂工作说不。' };
+                    level = currentLang === 'zh' ? { label: '🕊️ 底气被动', message: '被动收入够基本生活，有资格跟烂工作说不。' } : { label: '🕊️ Confident Passive', message: 'Covers basic life, can say no to bad jobs.' };
                 } else if (amount <= 20000) {
-                    level = { label: '🚪 半只脚踏出', message: '月入过万还不怎么用干活？你是来拉仇恨的。' };
+                    level = currentLang === 'zh' ? { label: '🚪 半只脚踏出', message: '月入过万还不怎么用干活？你是来拉仇恨的。' } : { label: '🚪 Halfway Out', message: '$10k/month without working much? Showing off.' };
                 } else {
-                    level = { label: '🤴 资本家本家', message: '被动月入两万+，你来这个网站是视察民情的吧？' };
+                    level = currentLang === 'zh' ? { label: '🤴 资本家本家', message: '被动月入两万+，你来这个网站是视察民情的吧？' } : { label: '🤴 Capitalist', message: 'Passive $20k+, here to inspect the masses?' };
                 }
                 
+                // 在输入框下方显示消息
+                const messageEl = document.getElementById('passiveIncomeMessage');
+                if (messageEl) {
+                    messageEl.textContent = level.message;
+                    messageEl.classList.add('visible');
+                    messageEl.classList.remove('hidden');
+                }
+                
+                // 同时弹出消息通知
                 showNotification(`${level.label} ${level.message}`);
             }
             // 无论金额多少都更新显示
             updateIncomeResultDisplay();
+        }
+
+        // 获取月薪分级文本（用于输入框下方显示）
+        function getSalaryLevelText(amount) {
+            if (amount === 0) {
+                return currentLang === 'zh' ? '💨 月薪0元？你是来人间凑数的吗？' : '💨 Monthly income $0? Are you here to make up the numbers?';
+            } else if (amount <= 1000) {
+                return currentLang === 'zh' ? '🌱 月薪不过千，生存全靠一口仙气。' : '🌱 Monthly income under $1000, surviving on thin air.';
+            } else if (amount <= 3000) {
+                return currentLang === 'zh' ? '🥚 刚好够吃饭，多花一分都要掂量。' : '🥚 Just enough to eat, every penny counts.';
+            } else if (amount <= 5000) {
+                return currentLang === 'zh' ? '🍚 饿不死也富不了，主打一个稳定贫穷。' : '🍚 Not starving, not rich, just stable poverty.';
+            } else if (amount <= 8000) {
+                return currentLang === 'zh' ? '🐴 全国牛马平均水平，不丢人也不光荣。' : '🐴 National average level, nothing to brag about.';
+            } else if (amount <= 12000) {
+                return currentLang === 'zh' ? '📈 比上不足比下有余，偶尔敢点外卖加个鸡腿。' : '📈 Above average, can afford extra treats.';
+            } else if (amount <= 18000) {
+                return currentLang === 'zh' ? '🏠 可以考虑房租之外存点钱了。' : '🏠 Can save after paying rent.';
+            } else if (amount <= 25000) {
+                return currentLang === 'zh' ? '🚗 月薪近两万，终于敢跟亲戚说在大城市还行。' : '🚗 Monthly nearly $25k, can hold head up in big city.';
+            } else if (amount <= 40000) {
+                return currentLang === 'zh' ? '✈️ 这个月薪，回老家可以横着走。' : '✈️ This income, can strut back home.';
+            } else if (amount <= 60000) {
+                return currentLang === 'zh' ? '👑 你是牛马圈的天花板，普通打工人仰望的存在。' : '👑 You are the ceiling of wage slaves.';
+            } else if (amount <= 100000) {
+                return currentLang === 'zh' ? '🚀 月薪六万以上，你已经不是牛马了，是开牛马场的人。' : '🚀 Monthly over $60k, you own the ranch.';
+            } else {
+                return currentLang === 'zh' ? '🏆 月薪十万，你该开个公司雇牛马了。' : '🏆 Monthly $100k+, time to hire wage slaves.';
+            }
+        }
+
+        // 获取被动收入分级文本（用于输入框下方显示）
+        function getPassiveIncomeLevelText(amount) {
+            if (amount <= 0) return '';
+            
+            if (amount <= 500) {
+                return currentLang === 'zh' ? '🌱 刚起步，至少话费有人帮你交了。' : '🌱 Just started, at least phone bill covered.';
+            } else if (amount <= 1000) {
+                return currentLang === 'zh' ? '📶 能覆盖水电煤，算是有个信号了。' : '📶 Covers utilities, got a signal.';
+            } else if (amount <= 2000) {
+                return currentLang === 'zh' ? '☕ 伙食费或咖啡自由，有点小确幸。' : '☕ Coffee or food freedom, small happiness.';
+            } else if (amount <= 5000) {
+                return currentLang === 'zh' ? '🏠 被动收入能cover房租，你已经比50%的牛马强。' : '🏠 Passive covers rent, better than 50%.';
+            } else if (amount <= 10000) {
+                return currentLang === 'zh' ? '🕊️ 被动收入够基本生活，有资格跟烂工作说不。' : '🕊️ Covers basic life, can say no to bad jobs.';
+            } else if (amount <= 20000) {
+                return currentLang === 'zh' ? '🚪 月入过万还不怎么用干活？你是来拉仇恨的。' : '🚪 $10k/month without working much? Showing off.';
+            } else {
+                return currentLang === 'zh' ? '🤴 被动月入两万+，你来这个网站是视察民情的吧？' : '🤴 Passive $20k+, here to inspect the masses?';
+            }
         }
 
         // 更新收入结果展示区域
@@ -4064,7 +5130,8 @@
             if (totalIncome > 0) {
                 passiveRatio = Math.round((passiveIncome / totalIncome) * 100);
             }
-            document.getElementById('passiveRatioLabel').textContent = `被动占${passiveRatio}%`;
+            const ratioLabel = currentLang === 'zh' ? `被动占${passiveRatio}%` : `Passive ${passiveRatio}%`;
+            document.getElementById('passiveRatioLabel').textContent = ratioLabel;
             
             // 获取月总收入标签
             let totalLevel = getTotalLevel(totalIncome);
@@ -4093,10 +5160,11 @@
             document.getElementById('hourlyDetailValue').textContent = `¥${hourlyRate.toFixed(2)}`;
             
             // 如果只有被动收入，显示"躺赚时薪"
+            const t = translations[currentLang];
             if (monthlyIncome === 0 && passiveIncome > 0) {
-                document.getElementById('hourlyDetailLabel').textContent = '躺赚时薪：';
+                document.getElementById('hourlyDetailLabel').textContent = t.lazyHourlyDetailLabel;
             } else {
-                document.getElementById('hourlyDetailLabel').textContent = '时薪：';
+                document.getElementById('hourlyDetailLabel').textContent = t.hourlyDetailLabel;
             }
             
             // 更新模式标签
@@ -4109,42 +5177,33 @@
             const workHours = parseFloat(document.getElementById('workHours').value) || 8;
             
             // 工作天数标签
-            let daysLabel = { icon: '', text: '', class: '' };
-            if (workDays === 1) {
-                daysLabel = { icon: '🧘', text: '神仙模式', class: 'mode-days-1' };
-            } else if (workDays === 2) {
-                daysLabel = { icon: '🎈', text: '体验生活', class: 'mode-days-2' };
-            } else if (workDays === 3) {
-                daysLabel = { icon: '😎', text: '半躺模式', class: 'mode-days-3' };
-            } else if (workDays === 4) {
-                daysLabel = { icon: '✨', text: '准自由', class: 'mode-days-4' };
-            } else if (workDays === 5) {
-                daysLabel = { icon: '🐴', text: '双休牛马', class: 'mode-days-5' };
-            } else if (workDays === 6) {
-                daysLabel = { icon: '📦', text: '单休牛马', class: 'mode-days-6' };
-            } else if (workDays === 7) {
-                daysLabel = { icon: '🔥', text: '终极牛马', class: 'mode-days-7' };
-            }
+            const t = translations[currentLang];
+            const daysLabels = t.workDaysLabels || {
+                1: { icon: '🧘', text: '神仙模式' },
+                2: { icon: '🎈', text: '体验生活' },
+                3: { icon: '😎', text: '半躺模式' },
+                4: { icon: '✨', text: '准自由' },
+                5: { icon: '🐴', text: '双休牛马' },
+                6: { icon: '📦', text: '单休牛马' },
+                7: { icon: '🔥', text: '终极牛马' }
+            };
+            let daysLabel = daysLabels[workDays] || { icon: '🐴', text: '标准牛马', class: 'mode-days-5' };
+            daysLabel.class = `mode-days-${workDays}`;
             
             // 工作小时标签
-            let hoursLabel = { icon: '', text: '', class: '' };
-            if (workHours <= 2) {
-                hoursLabel = { icon: '🎗️', text: '慈善上班', class: 'mode-hours-1' };
-            } else if (workHours <= 4) {
-                hoursLabel = { icon: '☕', text: '半日闲', class: 'mode-hours-2' };
-            } else if (workHours <= 6) {
-                hoursLabel = { icon: '🕶️', text: '弹性牛马', class: 'mode-hours-3' };
-            } else if (workHours <= 8) {
-                hoursLabel = { icon: '⏰', text: '标配工时', class: 'mode-hours-4' };
-            } else if (workHours <= 10) {
-                hoursLabel = { icon: '⏰', text: '加班牛马', class: 'mode-hours-5' };
-            } else if (workHours <= 12) {
-                hoursLabel = { icon: '💼', text: '996预备', class: 'mode-hours-6' };
-            } else if (workHours <= 16) {
-                hoursLabel = { icon: '🔥', text: '极限牛马', class: 'mode-hours-7' };
-            } else {
-                hoursLabel = { icon: '💀', text: '拿命换钱', class: 'mode-hours-8' };
-            }
+            const hoursLabels = t.workHoursLabels || {
+                1: { icon: '🎗️', text: '慈善上班' },
+                2: { icon: '☕', text: '半日闲' },
+                3: { icon: '🕶️', text: '弹性牛马' },
+                4: { icon: '⏰', text: '标配工时' },
+                5: { icon: '⏰', text: '加班牛马' },
+                6: { icon: '💼', text: '996预备' },
+                7: { icon: '🔥', text: '极限牛马' },
+                8: { icon: '💀', text: '拿命换钱' }
+            };
+            let hoursIndex = workHours <= 2 ? 1 : workHours <= 4 ? 2 : workHours <= 6 ? 3 : workHours <= 8 ? 4 : workHours <= 10 ? 5 : workHours <= 12 ? 6 : workHours <= 16 ? 7 : 8;
+            let hoursLabel = hoursLabels[hoursIndex] || { icon: '⏰', text: '标准工时', class: 'mode-hours-4' };
+            hoursLabel.class = `mode-hours-${hoursIndex}`;
             
             // 更新工作天数标签
             const daysModeElement = document.getElementById('workDaysModeTag');
@@ -4161,81 +5220,90 @@
 
         // 获取月薪等级信息
         function getSalaryLevel(amount) {
-            if (amount === 0) {
-                return { icon: '💨', label: '空气牛马' };
-            } else if (amount <= 1000) {
-                return { icon: '🌱', label: '萌芽牛马' };
-            } else if (amount <= 3000) {
-                return { icon: '🥚', label: '温饱牛马' };
-            } else if (amount <= 5000) {
-                return { icon: '🍚', label: '基础牛马' };
-            } else if (amount <= 8000) {
-                return { icon: '🐴', label: '标准牛马' };
-            } else if (amount <= 12000) {
-                return { icon: '📈', label: '进阶牛马' };
-            } else if (amount <= 18000) {
-                return { icon: '🏠', label: '小资牛马' };
-            } else if (amount <= 25000) {
-                return { icon: '🚗', label: '中产牛马' };
-            } else if (amount <= 40000) {
-                return { icon: '✈️', label: '高端牛马' };
-            } else if (amount <= 60000) {
-                return { icon: '👑', label: '牛马之王' };
-            } else if (amount <= 100000) {
-                return { icon: '🚀', label: '牛马传说' };
-            } else {
-                return { icon: '🏆', label: '资本家预备役' };
-            }
+            const t = translations[currentLang];
+            const levels = t.salaryLevels || {
+                0: { icon: '💨', label: '空气牛马' },
+                1000: { icon: '🌱', label: '萌芽牛马' },
+                3000: { icon: '🥚', label: '温饱牛马' },
+                5000: { icon: '🍚', label: '基础牛马' },
+                8000: { icon: '🐴', label: '标准牛马' },
+                12000: { icon: '📈', label: '进阶牛马' },
+                18000: { icon: '🏠', label: '小资牛马' },
+                25000: { icon: '🚗', label: '中产牛马' },
+                40000: { icon: '✈️', label: '高端牛马' },
+                60000: { icon: '👑', label: '牛马之王' },
+                100000: { icon: '🚀', label: '牛马传说' },
+                max: { icon: '🏆', label: '资本家预备役' }
+            };
+            
+            if (amount === 0) return levels[0];
+            else if (amount <= 1000) return levels[1000];
+            else if (amount <= 3000) return levels[3000];
+            else if (amount <= 5000) return levels[5000];
+            else if (amount <= 8000) return levels[8000];
+            else if (amount <= 12000) return levels[12000];
+            else if (amount <= 18000) return levels[18000];
+            else if (amount <= 25000) return levels[25000];
+            else if (amount <= 40000) return levels[40000];
+            else if (amount <= 60000) return levels[60000];
+            else if (amount <= 100000) return levels[100000];
+            else return levels.max;
         }
 
         // 获取被动收入等级信息
         function getPassiveLevel(amount) {
-            if (amount === 0) {
-                return { icon: '🐴', label: '纯牛马' };
-            } else if (amount <= 500) {
-                return { icon: '🌱', label: '萌芽被动' };
-            } else if (amount <= 1000) {
-                return { icon: '📶', label: '信号级被动' };
-            } else if (amount <= 2000) {
-                return { icon: '☕', label: '咖啡自由' };
-            } else if (amount <= 5000) {
-                return { icon: '🏠', label: '房租覆盖' };
-            } else if (amount <= 10000) {
-                return { icon: '🕊️', label: '底气被动' };
-            } else if (amount <= 20000) {
-                return { icon: '🚪', label: '半只脚踏出' };
-            } else {
-                return { icon: '🤴', label: '资本家本家' };
-            }
+            const t = translations[currentLang];
+            const levels = t.passiveLevels || {
+                0: { icon: '🐴', label: '纯牛马' },
+                500: { icon: '🌱', label: '萌芽被动' },
+                1000: { icon: '📶', label: '信号级被动' },
+                2000: { icon: '☕', label: '咖啡自由' },
+                5000: { icon: '🏠', label: '房租覆盖' },
+                10000: { icon: '🕊️', label: '底气被动' },
+                20000: { icon: '🚪', label: '半只脚踏出' },
+                max: { icon: '🤴', label: '资本家本家' }
+            };
+            
+            if (amount === 0) return levels[0];
+            else if (amount <= 500) return levels[500];
+            else if (amount <= 1000) return levels[1000];
+            else if (amount <= 2000) return levels[2000];
+            else if (amount <= 5000) return levels[5000];
+            else if (amount <= 10000) return levels[10000];
+            else if (amount <= 20000) return levels[20000];
+            else return levels.max;
         }
 
         // 获取月总收入等级信息
         function getTotalLevel(amount) {
-            if (amount === 0) {
-                return { icon: '🫥', label: '空气牛马', message: '总收入0元？你是来人间凑数的吗？' };
-            } else if (amount <= 1000) {
-                return { icon: '🌱', label: '萌芽牛马', message: '总收入不过千，生存全靠一口仙气。' };
-            } else if (amount <= 3000) {
-                return { icon: '🥚', label: '温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' };
-            } else if (amount <= 5000) {
-                return { icon: '🍚', label: '基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' };
-            } else if (amount <= 8000) {
-                return { icon: '🐴', label: '标准牛马', message: '总收入全国平均水平，不丢人也不光荣。' };
-            } else if (amount <= 12000) {
-                return { icon: '📈', label: '进阶牛马', message: '比上不足比下有余，偶尔敢加个鸡腿。' };
-            } else if (amount <= 18000) {
-                return { icon: '🏠', label: '小资牛马', message: '可以考虑房租之外存点钱了。' };
-            } else if (amount <= 25000) {
-                return { icon: '🚗', label: '中产牛马', message: '总收入近两万，终于敢说在大城市还行。' };
-            } else if (amount <= 40000) {
-                return { icon: '✈️', label: '高端牛马', message: '这个总收入，回老家可以横着走。' };
-            } else if (amount <= 60000) {
-                return { icon: '👑', label: '牛马之王', message: '你是牛马圈的天花板，打工人仰望的存在。' };
-            } else if (amount <= 100000) {
-                return { icon: '🚀', label: '牛马传说', message: '总收入六万以上，你不是牛马了，是开牛马场的。' };
-            } else {
-                return { icon: '🏆', label: '资本家预备役', message: '总收入十万，你该开个公司雇牛马了。' };
-            }
+            const t = translations[currentLang];
+            const levels = t.totalLevels || {
+                0: { icon: '🫥', label: '空气牛马', message: '总收入0元？你是来人间凑数的吗？' },
+                1000: { icon: '🌱', label: '萌芽牛马', message: '总收入不过千，生存全靠一口仙气。' },
+                3000: { icon: '🥚', label: '温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' },
+                5000: { icon: '🍚', label: '基础牛马', message: '饿不死也富不了，主打一个稳定贫穷。' },
+                8000: { icon: '🐴', label: '标准牛马', message: '总收入全国平均水平，不丢人也不光荣。' },
+                12000: { icon: '📈', label: '进阶牛马', message: '比上不足比下有余，偶尔敢加个鸡腿。' },
+                18000: { icon: '🏠', label: '小资牛马', message: '可以考虑房租之外存点钱了。' },
+                25000: { icon: '🚗', label: '中产牛马', message: '总收入近两万，终于敢说在大城市还行。' },
+                40000: { icon: '✈️', label: '高端牛马', message: '这个总收入，回老家可以横着走。' },
+                60000: { icon: '👑', label: '牛马之王', message: '你是牛马圈的天花板，打工人仰望的存在。' },
+                100000: { icon: '🚀', label: '牛马传说', message: '总收入六万以上，你不是牛马了，是开牛马场的。' },
+                max: { icon: '🏆', label: '资本家预备役', message: '总收入十万，你该开个公司雇牛马了。' }
+            };
+            
+            if (amount === 0) return levels[0];
+            else if (amount <= 1000) return levels[1000];
+            else if (amount <= 3000) return levels[3000];
+            else if (amount <= 5000) return levels[5000];
+            else if (amount <= 8000) return levels[8000];
+            else if (amount <= 12000) return levels[12000];
+            else if (amount <= 18000) return levels[18000];
+            else if (amount <= 25000) return levels[25000];
+            else if (amount <= 40000) return levels[40000];
+            else if (amount <= 60000) return levels[60000];
+            else if (amount <= 100000) return levels[100000];
+            else return levels.max;
         }
 
         // 通知队列系统 - 最多同时显示3条消息
@@ -4508,8 +5576,8 @@ async function shareAchievement() {
     const highScore = parseInt(localStorage.getItem('coinGameHighScore') || '0');
     
     // 获取历史最高成就
-    let highAchievement = coinGameAchievements[0];
-    for (const a of coinGameAchievements) {
+    let highAchievement = getCoinGameAchievements()[0];
+    for (const a of getCoinGameAchievements()) {
         if (highScore >= a.coins) {
             highAchievement = a;
         }
@@ -4580,10 +5648,20 @@ async function shareAchievement() {
         function switchLanguage() {
             currentLang = currentLang === 'zh' ? 'en' : 'zh';
             document.getElementById('langSwitch').textContent = currentLang === 'zh' ? 'English' : '中文';
+            localStorage.setItem('preferredLang', currentLang);
             updateLanguageContent();
             
-            // 保存语言偏好
-            localStorage.setItem('preferredLang', currentLang);
+            // 切换语言后更新其他内容
+            updateHistoryDisplay();
+            if (monthlyIncome > 0 || passiveIncome > 0) {
+                const income = calculateIncome(0);
+                updateLiveStatus(income);
+            }
+            updateIncomeResultDisplay();
+            updateModeLabels();
+            const currentGameCoins = parseInt(localStorage.getItem('currentCoins') || '0');
+            initCoinGameAchievements(currentGameCoins);
+            updateCurrentAchievementDisplay(currentGameCoins);
         }
 
 
@@ -4608,7 +5686,8 @@ async function shareAchievement() {
             safeUpdate('goalLabel', t.goalLabel);
             // 随机选择被动收入标签
             if (t.passiveLabelOptions) {
-                const randomPassiveLabel = t.passiveLabelOptions[Math.floor(Math.random() * t.passiveLabelOptions.length)] + '（牛马被动收入）';
+                const passiveSuffix = currentLang === 'zh' ? '（牛马被动收入）' : ' (Passive Income for the Wage Slave)';
+                const randomPassiveLabel = t.passiveLabelOptions[Math.floor(Math.random() * t.passiveLabelOptions.length)] + passiveSuffix;
                 safeUpdate('passiveLabel', randomPassiveLabel);
             } else {
                 safeUpdate('passiveLabel', t.passiveLabel);
@@ -4616,9 +5695,17 @@ async function shareAchievement() {
             safeUpdate('workDaysLabel', t.workDaysLabel);
             safeUpdate('workHoursLabel', t.workHoursLabel);
             safeUpdate('goalTip', t.goalTip);
+            
+            // 保存当前输入值，更新placeholder后恢复
+            const monthlyInput = document.getElementById('monthlyIncome');
+            const passiveInput = document.getElementById('passiveIncome');
+            const currentMonthlyValue = monthlyInput ? monthlyInput.value : '';
+            const currentPassiveValue = passiveInput ? passiveInput.value : '';
             safeUpdate('monthlyIncome', t.incomePlaceholder, 'placeholder');
             safeUpdate('incomeGoal', t.goalPlaceholder, 'placeholder');
             safeUpdate('passiveIncome', t.passivePlaceholder, 'placeholder');
+            if (currentMonthlyValue && monthlyInput) monthlyInput.value = currentMonthlyValue;
+            if (currentPassiveValue && passiveInput) passiveInput.value = currentPassiveValue;
             
             // 收入显示区域
             safeUpdate('secondLabel', t.secondLabel);
@@ -4626,6 +5713,11 @@ async function shareAchievement() {
             safeUpdate('hourLabel', t.hourLabel);
             safeUpdate('dayLabel', t.dayLabel);
             safeUpdate('weekLabel', t.weekLabel);
+            
+            // 结果详情区域
+            safeUpdate('salaryDetailLabel', t.salaryDetailLabel);
+            safeUpdate('passiveDetailLabel', t.passiveDetailLabel);
+            safeUpdate('totalDetailLabel', t.totalDetailLabel);
             
             // 实时掉落状态区域
             safeUpdate('liveStatusTitle', t.liveStatusTitle);
@@ -4660,6 +5752,10 @@ async function shareAchievement() {
             safeUpdate('aboutBtn', t.aboutBtn);
             safeUpdate('privacyBtn', t.privacyBtn);
             safeUpdate('clearAllHistoryBtn', t.clearAllBtn);
+            
+            // 牛马类型选择按钮
+            safeUpdate('stableWorkerBtn', t.stableWorkerBtn);
+            safeUpdate('freeWorkerBtn', t.freeWorkerBtn);
             
             // 接金币游戏区域
             const gameToggleBtn = document.getElementById('gameToggleBtn');
@@ -4706,18 +5802,9 @@ async function shareAchievement() {
             if (monthlyIncome <= 0) {
                 safeUpdate('statusText', t.statusTextInitial, 'innerHTML');
             }
-
-            // 更新历史记录显示
-            updateHistoryDisplay();
-            
-            // 更新实时状态显示
-            if (monthlyIncome > 0 || passiveIncome > 0) {
-                const income = calculateIncome(0); // 使用月薪+被动收入
-                updateLiveStatus(income);
-            }
         }
 
-        // 事件监听
+        // 事件监听器 - 先获取 DOM 元素
         const monthlyInput = document.getElementById('monthlyIncome');
         const passiveInput = document.getElementById('passiveIncome');
         const workDaysInput = document.getElementById('workDays');
@@ -4733,6 +5820,7 @@ async function shareAchievement() {
         workDaysInput.addEventListener('input', (e) => {
             const value = parseFloat(e.target.value);
             const t = translations[currentLang];
+            const messageEl = document.getElementById('workDaysMessage');
             let validWorkDays = null;
             
             if (isNaN(value)) {
@@ -4748,12 +5836,19 @@ async function shareAchievement() {
 
             // 异常情况
             if (value <= 0) {
+                messageEl.textContent = t.workDaysPrompts[0];
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
                 showNotification(t.workDaysPrompts[0]);
                 e.target.value = 5;
                 localStorage.setItem('workDays', 5);
                 validWorkDays = 5;
             } else if (value > 7) {
-                showNotification(t.workDaysPrompts.over7.replace('{days}', value));
+                const over7Msg = t.workDaysPrompts.over7.replace('{days}', value);
+                messageEl.textContent = over7Msg;
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
+                showNotification(over7Msg);
                 e.target.value = 7;
                 localStorage.setItem('workDays', 7);
                 validWorkDays = 7;
@@ -4761,6 +5856,9 @@ async function shareAchievement() {
                 validWorkDays = value;
                 localStorage.setItem('workDays', value);
                 // 立即显示对应天数的梗
+                messageEl.textContent = t.workDaysPrompts[value];
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
                 showNotification(t.workDaysPrompts[value]);
             }
 
@@ -4782,6 +5880,7 @@ async function shareAchievement() {
         workHoursInput.addEventListener('input', (e) => {
             const value = parseFloat(e.target.value);
             const t = translations[currentLang];
+            const messageEl = document.getElementById('workHoursMessage');
             let validWorkHours = null;
             
             if (isNaN(value)) {
@@ -4790,6 +5889,9 @@ async function shareAchievement() {
 
             // 验证是否为0.5的倍数
             if (Math.round(value * 2) / 2 !== value) {
+                messageEl.textContent = t.workHoursPrompts.notHalfMultiple;
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
                 showNotification(t.workHoursPrompts.notHalfMultiple);
                 // 四舍五入到最近的0.5
                 e.target.value = Math.round(value * 2) / 2;
@@ -4798,12 +5900,19 @@ async function shareAchievement() {
 
             // 异常情况
             if (value <= 0) {
+                messageEl.textContent = t.workHoursPrompts[0];
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
                 showNotification(t.workHoursPrompts[0]);
                 e.target.value = 8;
                 localStorage.setItem('workHours', 8);
                 validWorkHours = 8;
             } else if (value > 24) {
-                showNotification(t.workHoursPrompts.over24.replace('{hours}', value));
+                const over24Msg = t.workHoursPrompts.over24.replace('{hours}', value);
+                messageEl.textContent = over24Msg;
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
+                showNotification(over24Msg);
                 e.target.value = 24;
                 localStorage.setItem('workHours', 24);
                 validWorkHours = 24;
@@ -4811,6 +5920,9 @@ async function shareAchievement() {
                 validWorkHours = value;
                 localStorage.setItem('workHours', value);
                 // 立即显示对应工时的梗
+                messageEl.textContent = t.workHoursPrompts[value];
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
                 showNotification(t.workHoursPrompts[value]);
             }
 
@@ -4830,8 +5942,10 @@ async function shareAchievement() {
 
         monthlyInput.addEventListener('input', (e) => {
             const value = parseFloat(e.target.value);
+            const messageEl = document.getElementById('monthlyIncomeMessage');
             if (!isNaN(value) && value >= 0) {
                 monthlyIncome = value;
+                localStorage.setItem('monthlyIncome', value);
                 // 重置所有单位的开始时间
                 Object.keys(unitStates).forEach(unit => {
                     unitStates[unit].startTime = Date.now();
@@ -4841,12 +5955,16 @@ async function shareAchievement() {
                 startRealTimeCoinDrop();
                 
                 // 显示月薪分级梗
-                showSalaryLevelNotification(value);
+                const salaryLevelText = getSalaryLevelText(value);
+                messageEl.textContent = salaryLevelText;
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
             }
         });
 
         passiveInput.addEventListener('input', (e) => {
             const value = parseFloat(e.target.value);
+            const messageEl = document.getElementById('passiveIncomeMessage');
             if (!isNaN(value) && value >= 0) {
                 passiveIncome = value;
                 localStorage.setItem('passiveIncome', value);
@@ -4859,7 +5977,15 @@ async function shareAchievement() {
                 startRealTimeCoinDrop();
                 
                 // 显示被动收入分级梗
-                showPassiveIncomeLevelNotification(value);
+                if (value > 0) {
+                    const passiveLevelText = getPassiveIncomeLevelText(value);
+                    messageEl.textContent = passiveLevelText;
+                } else {
+                    // 值为0时显示默认提示
+                    messageEl.textContent = currentLang === 'zh' ? '没有也没关系，不丢人（牛马被动收入）' : 'No passive income? No shame.';
+                }
+                messageEl.classList.add('visible');
+                messageEl.classList.remove('hidden');
             }
         });
 
@@ -4958,15 +6084,76 @@ async function shareAchievement() {
             });
         }
 
+        // 结算弹窗按钮事件
+        const gameOverReplayBtn = document.getElementById('gameOverReplayBtn');
+        const gameOverCloseBtn = document.getElementById('gameOverCloseBtn');
+        const gameOverModal = document.getElementById('gameOverModal');
+
+        if (gameOverReplayBtn) {
+            gameOverReplayBtn.addEventListener('click', () => {
+                gameOverModal.style.display = 'none';
+                startGame();
+            });
+        }
+        if (gameOverCloseBtn) {
+            gameOverCloseBtn.addEventListener('click', () => {
+                gameOverModal.style.display = 'none';
+            });
+        }
+        if (gameOverModal) {
+            gameOverModal.addEventListener('click', (e) => {
+                if (e.target === gameOverModal) {
+                    gameOverModal.style.display = 'none';
+                }
+            });
+        }
+
+        // 分享战报按钮
+        const gameOverShareBtn = document.getElementById('gameOverShareBtn');
+        if (gameOverShareBtn) {
+            gameOverShareBtn.addEventListener('click', openShareModal);
+        }
+
+        // 分享选项弹窗事件
+        const shareModal = document.getElementById('shareModal');
+        const shareImageBtn = document.getElementById('shareImageBtn');
+        const shareTextBtn = document.getElementById('shareTextBtn');
+        const shareCancelBtn = document.getElementById('shareCancelBtn');
+
+        if (shareImageBtn) {
+            shareImageBtn.addEventListener('click', saveShareImage);
+        }
+        if (shareTextBtn) {
+            shareTextBtn.addEventListener('click', copyShareText);
+        }
+        if (shareCancelBtn) {
+            shareCancelBtn.addEventListener('click', closeShareModal);
+        }
+        if (shareModal) {
+            shareModal.addEventListener('click', (e) => {
+                if (e.target === shareModal) {
+                    closeShareModal();
+                }
+            });
+        }
+
         // 初始化
         function init() {
             // 预加载游戏图片
             preloadGameImages();
             
-            // 获取工作天数和工作小时输入框
+            // 获取 DOM 元素
+            const monthlyInput = document.getElementById('monthlyIncome');
+            const passiveInput = document.getElementById('passiveIncome');
             const workDaysInput = document.getElementById('workDays');
             const workHoursInput = document.getElementById('workHours');
-
+            const goalInput = document.getElementById('incomeGoal');
+            const unitCards = document.querySelectorAll('.unit-card');
+            const shareBtn = document.getElementById('shareBtn');
+            const langSwitch = document.getElementById('langSwitch');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
+            const clearAllHistoryBtn = document.getElementById('clearAllHistoryBtn');
+            
             // 牛马类型按钮事件
             const stableWorkerBtn = document.getElementById('stableWorkerBtn');
             const freeWorkerBtn = document.getElementById('freeWorkerBtn');
@@ -4980,19 +6167,17 @@ async function shareAchievement() {
             freeWorkerBtn.addEventListener('click', function() {
                 freeWorkerBtn.classList.add('selected');
                 stableWorkerBtn.classList.remove('selected');
-                showNotification(currentLang === 'zh' ? '🦄 我也想当个自由牛马，加速开发中！' : '🦄 I want to be a free worker, under development!');
+                showNotification(currentLang === 'zh' ? '🦄 我也想当个自由牛马，加速开发中！' : '🦄 I want to be a free wage slave, under development!');
             });
 
+            // 语言初始化
+            // 先读取并设置语言
+            let storedLang = localStorage.getItem('preferredLang');
+            currentLang = (storedLang === 'zh' || storedLang === 'en') ? storedLang : 'zh';
+            localStorage.setItem('preferredLang', currentLang);
+            
             // 默认选中稳定牛马
             stableWorkerBtn.classList.add('selected');
-
-            // 加载保存的语言偏好
-            const savedLang = localStorage.getItem('preferredLang');
-            if (savedLang) {
-                currentLang = savedLang;
-                document.getElementById('langSwitch').textContent = currentLang === 'zh' ? 'English' : '中文';
-                updateLanguageContent();
-            }
 
             // 初始化每个单位的状态
             const savedUnitStates = localStorage.getItem('unitStates');
@@ -5052,14 +6237,14 @@ async function shareAchievement() {
 
             // 加载上次的收入值
             const savedIncome = parseFloat(localStorage.getItem('monthlyIncome') || '0');
-            if (savedIncome > 0) {
+            if (!isNaN(savedIncome) && savedIncome >= 0) {
                 monthlyIncome = savedIncome;
                 monthlyInput.value = savedIncome;
             }
 
             // 加载上次的被动收入值
             const savedPassive = parseFloat(localStorage.getItem('passiveIncome') || '0');
-            if (savedPassive > 0) {
+            if (!isNaN(savedPassive) && savedPassive >= 0) {
                 passiveIncome = savedPassive;
                 passiveInput.value = savedPassive;
             }
@@ -5076,6 +6261,9 @@ async function shareAchievement() {
                 workHoursInput.value = savedWorkHours;
             }
 
+            // 更新所有语言相关内容（在加载完输入值之后调用）
+            updateLanguageContent();
+
             // 如果有收入，显示收入计算
             if (savedIncome > 0 || savedPassive > 0) {
                 const income = calculateIncome(0); // 使用计算后的总收入
@@ -5088,119 +6276,126 @@ async function shareAchievement() {
             updateModeLabels();
 
             // 欢迎提示 - 根据时间显示不同内容
-            setTimeout(() => {
-                let welcomeMessage;
-                if (currentLang === 'zh') {
-                    const hour = new Date().getHours();
-                    let messages;
-                    
-                    if (hour >= 6 && hour < 9) {
-                        // 早上6-9点
-                        messages = [
-                            '早起的牛马有工分挣',
-                            '牛马的一天从算账开始',
-                            '今日任务：算完账，继续搬砖',
-                            '欢迎来到，没有困难的工作，只有勇敢的牛马',
-                            '你的牛马身份已确认，请开始搬砖',
-                            '牛马交易所今日开盘，请查看行情'
-                        ];
-                    } else if (hour >= 9 && hour < 12) {
-                        // 早上9点-12点前
-                        messages = [
-                            '又是当牛做马的一天，请查收今日工分',
-                            '你的牛马身份已确认，请开始搬砖',
-                            '看看今天要搬多少砖，才能早日退休',
-                            '加油，今天的付出是为了以后不再当牛马',
-                            '欢迎查收你的"时薪羞辱"报告',
-                            '滴！牛马卡，余额请自行查看'
-                        ];
-                    } else if (hour >= 12 && hour < 14) {
-                        // 中午12-14点
-                        messages = [
-                            '午休了吗？算完去吃饭',
-                            '对自己好一点，休息休息',
-                            '不管你赚多少，今天也要好好吃饭',
-                            '欢迎查收你的"时薪羞辱"报告'
-                        ];
-                    } else if (hour >= 14 && hour < 18) {
-                        // 14-18点
-                        messages = [
-                            '算完这笔，你就是更清醒的牛马',
-                            '欢迎回来，对自己好一点',
-                            '欢迎查收你的"时薪羞辱"报告',
-                            '牛马金币+1+1+1+1',
-                            '看看今天要搬多少砖，才能早日退休',
-                            '加油，今天的付出是为了以后不再当牛马'
-                        ];
-                    } else if (hour >= 18 && hour < 22) {
-                        // 晚上18-22点
-                        messages = [
-                            '下班了吗？还在加班？',
-                            '累了吗？算完这笔，休息一下',
-                            '牛马辛苦了，记得吃晚饭',
-                            '早起的牛马有工分挣，晚睡的牛马有加班费'
-                        ];
-                    } else {
-                        // 深夜22点后到早上6点前
-                        messages = [
-                            '这个点了还在算时薪，早点睡',
-                            '别卷了，上床保命',
-                            '辛苦了，今天的你也闪闪发光',
-                            '你的时间，远不止这个数字'
-                        ];
-                    }
-                    
-                    welcomeMessage = '💰 ' + messages[Math.floor(Math.random() * messages.length)];
+            let welcomeMessage;
+            if (currentLang === 'zh') {
+                const hour = new Date().getHours();
+                let messages;
+                
+                if (hour >= 6 && hour < 9) {
+                    // 早上6-9点
+                    messages = [
+                        '早起的牛马有工分挣',
+                        '牛马的一天从算账开始',
+                        '今日任务：算完账，继续搬砖',
+                        '欢迎来到，没有困难的工作，只有勇敢的牛马',
+                        '你的牛马身份已确认，请开始搬砖',
+                        '牛马交易所今日开盘，请查看行情'
+                    ];
+                } else if (hour >= 9 && hour < 12) {
+                    // 早上9点-12点前
+                    messages = [
+                        '又是当牛做马的一天，请查收今日工分',
+                        '你的牛马身份已确认，请开始搬砖',
+                        '看看今天要搬多少砖，才能早日退休',
+                        '加油，今天的付出是为了以后不再当牛马',
+                        '欢迎查收你的"时薪羞辱"报告',
+                        '滴！牛马卡，余额请自行查看'
+                    ];
+                } else if (hour >= 12 && hour < 14) {
+                    // 中午12-14点
+                    messages = [
+                        '午休了吗？算完去吃饭',
+                        '对自己好一点，休息休息',
+                        '不管你赚多少，今天也要好好吃饭',
+                        '欢迎查收你的"时薪羞辱"报告'
+                    ];
+                } else if (hour >= 14 && hour < 18) {
+                    // 14-18点
+                    messages = [
+                        '算完这笔，你就是更清醒的牛马',
+                        '欢迎回来，对自己好一点',
+                        '欢迎查收你的"时薪羞辱"报告',
+                        '牛马金币+1+1+1+1',
+                        '看看今天要搬多少砖，才能早日退休',
+                        '加油，今天的付出是为了以后不再当牛马'
+                    ];
+                } else if (hour >= 18 && hour < 22) {
+                    // 晚上18-22点
+                    messages = [
+                        '下班了吗？还在加班？',
+                        '累了吗？算完这笔，休息一下',
+                        '牛马辛苦了，记得吃晚饭',
+                        '早起的牛马有工分挣，晚睡的牛马有加班费'
+                    ];
                 } else {
-                    welcomeMessage = '💰 Welcome to Bullshit Coin Calculator!';
+                    // 深夜22点后到早上6点前
+                    messages = [
+                        '这个点了还在算时薪，早点睡',
+                        '别卷了，上床保命',
+                        '辛苦了，今天的你也闪闪发光',
+                        '你的时间，远不止这个数字'
+                    ];
                 }
-                showNotification(welcomeMessage);
+                
+                welcomeMessage = '💰 ' + messages[Math.floor(Math.random() * messages.length)];
+            } else {
+                welcomeMessage = '💰 Welcome to Wage Slave Coin Calculator!';
+            }
+            // 弹出欢迎通知
+            showNotification(welcomeMessage);
 
-                // 创建通知队列（只包含有内容的通知）
-                const notificationQueue = [];
-                const t = translations[currentLang];
-                
-                // 添加月薪分级提示（如有）
-                if (monthlyIncome > 0) {
-                    notificationQueue.push(() => showSalaryLevelNotification(monthlyIncome));
-                }
-                
-                // 添加被动收入分级提示（如有）
+            const t = translations[currentLang];
+            
+            // 在输入框下方显示月薪分级提示
+            const monthlyMessageEl = document.getElementById('monthlyIncomeMessage');
+            if (monthlyMessageEl) {
+                const salaryLevelText = getSalaryLevelText(monthlyIncome);
+                monthlyMessageEl.textContent = salaryLevelText;
+                monthlyMessageEl.classList.add('visible');
+                monthlyMessageEl.classList.remove('hidden');
+            }
+            
+            // 在输入框下方显示被动收入分级提示
+            const passiveMessageEl = document.getElementById('passiveIncomeMessage');
+            if (passiveMessageEl) {
                 if (passiveIncome > 0) {
-                    notificationQueue.push(() => showPassiveIncomeLevelNotification(passiveIncome));
+                    const passiveLevelText = getPassiveIncomeLevelText(passiveIncome);
+                    passiveMessageEl.textContent = passiveLevelText;
+                } else {
+                    // 被动收入为0时显示默认提示
+                    passiveMessageEl.textContent = currentLang === 'zh' ? '没有也没关系，不丢人（牛马被动收入）' : 'No passive income? No shame.';
                 }
-                
-                // 添加工作天数提示
-                const currentWorkDays = parseFloat(workDaysInput.value) || 5;
-                if (currentWorkDays >= 1 && currentWorkDays <= 7) {
-                    notificationQueue.push(() => showNotification(t.workDaysPrompts[currentWorkDays]));
+                passiveMessageEl.classList.add('visible');
+                passiveMessageEl.classList.remove('hidden');
+            }
+            
+            // 在输入框下方显示工作天数提示
+            const workDaysInputEl = document.getElementById('workDays');
+            const currentWorkDays = parseFloat(workDaysInputEl ? workDaysInputEl.value : 5) || 5;
+            if (currentWorkDays >= 1 && currentWorkDays <= 7) {
+                const messageEl = document.getElementById('workDaysMessage');
+                if (messageEl) {
+                    messageEl.textContent = t.workDaysPrompts[currentWorkDays];
+                    messageEl.classList.add('visible');
+                    messageEl.classList.remove('hidden');
                 }
-                
-                // 添加工时提示
-                const currentWorkHours = parseFloat(workHoursInput.value) || 8;
-                if (currentWorkHours >= 0.5 && currentWorkHours <= 24) {
-                    notificationQueue.push(() => showNotification(t.workHoursPrompts[currentWorkHours]));
+            }
+            
+            // 在输入框下方显示工时提示
+            const workHoursInputEl = document.getElementById('workHours');
+            const currentWorkHours = parseFloat(workHoursInputEl ? workHoursInputEl.value : 8) || 8;
+            if (currentWorkHours >= 0.5 && currentWorkHours <= 24) {
+                const messageEl = document.getElementById('workHoursMessage');
+                if (messageEl) {
+                    messageEl.textContent = t.workHoursPrompts[currentWorkHours];
+                    messageEl.classList.add('visible');
+                    messageEl.classList.remove('hidden');
                 }
-                
-                // 依次显示队列中的通知
-                let index = 0;
-                const showNextNotification = () => {
-                    if (index < notificationQueue.length) {
-                        notificationQueue[index]();
-                        index++;
-                        setTimeout(showNextNotification, 800); // 每个通知间隔800ms
-                    } else {
-                        // 所有通知显示完毕后，更新结果展示区域并标记初始化完成
-                        setTimeout(() => {
-                            updateIncomeResultDisplay();
-                            isInitializing = false;
-                        }, 3500);
-                    }
-                };
-                
-                // 延迟1.5秒后开始显示队列中的通知
-                setTimeout(showNextNotification, 1500);
-            }, 500);
+            }
+            
+            // 标记初始化完成
+            updateIncomeResultDisplay();
+            isInitializing = false;
         }
 
         // 页面卸载前保存状态
