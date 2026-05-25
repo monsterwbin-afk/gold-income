@@ -3721,16 +3721,16 @@
         <div class="identity-share-content">
             <div class="identity-share-header">
                 <span class="identity-share-icon">📤</span>
-                <div class="identity-share-title">分享到</div>
+                <div class="identity-share-title" id="shareToTitle">分享到</div>
             </div>
             <div class="identity-share-options">
                 <button class="identity-share-option" id="saveIdentityCardBtn">
                     <span class="identity-share-option-icon">📸</span>
-                    <span class="identity-share-option-text">保存我的牛马身份卡片</span>
+                    <span class="identity-share-option-text" id="saveCardText">保存我的牛马身份卡片</span>
                 </button>
                 <button class="identity-share-option" id="copyIdentityTextBtn">
                     <span class="identity-share-option-icon">📋</span>
-                    <span class="identity-share-option-text">复制炫耀文案</span>
+                    <span class="identity-share-option-text" id="copyTextText">复制炫耀文案</span>
                 </button>
             </div>
             <button class="identity-share-cancel-btn" id="identityShareCancelBtn">取消</button>
@@ -3985,6 +3985,8 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
             const totalIncome = monthlyIncome + passiveIncome;
             const totalLevel = getTotalLevel(totalIncome);
             const passiveLevel = getPassiveLevel(passiveIncome);
+            const t = translations[currentLang];
+            const identityCard = t.identityCard || {};
             
             // 计算被动占比
             let passiveRatio = 0;
@@ -4011,7 +4013,6 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
             const workDays = parseInt(document.getElementById('workDays').value) || 5;
             const workHours = parseFloat(document.getElementById('workHours').value) || 8;
             
-            const t = translations[currentLang];
             const daysLabels = t.workDaysLabels || {
                 1: { icon: '🧘', text: '神仙模式' },
                 2: { icon: '🎈', text: '体验生活' },
@@ -4036,13 +4037,26 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
             let hoursIndex = workHours <= 2 ? 1 : workHours <= 4 ? 2 : workHours <= 6 ? 3 : workHours <= 8 ? 4 : workHours <= 10 ? 5 : workHours <= 12 ? 6 : workHours <= 16 ? 7 : 8;
             const hoursLabel = hoursLabels[hoursIndex] || { icon: '⏰', text: '标准工时' };
             
+            // 更新弹窗静态文本
+            document.querySelector('.identity-card-title').textContent = identityCard.title || '🏷️ 我的牛马身份卡';
+            document.querySelector('.identity-card-cta-text').textContent = `—— ${identityCard.testRank || '测测你的牛马段位'} ——`;
+            document.querySelector('#identityCardShareBtn span:last-child').textContent = identityCard.shareBtn || '一键分享';
+            document.querySelector('.qrcode-text').textContent = identityCard.scanQR || '扫码访问网站';
+            document.querySelector('#identityCardCloseBtn').textContent = identityCard.close || '关闭';
+            
+            // 更新分享弹窗文本
+            document.getElementById('shareToTitle').textContent = currentLang === 'zh' ? '分享到' : 'Share to';
+            document.getElementById('saveCardText').textContent = identityCard.saveCard || '保存我的牛马身份卡片';
+            document.getElementById('copyTextText').textContent = identityCard.copyText || '复制炫耀文案';
+            document.getElementById('identityShareCancelBtn').textContent = currentLang === 'zh' ? '取消' : 'Cancel';
+            
             // 更新弹窗显示
             document.getElementById('identityTotalIcon').textContent = totalLevel.icon;
             document.getElementById('identityTotalLabel').textContent = totalLevel.label;
             
             document.getElementById('identityPassiveIcon').textContent = passiveLevel.icon;
             document.getElementById('identityPassiveLabel').textContent = passiveLevel.label;
-            document.getElementById('identityPassiveValue').textContent = `被动占${passiveRatio}%`;
+            document.getElementById('identityPassiveValue').textContent = `${identityCard.passiveRatio || '被动占'}${passiveRatio}%`;
             
             document.getElementById('identityWorkDaysIcon').textContent = daysLabel.icon;
             document.getElementById('identityWorkDaysLabel').textContent = daysLabel.text;
@@ -4051,6 +4065,7 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
             
             document.getElementById('identityQuote').textContent = `💬 "${totalLevel.message}"`;
             
+            document.querySelector('.hourly-status-label').textContent = identityCard.hourlyStatus || '时薪身份';
             document.getElementById('hourlyStatusIcon').textContent = hourlyLevel.icon;
             document.getElementById('hourlyStatusName').textContent = hourlyLevel.label;
             document.getElementById('hourlyStatusDesc').textContent = `"${hourlyLevel.desc}"`;
@@ -4218,6 +4233,18 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 noHistoryText: '暂无历史记录',
                 shareBtn: '📤 分享我的摸鱼游戏成就',
                 aboutBtn: '关于我们',
+                identityCard: {
+                    title: '🏷️ 我的牛马身份卡',
+                    triggerBtn: '分享我的牛马身份',
+                    shareBtn: '📤 一键分享',
+                    hourlyStatus: '时薪身份',
+                    testRank: '测测你的牛马段位',
+                    scanQR: '扫码访问网站',
+                    close: '关闭',
+                    saveCard: '保存我的牛马身份卡片',
+                    copyText: '复制炫耀文案',
+                    passiveRatio: '被动占'
+                },
                 privacyBtn: '隐私政策',
                 incomePlaceholder: '输入您的月薪',
                 goalPlaceholder: '设定目标收入',
@@ -4520,6 +4547,18 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 noHistoryText: 'No history records',
                 shareBtn: '📤 Share My Coin Game Achievement',
                 aboutBtn: 'About',
+                identityCard: {
+                    title: '🏷️ My Wage Slave ID Card',
+                    triggerBtn: 'Share My Wage Slave Identity',
+                    shareBtn: '📤 One-click Share',
+                    hourlyStatus: 'Hourly Rate Status',
+                    testRank: 'Test Your Wage Slave Rank',
+                    scanQR: 'Scan to visit website',
+                    close: 'Close',
+                    saveCard: 'Save My ID Card',
+                    copyText: 'Copy Show-off Text',
+                    passiveRatio: 'Passive'
+                },
                 privacyBtn: 'Privacy',
                 incomePlaceholder: 'Enter your monthly income',
                 goalPlaceholder: 'Set income goal',
@@ -6700,6 +6739,61 @@ async function shareAchievement() {
             const currentGameCoins = parseInt(localStorage.getItem('currentCoins') || '0');
             initCoinGameAchievements(currentGameCoins);
             updateCurrentAchievementDisplay(currentGameCoins);
+            
+            // 更新身份卡按钮文本
+            const t = translations[currentLang];
+            const triggerBtnText = document.querySelector('#identityCardTriggerBtn .identity-card-trigger-text');
+            if (triggerBtnText && t.identityCard && t.identityCard.triggerBtn) {
+                triggerBtnText.textContent = t.identityCard.triggerBtn;
+            }
+            
+            // 更新输入框下方的消息提示
+            updateInputMessages();
+        }
+        
+        // 更新输入框消息提示
+        function updateInputMessages() {
+            const t = translations[currentLang];
+            
+            // 更新月薪消息
+            const monthlyMessageEl = document.getElementById('monthlyIncomeMessage');
+            if (monthlyMessageEl && monthlyIncome > 0) {
+                const salaryLevelText = getSalaryLevelText(monthlyIncome);
+                monthlyMessageEl.textContent = salaryLevelText;
+            }
+            
+            // 更新被动收入消息
+            const passiveMessageEl = document.getElementById('passiveIncomeMessage');
+            if (passiveMessageEl) {
+                if (passiveIncome > 0) {
+                    const passiveLevelText = getPassiveIncomeLevelText(passiveIncome);
+                    passiveMessageEl.textContent = passiveLevelText;
+                } else {
+                    passiveMessageEl.textContent = currentLang === 'zh' ? '没有也没关系，不丢人（牛马被动收入）' : 'No passive income? No shame.';
+                }
+            }
+            
+            // 更新工作天数消息
+            const workDaysInputEl = document.getElementById('workDays');
+            const currentWorkDays = parseFloat(workDaysInputEl ? workDaysInputEl.value : 5) || 5;
+            if (currentWorkDays >= 1 && currentWorkDays <= 7) {
+                const workDaysMessageEl = document.getElementById('workDaysMessage');
+                if (workDaysMessageEl && t.workDaysPrompts) {
+                    workDaysMessageEl.textContent = t.workDaysPrompts[currentWorkDays];
+                }
+            }
+            
+            // 更新工时消息
+            const workHoursInputEl = document.getElementById('workHours');
+            const currentWorkHours = parseFloat(workHoursInputEl ? workHoursInputEl.value : 8) || 8;
+            if (currentWorkHours >= 0.5 && currentWorkHours <= 24) {
+                const workHoursMessageEl = document.getElementById('workHoursMessage');
+                if (workHoursMessageEl && t.workHoursPrompts) {
+                    // 根据工时范围获取对应的提示
+                    let hoursIndex = currentWorkHours <= 2 ? 1 : currentWorkHours <= 4 ? 2 : currentWorkHours <= 6 ? 3 : currentWorkHours <= 8 ? 4 : currentWorkHours <= 10 ? 5 : currentWorkHours <= 12 ? 6 : currentWorkHours <= 16 ? 7 : 8;
+                    workHoursMessageEl.textContent = t.workHoursPrompts[hoursIndex];
+                }
+            }
         }
 
 
@@ -6790,6 +6884,14 @@ async function shareAchievement() {
             safeUpdate('aboutBtn', t.aboutBtn);
             safeUpdate('privacyBtn', t.privacyBtn);
             safeUpdate('clearAllHistoryBtn', t.clearAllBtn);
+            
+            // 身份卡触发按钮
+            if (t.identityCard && t.identityCard.triggerBtn) {
+                const triggerBtnText = document.querySelector('#identityCardTriggerBtn .identity-card-trigger-text');
+                if (triggerBtnText) {
+                    triggerBtnText.textContent = t.identityCard.triggerBtn;
+                }
+            }
             
             // 牛马类型选择按钮
             safeUpdate('stableWorkerBtn', t.stableWorkerBtn);
