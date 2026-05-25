@@ -2018,6 +2018,341 @@
             margin-top: 10px;
         }
 
+        /* 牛马身份卡触发按钮 */
+        .identity-card-trigger-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            border: none;
+            border-radius: 25px;
+            color: #1a1a2e;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .identity-card-trigger-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.7);
+        }
+
+        .identity-card-trigger-icon {
+            font-size: 1.2em;
+        }
+
+        /* 牛马身份卡弹窗 */
+        .identity-card-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .identity-card-modal.active {
+            display: flex;
+        }
+
+        .identity-card-container {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 4px solid #ffd700;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .identity-card-header {
+            background: linear-gradient(135deg, #ffd700, #ffa502);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .identity-card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .identity-card-content {
+            padding: 25px;
+        }
+
+        .identity-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .identity-tag-icon {
+            font-size: 1.4em;
+        }
+
+        .identity-tag-label {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .identity-tag-value {
+            color: #ff6b9d;
+            font-size: 1em;
+            margin-left: auto;
+        }
+
+        .identity-quote {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 107, 157, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .identity-quote-text {
+            color: #ff6b9d;
+            font-style: italic;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .hourly-status-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(255, 165, 2, 0.1));
+            border-radius: 10px;
+            border-left: 4px solid #ff6b9d;
+        }
+
+        .hourly-status-label {
+            color: #ff6b9d;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .hourly-status-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .hourly-status-icon {
+            font-size: 1.5em;
+        }
+
+        .hourly-status-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .hourly-status-desc {
+            color: #ccc;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .identity-card-cta {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+        .identity-card-cta-text {
+            color: #ff9500;
+            font-size: 0.95em;
+            font-style: italic;
+        }
+
+        .identity-card-share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff9500, #ff6b00);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .identity-card-share-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
+        }
+
+        .identity-card-qrcode {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .qrcode-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .qrcode-text {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .identity-card-close-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            color: #ffd700;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .identity-card-close-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* 身份卡分享弹窗 */
+        .identity-share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .identity-share-modal.active {
+            display: flex;
+        }
+
+        .identity-share-content {
+            width: 100%;
+            max-width: 320px;
+            background: #1a1a2e;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #ffd700;
+        }
+
+        .identity-share-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .identity-share-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .identity-share-title {
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .identity-share-options {
+            padding: 10px;
+        }
+
+        .identity-share-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .identity-share-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .identity-share-option-icon {
+            font-size: 1.3em;
+        }
+
+        .identity-share-option-text {
+            flex: 1;
+        }
+
+        .identity-share-cancel-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 0;
+            color: #999;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .identity-share-cancel-btn:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
         /* 分享图片卡片 */
         .share-image-container {
             position: fixed;
@@ -2345,6 +2680,311 @@
 
         .celebration.active {
             display: block;
+        }
+
+        /* 牛马身份卡弹窗 */
+        .identity-card-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .identity-card-modal.active {
+            display: flex;
+        }
+
+        .identity-card-container {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #ffd700;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.2);
+            overflow: hidden;
+            animation: modalPop 0.4s ease;
+        }
+
+        .identity-card-header {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,149,0,0.15));
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .identity-card-title {
+            font-size: 1.3em;
+            color: #ffd700;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .identity-card-content {
+            padding: 25px;
+        }
+
+        .identity-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.05));
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .identity-tag-icon {
+            font-size: 1.5em;
+        }
+
+        .identity-tag-label {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .identity-tag-value {
+            margin-left: auto;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .identity-quote {
+            background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,149,0,0.05));
+            border-left: 4px solid #ffd700;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .identity-quote-text {
+            color: #ffd700;
+            font-size: 1em;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .hourly-status-section {
+            background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(255,77,138,0.08));
+            border: 2px solid #ff6b9d;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .hourly-status-label {
+            color: #ff6b9d;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .hourly-status-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .hourly-status-icon {
+            font-size: 1.8em;
+        }
+
+        .hourly-status-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .hourly-status-desc {
+            color: #ccc;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .identity-card-cta {
+            text-align: center;
+            padding: 15px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.05));
+            border-radius: 10px;
+            border: 1px dashed rgba(255,215,0,0.3);
+        }
+
+        .identity-card-cta-text {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .identity-card-qrcode {
+            text-align: center;
+            padding: 15px;
+            border-top: 2px dashed rgba(255,215,0,0.3);
+        }
+
+        .qrcode-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
+            display: block;
+            border-radius: 10px;
+            border: 2px solid #ffd700;
+        }
+
+        .qrcode-text {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .identity-card-share-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            border: none;
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .identity-card-share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .identity-card-close-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3a3a5c, #2a2a4c);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .identity-card-close-btn:hover {
+            background: linear-gradient(135deg, #4a4a6c, #3a3a5c);
+        }
+
+        /* 身份卡分享弹窗 */
+        .identity-share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 600;
+            padding: 20px;
+        }
+
+        .identity-share-modal.active {
+            display: flex;
+        }
+
+        .identity-share-content {
+            width: 100%;
+            max-width: 350px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+        }
+
+        .identity-share-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .identity-share-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .identity-share-title {
+            color: #ffd700;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .identity-share-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .identity-share-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.05));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .identity-share-option:hover {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,149,0,0.15));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .identity-share-option-icon {
+            font-size: 1.6em;
+        }
+
+        .identity-share-option-text {
+            color: #ffd700;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .identity-share-cancel-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3a3a5c, #2a2a4c);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .identity-share-cancel-btn:hover {
+            background: linear-gradient(135deg, #4a4a6c, #3a3a5c);
         }
 
         /* 响应式设计 */
@@ -2801,6 +3441,13 @@
                     <span class="detail-value" id="hourlyDetailValue">¥0</span>
                 </div>
             </div>
+            <!-- 牛马身份卡按钮 -->
+            <div style="margin-top: 20px; display: flex; justify-content: center;">
+                <button class="identity-card-trigger-btn" id="identityCardTriggerBtn">
+                    <span class="identity-card-trigger-icon">🐴</span>
+                    <span class="identity-card-trigger-text">分享我的牛马身份</span>
+                </button>
+            </div>
         </div>
 
         <div class="achievements-section">
@@ -3020,6 +3667,119 @@
         </div>
     </div>
 
+    <!-- 牛马身份卡弹窗 -->
+    <div class="identity-card-modal" id="identityCardModal">
+        <div class="identity-card-container">
+            <div class="identity-card-header">
+                <div class="identity-card-title">🏷️ 我的牛马身份卡</div>
+            </div>
+            <div class="identity-card-content">
+                <div class="identity-tag">
+                    <span class="identity-tag-icon" id="identityTotalIcon">🥚</span>
+                    <span class="identity-tag-label" id="identityTotalLabel">温饱牛马</span>
+                </div>
+                <div class="identity-tag">
+                    <span class="identity-tag-icon" id="identityPassiveIcon">🐴</span>
+                    <span class="identity-tag-label" id="identityPassiveLabel">纯牛马</span>
+                    <span class="identity-tag-value" id="identityPassiveValue">被动占0%</span>
+                </div>
+                <div class="identity-tag">
+                    <span class="identity-tag-icon" id="identityWorkDaysIcon">🐴</span>
+                    <span class="identity-tag-label" id="identityWorkDaysLabel">双休牛马</span>
+                    <span class="identity-tag-icon" id="identityWorkHoursIcon">⏰</span>
+                    <span class="identity-tag-label" id="identityWorkHoursLabel">标配工时</span>
+                </div>
+                <div class="identity-quote">
+                    <span class="identity-quote-text" id="identityQuote">💬 "刚好够吃饭，多花一分都要掂量。"</span>
+                </div>
+                <div class="hourly-status-section">
+                    <div class="hourly-status-label">⏰ 时薪身份</div>
+                    <div class="hourly-status-main">
+                        <span class="hourly-status-icon" id="hourlyStatusIcon">🍜</span>
+                        <span class="hourly-status-name" id="hourlyStatusName">沙县自由</span>
+                    </div>
+                    <div class="hourly-status-desc" id="hourlyStatusDesc">"拌面+扁肉，加个鸡腿要犹豫三秒。"</div>
+                </div>
+                <div class="identity-card-cta">
+                    <span class="identity-card-cta-text">—— 测测你的牛马段位 ——</span>
+                </div>
+                <button class="identity-card-share-btn" id="identityCardShareBtn">
+                    <span>📤</span>
+                    <span>一键分享</span>
+                </button>
+                <div class="identity-card-qrcode">
+                    <img src="qrcode_index.png" alt="二维码" class="qrcode-image" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://monsterwbin-afk.github.io/gold-income/'">
+                    <div class="qrcode-text">扫码访问网站</div>
+                </div>
+                <button class="identity-card-close-btn" id="identityCardCloseBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 身份卡分享弹窗 -->
+    <div class="identity-share-modal" id="identityShareModal">
+        <div class="identity-share-content">
+            <div class="identity-share-header">
+                <span class="identity-share-icon">📤</span>
+                <div class="identity-share-title">分享到</div>
+            </div>
+            <div class="identity-share-options">
+                <button class="identity-share-option" id="saveIdentityCardBtn">
+                    <span class="identity-share-option-icon">📸</span>
+                    <span class="identity-share-option-text">保存我的牛马身份卡片</span>
+                </button>
+                <button class="identity-share-option" id="copyIdentityTextBtn">
+                    <span class="identity-share-option-icon">📋</span>
+                    <span class="identity-share-option-text">复制炫耀文案</span>
+                </button>
+            </div>
+            <button class="identity-share-cancel-btn" id="identityShareCancelBtn">取消</button>
+        </div>
+    </div>
+
+    <!-- 身份卡图片生成区域（隐藏） -->
+    <div class="share-image-container" id="identityCardImageContainer" style="display: none;">
+        <div class="share-image-card" id="identityCardImage">
+            <div class="share-image-header">
+                <span class="share-image-title">🏷️ 我的牛马身份卡</span>
+            </div>
+            <div class="share-image-stats" style="text-align: left;">
+                <div style="padding: 10px 0; border-bottom: 1px dashed rgba(255,215,0,0.3);">
+                    <span style="font-size: 1.5em;">🥚</span>
+                    <span style="color: #ffd700; font-weight: bold; margin-left: 10px;">温饱牛马</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px dashed rgba(255,215,0,0.3);">
+                    <span style="font-size: 1.5em;">🐴</span>
+                    <span style="color: #ffd700; font-weight: bold; margin-left: 10px;">纯牛马 · 被动占0%</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px dashed rgba(255,215,0,0.3);">
+                    <span style="font-size: 1.5em;">🐴</span>
+                    <span style="color: #ffd700; font-weight: bold; margin-left: 10px;">双休牛马 · ⏰ 标配工时</span>
+                </div>
+            </div>
+            <div class="share-image-quotes">
+                <div class="share-image-quote">
+                    <span class="share-image-quote-icon">💬</span>
+                    <span class="share-image-quote-text" id="identityCardQuoteText">"刚好够吃饭，多花一分都要掂量。"</span>
+                </div>
+            </div>
+            <div style="padding: 15px; background: rgba(255,107,157,0.1); border-radius: 10px; margin-bottom: 15px;">
+                <div style="color: #ff6b9d; font-weight: bold; margin-bottom: 8px;">⏰ 时薪身份</div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                    <span style="font-size: 1.5em;" id="identityCardHourlyIcon">🍜</span>
+                    <span style="color: #ffd700; font-weight: bold;" id="identityCardHourlyName">沙县自由</span>
+                </div>
+                <div style="color: #ccc; font-size: 0.9em;" id="identityCardHourlyDesc">"拌面+扁肉，加个鸡腿要犹豫三秒。"</div>
+            </div>
+            <div class="share-image-footer">
+                <div class="share-image-cta">—— 测测你的牛马段位 ——</div>
+                <div style="font-size: 0.9em; color: #ff9500; margin-top: 5px;">🐴 牛马金币计算器</div>
+                <img src="qrcode_index.png" alt="二维码" style="width: 80px; height: 80px; margin: 10px auto; display: block; border-radius: 8px;" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://monsterwbin-afk.github.io/gold-income/'">
+                <div class="share-image-url">👉 https://monsterwbin-afk.github.io/gold-income/</div>
+            </div>
+        </div>
+    </div>
+
     <!-- 图片生成区域（隐藏，用于生成分享图片） -->
     <div class="share-image-container" id="shareImageContainer" style="display: none;">
         <div class="share-image-card">
@@ -3113,6 +3873,284 @@
             day: { startTime: Date.now(), accumulatedMoney: 0 },
             week: { startTime: Date.now(), accumulatedMoney: 0 }
         };
+
+        // 时薪身份等级数据
+        const hourlyRateLevels = {
+            zh: [
+                { min: 0, max: 5, icon: '🤡', label: '倒贴上班', desc: '时薪不够买瓶水，你是在做慈善吗？' },
+                { min: 5, max: 10, icon: '💨', label: '西北风品鉴师', desc: '喝西北风都赶不上热乎的。' },
+                { min: 10, max: 15, icon: '🥤', label: '蜜雪冰城会员', desc: '甜蜜蜜？4块钱的柠檬水最配你。' },
+                { min: 15, max: 20, icon: '🍜', label: '泡面自由', desc: '袋装泡面随便买，桶装的要等发工资。' },
+                { min: 20, max: 25, icon: '🥟', label: '沙县自由', desc: '拌面+扁肉，加个鸡腿要犹豫三秒。' },
+                { min: 25, max: 35, icon: '☕', label: '奶茶自由', desc: '奶茶想加什么料都行，不用看价格。' },
+                { min: 35, max: 50, icon: '🍔', label: '麦当劳中产', desc: '薯条敢加大了，巨无霸还是有点心疼。' },
+                { min: 50, max: 70, icon: '🍲', label: '海底捞预备', desc: '一个人吃火锅不心疼，毛肚要咬咬牙。' },
+                { min: 70, max: 100, icon: '🍲', label: '海底捞自由', desc: '毛肚随便点，锅底要两个。' },
+                { min: 100, max: 150, icon: '🍣', label: '日料自由', desc: '三文鱼刺身想吃几片点几片。' },
+                { min: 150, max: 250, icon: '🍽', label: '米其林打卡', desc: '吃饭不看价格，只看评分。' },
+                { min: 250, max: 500, icon: '🧑‍🍳', label: '私厨定制', desc: '厨师上门服务，吃饭讲究仪式感。' },
+                { min: 500, max: 1000, icon: '🍷', label: '餐厅股东', desc: '时薪够你入股沙县，考虑一下？' },
+                { min: 1000, max: Infinity, icon: '🤵', label: '收购餐饮集团', desc: '今天的沙县你包了，明天收购麦当劳。' }
+            ],
+            en: [
+                { min: 0, max: 5, icon: '🤡', label: 'Charity Worker', desc: 'Hourly rate can\'t even buy a bottle of water.' },
+                { min: 5, max: 10, icon: '💨', label: 'Wind Taster', desc: 'Can\'t even catch a warm breeze.' },
+                { min: 10, max: 15, icon: '🥤', label: 'Mixue Member', desc: 'Sweet? Lemon water is your best bet.' },
+                { min: 15, max: 20, icon: '🍜', label: 'Instant Noodle Free', desc: 'Bagged noodles anytime, cup noodles on payday.' },
+                { min: 20, max: 25, icon: '🥟', label: 'Sha County Free', desc: 'Noodles + wonton, hesitate for chicken leg.' },
+                { min: 25, max: 35, icon: '☕', label: 'Milk Tea Free', desc: 'Any topping you want, no price checking.' },
+                { min: 35, max: 50, icon: '🍔', label: 'McDonalds Middle Class', desc: 'Large fries yes, Big Mac still hurts.' },
+                { min: 50, max: 70, icon: '🍲', label: 'Hot Pot Ready', desc: 'Dining alone is fine, tripe needs courage.' },
+                { min: 70, max: 100, icon: '🍲', label: 'Hot Pot Free', desc: 'Tripe anytime, double broth please.' },
+                { min: 100, max: 150, icon: '🍣', label: 'Sushi Free', desc: 'Salmon sashimi as much as you want.' },
+                { min: 150, max: 250, icon: '🍽', label: 'Michelin Ready', desc: 'Rating over price, that\'s the way.' },
+                { min: 250, max: 500, icon: '🧑‍🍳', label: 'Private Chef', desc: 'Chef at home, ceremony matters.' },
+                { min: 500, max: 1000, icon: '🍷', label: 'Restaurant Owner', desc: 'Hourly rate can buy a restaurant.' },
+                { min: 1000, max: Infinity, icon: '🤵', label: 'Food Conglomerate', desc: 'Buy Sha County today, McDonalds tomorrow.' }
+            ]
+        };
+
+        // 获取时薪身份
+        function getHourlyRateLevel(hourlyRate) {
+            const levels = hourlyRateLevels[currentLang];
+            for (const level of levels) {
+                if (hourlyRate >= level.min && hourlyRate < level.max) {
+                    return level;
+                }
+            }
+            return levels[levels.length - 1];
+        }
+
+        // 炫耀文案模板
+        const showOffTemplates = {
+            zh: [
+                {
+                    name: '扎心版',
+                    template: (data) => `测了一下我的牛马段位，结果是"${data.totalLevel.label}"。
+
+${data.totalLevel.message.replace('💬 "', '').replace('"', '')}
+
+你也来测测？👉 https://monsterwbin-afk.github.io/gold-income/`
+                },
+                {
+                    name: '自嘲版',
+                    template: (data) => `${data.passiveLevel.label}，${data.hourlyLevel.label}。
+
+${data.hourlyLevel.desc}
+
+来测你的段位 👉 https://monsterwbin-afk.github.io/gold-income/`
+                },
+                {
+                    name: '凡尔赛版',
+                    template: (data) => `测完说我"${data.totalLevel.label}"，我有这么卷吗？
+
+你们都是啥段位？来晒 👉 https://monsterwbin-afk.github.io/gold-income/`
+                }
+            ],
+            en: [
+                {
+                    name: 'Humble',
+                    template: (data) => `Got my wage slave rank: "${data.totalLevel.label}".
+
+${data.totalLevel.message}
+
+Test yours 👉 https://monsterwbin-afk.github.io/gold-income/`
+                },
+                {
+                    name: 'Self-deprecating',
+                    template: (data) => `${data.passiveLevel.label}, ${data.hourlyLevel.label}.
+
+${data.hourlyLevel.desc}
+
+Test your rank 👉 https://monsterwbin-afk.github.io/gold-income/`
+                },
+                {
+                    name: 'Flex',
+                    template: (data) => `Got "${data.totalLevel.label}"? Am I that competitive?
+
+What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
+                }
+            ]
+        };
+
+        // 生成随机炫耀文案
+        function generateShowOffText(data) {
+            const templates = showOffTemplates[currentLang];
+            const randomIndex = Math.floor(Math.random() * templates.length);
+            return templates[randomIndex].template(data);
+        }
+
+        // 更新牛马身份卡显示
+        function updateIdentityCardDisplay() {
+            const totalIncome = monthlyIncome + passiveIncome;
+            const totalLevel = getTotalLevel(totalIncome);
+            const passiveLevel = getPassiveLevel(passiveIncome);
+            
+            // 计算被动占比
+            let passiveRatio = 0;
+            if (totalIncome > 0) {
+                passiveRatio = Math.round((passiveIncome / totalIncome) * 100);
+            }
+            
+            // 计算时薪
+            let hourlyRate = 0;
+            if (totalIncome > 0) {
+                if (monthlyIncome > 0) {
+                    const workDays = parseFloat(document.getElementById('workDays').value) || 5;
+                    const workHours = parseFloat(document.getElementById('workHours').value) || 8;
+                    const weeklyIncome = totalIncome / 4.333;
+                    const dailyIncome = weeklyIncome / workDays;
+                    hourlyRate = dailyIncome / workHours;
+                } else {
+                    hourlyRate = totalIncome / 30 / 24;
+                }
+            }
+            const hourlyLevel = getHourlyRateLevel(hourlyRate);
+            
+            // 获取工作天数和工时标签
+            const workDays = parseInt(document.getElementById('workDays').value) || 5;
+            const workHours = parseFloat(document.getElementById('workHours').value) || 8;
+            
+            const t = translations[currentLang];
+            const daysLabels = t.workDaysLabels || {
+                1: { icon: '🧘', text: '神仙模式' },
+                2: { icon: '🎈', text: '体验生活' },
+                3: { icon: '😎', text: '半躺模式' },
+                4: { icon: '✨', text: '准自由' },
+                5: { icon: '🐴', text: '双休牛马' },
+                6: { icon: '📦', text: '单休牛马' },
+                7: { icon: '🔥', text: '终极牛马' }
+            };
+            const daysLabel = daysLabels[workDays] || { icon: '🐴', text: '标准牛马' };
+            
+            const hoursLabels = t.workHoursLabels || {
+                1: { icon: '🎗️', text: '慈善上班' },
+                2: { icon: '☕', text: '半日闲' },
+                3: { icon: '🕶️', text: '弹性牛马' },
+                4: { icon: '⏰', text: '标配工时' },
+                5: { icon: '⏰', text: '加班牛马' },
+                6: { icon: '💼', text: '996预备' },
+                7: { icon: '🔥', text: '极限牛马' },
+                8: { icon: '💀', text: '拿命换钱' }
+            };
+            let hoursIndex = workHours <= 2 ? 1 : workHours <= 4 ? 2 : workHours <= 6 ? 3 : workHours <= 8 ? 4 : workHours <= 10 ? 5 : workHours <= 12 ? 6 : workHours <= 16 ? 7 : 8;
+            const hoursLabel = hoursLabels[hoursIndex] || { icon: '⏰', text: '标准工时' };
+            
+            // 更新弹窗显示
+            document.getElementById('identityTotalIcon').textContent = totalLevel.icon;
+            document.getElementById('identityTotalLabel').textContent = totalLevel.label;
+            
+            document.getElementById('identityPassiveIcon').textContent = passiveLevel.icon;
+            document.getElementById('identityPassiveLabel').textContent = passiveLevel.label;
+            document.getElementById('identityPassiveValue').textContent = `被动占${passiveRatio}%`;
+            
+            document.getElementById('identityWorkDaysIcon').textContent = daysLabel.icon;
+            document.getElementById('identityWorkDaysLabel').textContent = daysLabel.text;
+            document.getElementById('identityWorkHoursIcon').textContent = hoursLabel.icon;
+            document.getElementById('identityWorkHoursLabel').textContent = hoursLabel.text;
+            
+            document.getElementById('identityQuote').textContent = `💬 "${totalLevel.message}"`;
+            
+            document.getElementById('hourlyStatusIcon').textContent = hourlyLevel.icon;
+            document.getElementById('hourlyStatusName').textContent = hourlyLevel.label;
+            document.getElementById('hourlyStatusDesc').textContent = `"${hourlyLevel.desc}"`;
+            
+            // 更新图片生成区域
+            document.getElementById('identityCardQuoteText').textContent = `"${totalLevel.message}"`;
+            document.getElementById('identityCardHourlyIcon').textContent = hourlyLevel.icon;
+            document.getElementById('identityCardHourlyName').textContent = hourlyLevel.label;
+            document.getElementById('identityCardHourlyDesc').textContent = `"${hourlyLevel.desc}"`;
+            
+            // 保存当前数据用于分享
+            window.currentIdentityData = {
+                totalLevel: totalLevel,
+                passiveLevel: passiveLevel,
+                hourlyLevel: hourlyLevel,
+                passiveRatio: passiveRatio,
+                daysLabel: daysLabel,
+                hoursLabel: hoursLabel
+            };
+        }
+
+        // 打开牛马身份卡弹窗
+        function openIdentityCardModal() {
+            updateIdentityCardDisplay();
+            document.getElementById('identityCardModal').classList.add('active');
+        }
+
+        // 关闭牛马身份卡弹窗
+        function closeIdentityCardModal() {
+            document.getElementById('identityCardModal').classList.remove('active');
+        }
+
+        // 打开身份卡分享弹窗
+        function openIdentityShareModal() {
+            document.getElementById('identityShareModal').classList.add('active');
+        }
+
+        // 关闭身份卡分享弹窗
+        function closeIdentityShareModal() {
+            document.getElementById('identityShareModal').classList.remove('active');
+        }
+
+        // 保存身份卡图片
+        async function saveIdentityCardImage() {
+            const container = document.getElementById('identityCardImageContainer');
+            container.style.display = 'block';
+            container.style.left = '50%';
+            container.style.top = '50%';
+            container.style.transform = 'translate(-50%, -50%)';
+
+            try {
+                const canvas = await html2canvas(container, {
+                    backgroundColor: '#1a1a2e',
+                    scale: 2,
+                    useCORS: true
+                });
+
+                const link = document.createElement('a');
+                link.download = '我的牛马身份卡.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                showNotification(currentLang === 'zh' ? '📸 图片保存成功！快去分享吧' : '📸 Image saved successfully!');
+                closeIdentityShareModal();
+            } catch (err) {
+                console.error('生成图片失败:', err);
+                showNotification(currentLang === 'zh' ? '❌ 图片生成失败，请重试' : '❌ Failed to generate image');
+            }
+
+            container.style.display = 'none';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            container.style.transform = 'none';
+        }
+
+        // 复制炫耀文案
+        async function copyIdentityText() {
+            const data = window.currentIdentityData || {
+                totalLevel: { label: '温饱牛马', message: '刚好够吃饭，多花一分都要掂量。' },
+                passiveLevel: { label: '纯牛马' },
+                hourlyLevel: { label: '沙县自由', desc: '拌面+扁肉，加个鸡腿要犹豫三秒。' }
+            };
+            
+            const text = generateShowOffText(data);
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                showNotification(currentLang === 'zh' ? '✅ 复制成功！快去炫耀吧' : '✅ Copied successfully!');
+                closeIdentityShareModal();
+            } catch (err) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification(currentLang === 'zh' ? '✅ 复制成功！快去炫耀吧' : '✅ Copied successfully!');
+                closeIdentityShareModal();
+            }
+        }
 
         // 翻译数据
         const translations = {
@@ -6047,6 +7085,38 @@ async function shareAchievement() {
         });
 
         shareBtn.addEventListener('click', shareAchievement);
+        
+        // 牛马身份卡事件绑定
+        const identityCardTriggerBtn = document.getElementById('identityCardTriggerBtn');
+        if (identityCardTriggerBtn) {
+            identityCardTriggerBtn.addEventListener('click', openIdentityCardModal);
+        }
+        
+        const identityCardCloseBtn = document.getElementById('identityCardCloseBtn');
+        if (identityCardCloseBtn) {
+            identityCardCloseBtn.addEventListener('click', closeIdentityCardModal);
+        }
+        
+        const identityCardShareBtn = document.getElementById('identityCardShareBtn');
+        if (identityCardShareBtn) {
+            identityCardShareBtn.addEventListener('click', openIdentityShareModal);
+        }
+        
+        const identityShareCancelBtn = document.getElementById('identityShareCancelBtn');
+        if (identityShareCancelBtn) {
+            identityShareCancelBtn.addEventListener('click', closeIdentityShareModal);
+        }
+        
+        const saveIdentityCardBtn = document.getElementById('saveIdentityCardBtn');
+        if (saveIdentityCardBtn) {
+            saveIdentityCardBtn.addEventListener('click', saveIdentityCardImage);
+        }
+        
+        const copyIdentityTextBtn = document.getElementById('copyIdentityTextBtn');
+        if (copyIdentityTextBtn) {
+            copyIdentityTextBtn.addEventListener('click', copyIdentityText);
+        }
+        
         const aboutBtn = document.getElementById('aboutBtn');
         if (aboutBtn) {
             aboutBtn.addEventListener('click', (e) => {
