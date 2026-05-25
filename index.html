@@ -2873,7 +2873,7 @@
         }
 
         .identity-card-close-btn {
-            width: 100%;
+            width: calc(100% - 50px);
             padding: 12px;
             background: linear-gradient(135deg, #3a3a5c, #2a2a4c);
             border: 2px solid #ffd700;
@@ -2883,7 +2883,9 @@
             font-size: 1em;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
+            margin: 15px auto;
+            display: block;
+            flex-shrink: 0;
         }
 
         .identity-card-close-btn:hover {
@@ -3012,6 +3014,26 @@
 
             .wallet-icon {
                 font-size: 3em;
+            }
+
+            .identity-card-modal {
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+
+            .identity-card-container {
+                max-height: 90vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .identity-card-content {
+                flex: 1;
+                overflow-y: auto;
+            }
+
+            .identity-card-close-btn {
+                flex-shrink: 0;
             }
         }
 
@@ -4236,7 +4258,7 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 identityCard: {
                     title: '🏷️ 我的牛马身份卡',
                     triggerBtn: '分享我的牛马身份',
-                    shareBtn: '📤 一键分享',
+                    shareBtn: '一键分享',
                     hourlyStatus: '时薪身份',
                     testRank: '测测你的牛马段位',
                     scanQR: '扫码访问网站',
@@ -4550,7 +4572,7 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 identityCard: {
                     title: '🏷️ My Wage Slave ID Card',
                     triggerBtn: 'Share My Wage Slave Identity',
-                    shareBtn: '📤 One-click Share',
+                    shareBtn: 'One-click Share',
                     hourlyStatus: 'Hourly Rate Status',
                     testRank: 'Test Your Wage Slave Rank',
                     scanQR: 'Scan to visit website',
