@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9354020972269797"
+         crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美妙收入掉金币 - 打工人的财富可视化</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+    <title>牛马金币工坊 - 打工人の财富可视化</title>
     <style>
         * {
             margin: 0;
@@ -3521,7 +3525,7 @@
                 </div>
                 <div class="achievement" data-achievement="perfect-slacker">
                     <span class="achievement-icon" style="color: #1E90FF;">🎣</span>
-                    <div class="achievement-name"><span class="name-emoji">🎯</span><span class="name-text" id="perfectSlackerName">完美摸鱼<br>时薪<20且被动>月薪</span></div>
+                    <div class="achievement-name"><span class="name-emoji">🎯</span><span class="name-text" id="perfectSlackerName">完美摸鱼<br>时薪&lt;20且被动&gt;月薪</span></div>
                 </div>
             </div>
         </div>
@@ -3730,7 +3734,7 @@
                     <span>一键分享</span>
                 </button>
                 <div class="identity-card-qrcode">
-                    <img src="qrcode_index.png" alt="二维码" class="qrcode-image" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://salaryniuma.com/'">
+                    <img src="qrcode_index.png" alt="二维码" class="qrcode-image" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://monsterwbin-afk.github.io/gold-income/'">
                     <div class="qrcode-text">扫码访问网站</div>
                 </div>
                 <button class="identity-card-close-btn" id="identityCardCloseBtn">关闭</button>
@@ -3796,8 +3800,8 @@
             <div class="share-image-footer">
                 <div class="share-image-cta">—— 测测你的牛马段位 ——</div>
                 <div style="font-size: 0.9em; color: #ff9500; margin-top: 5px;">🐴 牛马金币计算器</div>
-                <img src="qrcode_index.png" alt="二维码" style="width: 80px; height: 80px; margin: 10px auto; display: block; border-radius: 8px;" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://salaryniuma.com/'">
-                <div class="share-image-url">👉 https://salaryniuma.com/</div>
+                <img src="qrcode_index.png" alt="二维码" style="width: 80px; height: 80px; margin: 10px auto; display: block; border-radius: 8px;" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://monsterwbin-afk.github.io/gold-income/'">
+                <div class="share-image-url">👉 https://monsterwbin-afk.github.io/gold-income/</div>
             </div>
         </div>
     </div>
@@ -3952,7 +3956,7 @@
 
 ${data.totalLevel.message.replace('💬 "', '').replace('"', '')}
 
-你也来测测？👉 https://salaryniuma.com/`
+你也来测测？👉 https://monsterwbin-afk.github.io/gold-income/`
                 },
                 {
                     name: '自嘲版',
@@ -3960,13 +3964,13 @@ ${data.totalLevel.message.replace('💬 "', '').replace('"', '')}
 
 ${data.hourlyLevel.desc}
 
-来测你的段位 👉 https://salaryniuma.com/`
+来测你的段位 👉 https://monsterwbin-afk.github.io/gold-income/`
                 },
                 {
                     name: '凡尔赛版',
                     template: (data) => `测完说我"${data.totalLevel.label}"，我有这么卷吗？
 
-你们都是啥段位？来晒 👉 https://salaryniuma.com/`
+你们都是啥段位？来晒 👉 https://monsterwbin-afk.github.io/gold-income/`
                 }
             ],
             en: [
@@ -3976,7 +3980,7 @@ ${data.hourlyLevel.desc}
 
 ${data.totalLevel.message}
 
-Test yours 👉 https://salaryniuma.com/`
+Test yours 👉 https://monsterwbin-afk.github.io/gold-income/`
                 },
                 {
                     name: 'Self-deprecating',
@@ -3984,13 +3988,13 @@ Test yours 👉 https://salaryniuma.com/`
 
 ${data.hourlyLevel.desc}
 
-Test your rank 👉 https://salaryniuma.com/`
+Test your rank 👉 https://monsterwbin-afk.github.io/gold-income/`
                 },
                 {
                     name: 'Flex',
                     template: (data) => `Got "${data.totalLevel.label}"? Am I that competitive?
 
-What's your rank? Show off 👉 https://salaryniuma.com/`
+What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 }
             ]
         };
@@ -6739,7 +6743,7 @@ async function shareAchievement() {
         }
     }
     
-    const pageUrl = 'https://salaryniuma.com/';
+    const pageUrl = 'https://monsterwbin-afk.github.io/gold-income/';
     const text = currentLang === 'zh' ? 
         `我在摸鱼游戏中取得了 ${highScore} 金币的历史最高分！\n成就：${highAchievement.title}\n快来挑战吧！\n${pageUrl}` :
         `I achieved ${highScore} coins in Coin Catching Game!\nAchievement: ${highAchievement.title}\nCome challenge!\n${pageUrl}`;
