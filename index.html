@@ -873,6 +873,67 @@
             box-shadow: 0 0 30px rgba(255,215,0,0.5), inset 0 0 20px rgba(255,215,0,0.15);
         }
 
+        a.worker-type-btn {
+            text-decoration: none;
+            display: inline-flex;
+        }
+
+        /* 房奴评估推荐卡片 */
+        .mortgage-promo-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,193,7,0.12));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 28px 24px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(255,215,0,0.25), inset 0 0 30px rgba(255,215,0,0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .mortgage-promo-title {
+            font-size: clamp(1.1em, 4vw, 1.4em);
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .mortgage-promo-desc {
+            color: #ccc;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .mortgage-promo-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            min-width: 150px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            color: #ffd700;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(255,215,0,0.25);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .mortgage-promo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,215,0,0.35);
+            background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,149,0,0.12));
+        }
+
         .input-group {
             margin-bottom: 20px;
             position: relative;
@@ -3315,6 +3376,7 @@
             <div class="worker-type-section">
                 <button class="worker-type-btn" id="stableWorkerBtn"></button>
                 <button class="worker-type-btn" id="freeWorkerBtn"></button>
+                <a href="mortgage.html" class="worker-type-btn" id="mortgageNavBtn"></a>
             </div>
 
             <div class="input-group">
@@ -3528,6 +3590,12 @@
                     <div class="achievement-name"><span class="name-emoji">🎯</span><span class="name-text" id="perfectSlackerName">完美摸鱼<br>时薪&lt;20且被动&gt;月薪</span></div>
                 </div>
             </div>
+        </div>
+
+        <div class="mortgage-promo-card">
+            <div class="mortgage-promo-title" id="mortgagePromoTitle"></div>
+            <p class="mortgage-promo-desc" id="mortgagePromoDesc"></p>
+            <a href="mortgage.html" class="mortgage-promo-btn" id="mortgagePromoBtn"></a>
         </div>
 
         <!-- 长期积累效果栏目 -->
@@ -4341,6 +4409,10 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 firstGameTip: '累了吧？来摸会儿鱼',
                 stableWorkerBtn: '🐂 我是稳定牛马',
                 freeWorkerBtn: '🦄 我是自由牛马',
+                mortgageNavBtn: '🏠 房奴评估',
+                mortgagePromoTitle: '🔥 新工具上线！算算你的牛马值，配当房奴吗？',
+                mortgagePromoDesc: '月供、房租、生活费一键算清，看看买房后你每天还剩几块钱吃饭。',
+                mortgagePromoBtn: '🐂 开始评估',
                 salaryDetailLabel: '月薪：',
                 passiveDetailLabel: '被动：',
                 totalDetailLabel: '月总收入：',
@@ -4655,6 +4727,10 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
                 firstGameTip: 'Tired? Let\'s catch some coins!',
                 stableWorkerBtn: '🐂 I am Stable Wage Slave',
                 freeWorkerBtn: '🦄 I am Free Wage Slave',
+                mortgageNavBtn: '🏠 Mortgage Check',
+                mortgagePromoTitle: '🔥 New Tool! Can your wage-slave score afford a mortgage?',
+                mortgagePromoDesc: 'Mortgage, rent & living costs in one click — see how much you have left for food each day.',
+                mortgagePromoBtn: '🐂 Start Assessment',
                 salaryDetailLabel: 'Monthly: ',
                 passiveDetailLabel: 'Passive: ',
                 totalDetailLabel: 'Total: ',
@@ -6840,7 +6916,7 @@ async function shareAchievement() {
             
             // 更新月薪消息
             const monthlyMessageEl = document.getElementById('monthlyIncomeMessage');
-            if (monthlyMessageEl && monthlyIncome > 0) {
+            if (monthlyMessageEl) {
                 const salaryLevelText = getSalaryLevelText(monthlyIncome);
                 monthlyMessageEl.textContent = salaryLevelText;
             }
@@ -6979,6 +7055,10 @@ async function shareAchievement() {
             // 牛马类型选择按钮
             safeUpdate('stableWorkerBtn', t.stableWorkerBtn);
             safeUpdate('freeWorkerBtn', t.freeWorkerBtn);
+            safeUpdate('mortgageNavBtn', t.mortgageNavBtn);
+            safeUpdate('mortgagePromoTitle', t.mortgagePromoTitle);
+            safeUpdate('mortgagePromoDesc', t.mortgagePromoDesc);
+            safeUpdate('mortgagePromoBtn', t.mortgagePromoBtn);
             
             // 接金币游戏区域
             const gameToggleBtn = document.getElementById('gameToggleBtn');

@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9354020972269797"
+         crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+    <title>牛马买房生存评估器 - 算算你配当房奴吗</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NJ9X9P2932"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NJ9X9P2932');
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+            position: relative;
+            background: linear-gradient(135deg, #1a0000 0%, #331a00 50%, #1a0000 100%);
+            font-weight: 600;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(255,215,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,149,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255,215,0,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(255,149,0,0.2) 0%, transparent 50%);
+            animation: backgroundGlow 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                radial-gradient(#ffd700 1px, transparent 1px),
+                radial-gradient(#ff9500 0.5px, transparent 0.5px);
+            background-size: 50px 50px, 25px 25px;
+            background-position: 0 0, 12.5px 12.5px;
+            opacity: 0.1;
+            animation: float 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes backgroundGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        /* 金币粒子层 */
+        .coin-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .coin-particle {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            transform: translateY(100vh);
+            animation: coinFloat linear infinite;
+        }
+
+        @keyframes coinFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            padding: 24px 0 16px;
+            position: relative;
+        }
+
+        /* 语言切换按钮 */
+        .lang-switch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            border: 2px solid #ff9500;
+            color: #1a1a2e;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.7);
+            background: linear-gradient(135deg, #ffed4a, #ffd700);
+        }
+
+        h1 {
+            font-size: clamp(1.6em, 5vw, 2.4em);
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        h1 .title-text {
+            background: linear-gradient(135deg, #ffd700, #ffed4a, #ff9500, #ffd700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: clamp(0.85em, 3vw, 1.05em);
+            color: #ccc;
+            font-weight: bold;
+            line-height: 1.5;
+            padding: 0 8px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            border-radius: 12px;
+            color: #856404;
+            font-weight: bold;
+            font-size: clamp(0.85em, 3vw, 1em);
+            padding: 14px 16px;
+            margin: 16px 0 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .input-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.15));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(255,215,0,0.3), inset 0 0 30px rgba(255,215,0,0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,215,0,0.2), transparent);
+            animation: shimmer 3s linear infinite;
+            pointer-events: none;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+            text-align: left;
+        }
+
+        .input-label {
+            font-size: 1.05em;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 900;
+        }
+
+        .input-hint {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.6);
+            color: #ffd700;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255,215,0,0.15);
+        }
+
+        .form-input:focus, .form-select:focus {
+            box-shadow: 0 0 25px rgba(255,215,0,0.5);
+            border-color: #ff9500;
+        }
+
+        .form-select option { background: #1a0000; color: #ffd700; }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-row .form-input { flex: 1; }
+
+        .quick-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .quick-btn, .action-btn, .method-btn {
+            padding: 8px 14px;
+            font-size: 0.95em;
+            font-weight: bold;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,149,0,0.1));
+            color: #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .quick-btn:hover, .action-btn:hover, .method-btn:hover {
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,149,0,0.2));
+            transform: translateY(-2px);
+        }
+
+        .quick-btn.active, .method-btn.active {
+            background: linear-gradient(135deg, rgba(255,215,0,0.4), rgba(255,149,0,0.3));
+            box-shadow: 0 0 20px rgba(255,215,0,0.4);
+        }
+
+        .tip-box {
+            background: rgba(200, 200, 200, 0.12);
+            border: 1px solid rgba(200, 200, 200, 0.3);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            color: #ddd;
+            font-size: 0.9em;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tip-box strong {
+            color: #ffd700;
+            font-size: 1.05em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .tip-box .summary {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255,215,0,0.3);
+            color: #ff9500;
+            font-weight: bold;
+        }
+
+        .method-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .method-btn { flex: 1; padding: 12px; font-size: 1em; }
+
+        .help-tip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffd700;
+            color: #1a0000;
+            font-size: 0.75em;
+            font-weight: 900;
+            cursor: help;
+            margin-left: 6px;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .help-tip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: normal;
+            width: 220px;
+            text-align: center;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        /* 结果区 */
+        .results-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffd700, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pro-results {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(255,215,0,0.2);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .result-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,215,0,0.25);
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+        }
+
+        .result-card .label {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+
+        .result-card .value {
+            font-size: 1.15em;
+            font-weight: 900;
+            color: #ffd700;
+            word-break: break-all;
+        }
+
+        .heartbreak-section {
+            background: linear-gradient(135deg, rgba(255,50,50,0.15), rgba(139,0,0,0.2));
+            border: 2px solid #ff6b6b;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(255,50,50,0.2);
+        }
+
+        .heartbreak-section .section-title {
+            background: linear-gradient(135deg, #ff6b6b, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .daily-food {
+            font-size: clamp(2em, 8vw, 3.2em);
+            font-weight: 900;
+            color: #ff6b6b;
+            text-shadow: 0 0 20px rgba(255,107,107,0.5);
+            margin: 12px 0;
+            line-height: 1.2;
+        }
+
+        .survival-level {
+            font-size: clamp(1.2em, 4vw, 1.6em);
+            font-weight: 900;
+            color: #ffd700;
+            margin: 12px 0;
+        }
+
+        .heartbreak-detail {
+            color: #ccc;
+            font-size: 0.95em;
+            line-height: 1.8;
+            margin-top: 12px;
+        }
+
+        .heartbreak-detail span {
+            color: #ff9500;
+            font-weight: bold;
+        }
+
+        /* 赎身进度条 */
+        .redemption-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar-wrap {
+            background: rgba(0,0,0,0.5);
+            border-radius: 12px;
+            height: 28px;
+            overflow: hidden;
+            margin: 16px 0;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff9500);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 900;
+            color: #1a0000;
+            min-width: 40px;
+        }
+
+        .redemption-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .redemption-stat {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .redemption-stat .label { font-size: 0.8em; color: #aaa; }
+        .redemption-stat .value { font-size: 1.1em; font-weight: 900; color: #ffd700; margin-top: 4px; }
+
+        /* 底部 */
+        .cta-section {
+            text-align: center;
+            margin: 32px 0 24px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 28px;
+            font-size: clamp(0.95em, 3.5vw, 1.15em);
+            font-weight: 900;
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,149,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            color: #ffd700;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(255,215,0,0.25);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            max-width: 100%;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,215,0,0.4);
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,149,0,0.2));
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 16px 40px;
+            color: #888;
+            font-size: 0.9em;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 16px;
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        @media (max-width: 480px) {
+            .input-section { padding: 18px 14px; }
+            .quick-btn { padding: 6px 10px; font-size: 0.85em; }
+            .method-btn { font-size: 0.85em; padding: 10px 6px; }
+            .lang-switch {
+                position: static;
+                display: block;
+                margin: 0 auto 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="coin-particles" id="coinParticles"></div>
+    <div class="container">
+        <header>
+            <button class="lang-switch" id="langSwitch">English</button>
+            <a href="index.html" class="back-link" id="backLink">← 返回牛马金币工坊</a>
+            <h1><span>🐂</span><span class="title-text" id="mainTitle">牛马买房生存评估器</span></h1>
+            <p class="subtitle" id="subtitle">月供算得清，人生算不清 | 数据仅供苦笑，贷款请询银行</p>
+        </header>
+
+        <div class="warning-box" id="warningBox">⚠️ 纯属打工人苦中作乐，不构成任何投资建议！请咨询持牌机构。</div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label class="input-label" id="housePriceLabel">🏚️ 钢筋笼总市值（元）</label>
+                <span class="input-hint" id="housePriceHint">房屋总价</span>
+                <input type="number" class="form-input" id="housePrice" placeholder="输入总价" value="2000000" min="0" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="downPaymentLabel">👛 六个钱包首付（%）</label>
+                <span class="input-hint" id="downPaymentHint">首付比例</span>
+                <input type="number" class="form-input" id="downPaymentPct" placeholder="30" value="30" min="0" max="100" oninput="onDownPctInput()">
+                <div class="quick-btns">
+                    <button type="button" class="quick-btn" data-pct="15" onclick="setDownPct(15)">15%</button>
+                    <button type="button" class="quick-btn" data-pct="25" onclick="setDownPct(25)">25%</button>
+                    <button type="button" class="quick-btn active" data-pct="30" onclick="setDownPct(30)">30%</button>
+                    <button type="button" class="quick-btn" data-pct="40" onclick="setDownPct(40)">40%</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="loanYearsLabel">📜 卖身契年限（年）</label>
+                <span class="input-hint" id="loanYearsHint">贷款年限</span>
+                <select class="form-select" id="loanYears" onchange="calculate()">
+                    <option value="5">5年</option>
+                    <option value="10">10年</option>
+                    <option value="20">20年</option>
+                    <option value="30" selected>30年</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="interestRateLabel">🔪 资本镰刀利率（%）</label>
+                <span class="input-hint" id="interestRateHint">年利率</span>
+                <div class="input-row">
+                    <input type="number" class="form-input" id="interestRate" placeholder="3.95" value="3.95" min="0" step="0.01" oninput="calculate()">
+                    <button type="button" class="action-btn" id="fillLPRBtn" onclick="fillLPR()">📈 填充LPR</button>
+                </div>
+            </div>
+
+            <div class="tip-box" id="tipBox">
+                <strong id="tipTitle">💡 还款方式怎么选？</strong>
+                <p id="tipEqualInterest"><b>等额本息</b>：每月还款额固定，前期主要还利息，适合收入稳定、不想每月金额变动的"佛系牛马"。</p>
+                <p id="tipEqualPrincipal" style="margin-top:6px"><b>等额本金</b>：每月还款额逐月递减，总利息更少，但前期还款压力大，适合想省利息、能扛住前几年的"奋斗牛马"。</p>
+                <p class="summary" id="tipSummary">一句话总结：想省总利息选等额本金，想月供压力小选等额本息。</p>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="repaymentLabel">🔄 还款方式</label>
+                <div class="method-toggle">
+                    <button type="button" class="method-btn active" id="btnEqualInterest" onclick="setMethod('equalInterest')">等额本息</button>
+                    <button type="button" class="method-btn" id="btnEqualPrincipal" onclick="setMethod('equalPrincipal')">等额本金</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="salaryLabel">🐂 牛马月俸禄（元）</label>
+                <span class="input-hint" id="salaryHint">税后月薪</span>
+                <input type="number" class="form-input" id="salary" placeholder="输入税后月薪" value="8000" min="0" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="housingFundLabel">🏦 公积金续命费（元）<span class="help-tip" id="housingFundTip" data-tip="公积金可用于偿还房贷，此处填写每月总缴存额">?</span></label>
+                <span class="input-hint" id="housingFundHint">个人+单位月缴存总额</span>
+                <input type="number" class="form-input" id="housingFund" placeholder="如 2800" value="2000" min="0" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="rentLabel">🏕️ 牛棚租金（元）</label>
+                <span class="input-hint" id="rentHint">当前每月房租</span>
+                <input type="number" class="form-input" id="rent" placeholder="输入当前房租" value="3000" min="0" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" id="livingCostLabel">🍜 草料费（元）</label>
+                <span class="input-hint" id="livingCostHint">每月基本生活费（吃、行、水电等）</span>
+                <input type="number" class="form-input" id="livingCost" placeholder="输入基本生活费" value="2500" min="0" oninput="calculate()">
+            </div>
+        </div>
+
+        <!-- 上半屏：专业数据 -->
+        <div class="results-section">
+            <h2 class="section-title" id="proResultsTitle">📊 贷款硬核数据</h2>
+            <div class="pro-results">
+                <div class="result-grid">
+                    <div class="result-card"><div class="label" id="labelDownPayment">首付金额</div><div class="value" id="rDownPayment">-</div></div>
+                    <div class="result-card"><div class="label" id="labelLoanAmount">贷款总额</div><div class="value" id="rLoanAmount">-</div></div>
+                    <div class="result-card"><div class="label" id="labelMonthlyPayment">月供</div><div class="value" id="rMonthlyPayment">-</div></div>
+                    <div class="result-card"><div class="label" id="labelActualPayment">公积金抵扣后</div><div class="value" id="rActualPayment">-</div></div>
+                    <div class="result-card"><div class="label" id="labelTotalPayment">还款总额</div><div class="value" id="rTotalPayment">-</div></div>
+                    <div class="result-card"><div class="label" id="labelTotalInterest">利息总额</div><div class="value" id="rTotalInterest">-</div></div>
+                    <div class="result-card"><div class="label" id="labelDebtRatio">月供占收入比</div><div class="value" id="rDebtRatio">-</div></div>
+                    <div class="result-card"><div class="label" id="labelMonthlySurplus">买房后月结余</div><div class="value" id="rMonthlySurplus">-</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下半屏：扎心 -->
+        <div class="heartbreak-section">
+            <h2 class="section-title" id="heartbreakTitle">💔 扎心生存报告</h2>
+            <div class="daily-food" id="rDailyFood">每天还能吃 ¥0.00</div>
+            <div class="survival-level" id="rSurvivalLevel">-</div>
+            <div class="heartbreak-detail" id="rHeartbreakDetail"></div>
+        </div>
+
+        <!-- 赎身进度条 -->
+        <div class="redemption-section">
+            <h2 class="section-title" id="redemptionTitle">⛓️ 赎身进度条（提前还款模拟）</h2>
+            <div class="input-group">
+                <label class="input-label" id="extraPaymentLabel">每月额外还款（元）</label>
+                <input type="number" class="form-input" id="extraPayment" placeholder="0" value="0" min="0" oninput="calculate()">
+            </div>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar" id="redemptionBar" style="width:0%">0%</div>
+            </div>
+            <div class="redemption-stats">
+                <div class="redemption-stat"><div class="label" id="labelOriginalYears">原计划还清</div><div class="value" id="rOriginalYears">-</div></div>
+                <div class="redemption-stat"><div class="label" id="labelAcceleratedYears">加速后还清</div><div class="value" id="rAcceleratedYears">-</div></div>
+                <div class="redemption-stat"><div class="label" id="labelSavedMonths">节省月数</div><div class="value" id="rSavedMonths">-</div></div>
+                <div class="redemption-stat"><div class="label" id="labelSavedInterest">节省利息</div><div class="value" id="rSavedInterest">-</div></div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="https://salaryniuma.com/" target="_blank" rel="noopener" class="cta-btn" id="ctaBtn">😭 压力太大，还是回去算算我的时薪摸摸鱼吧</a>
+        </div>
+
+        <footer id="footerText">本工具已精确到分，但人生无法精确，愿你早日卸下牛鞍。</footer>
+    </div>
+
+    <script>
+        // 创建金币粒子背景（与 index.html 一致）
+        function createCoinParticles() {
+            const container = document.getElementById('coinParticles');
+            const count = 20;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'coin-particle';
+                particle.textContent = '💰';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.fontSize = (16 + Math.random() * 16) + 'px';
+                container.appendChild(particle);
+            }
+        }
+        createCoinParticles();
+
+        const translations = {
+            zh: {
+                pageTitle: '牛马买房生存评估器 - 算算你配当房奴吗',
+                backLink: '← 返回牛马金币工坊',
+                mainTitle: '牛马买房生存评估器',
+                subtitle: '月供算得清，人生算不清 | 数据仅供苦笑，贷款请询银行',
+                warning: '⚠️ 纯属打工人苦中作乐，不构成任何投资建议！请咨询持牌机构。',
+                housePriceLabel: '🏚️ 钢筋笼总市值（元）',
+                housePriceHint: '房屋总价',
+                housePricePlaceholder: '输入总价',
+                downPaymentLabel: '👛 六个钱包首付（%）',
+                downPaymentHint: '首付比例',
+                loanYearsLabel: '📜 卖身契年限（年）',
+                loanYearsHint: '贷款年限',
+                yearUnit: '年',
+                interestRateLabel: '🔪 资本镰刀利率（%）',
+                interestRateHint: '年利率',
+                fillLPR: '📈 填充LPR',
+                tipTitle: '💡 还款方式怎么选？',
+                tipEqualInterest: '<b>等额本息</b>：每月还款额固定，前期主要还利息，适合收入稳定、不想每月金额变动的"佛系牛马"。',
+                tipEqualPrincipal: '<b>等额本金</b>：每月还款额逐月递减，总利息更少，但前期还款压力大，适合想省利息、能扛住前几年的"奋斗牛马"。',
+                tipSummary: '一句话总结：想省总利息选等额本金，想月供压力小选等额本息。',
+                repaymentLabel: '🔄 还款方式',
+                equalInterest: '等额本息',
+                equalPrincipal: '等额本金',
+                salaryLabel: '🐂 牛马月俸禄（元）',
+                salaryHint: '税后月薪',
+                salaryPlaceholder: '输入税后月薪',
+                housingFundLabel: '🏦 公积金续命费（元）',
+                housingFundHint: '个人+单位月缴存总额',
+                housingFundPlaceholder: '如 2800',
+                housingFundTip: '公积金可用于偿还房贷，此处填写每月总缴存额',
+                rentLabel: '🏕️ 牛棚租金（元）',
+                rentHint: '当前每月房租',
+                rentPlaceholder: '输入当前房租',
+                livingCostLabel: '🍜 草料费（元）',
+                livingCostHint: '每月基本生活费（吃、行、水电等）',
+                livingCostPlaceholder: '输入基本生活费',
+                proResultsTitle: '📊 贷款硬核数据',
+                labelDownPayment: '首付金额',
+                labelLoanAmount: '贷款总额',
+                labelMonthlyPayment: '月供',
+                labelActualPayment: '公积金抵扣后',
+                labelTotalPayment: '还款总额',
+                labelTotalInterest: '利息总额',
+                labelDebtRatio: '月供占收入比',
+                labelMonthlySurplus: '买房后月结余',
+                heartbreakTitle: '💔 扎心生存报告',
+                dailyFoodPrefix: '每天还能吃 ',
+                redemptionTitle: '⛓️ 赎身进度条（提前还款模拟）',
+                extraPaymentLabel: '每月额外还款（元）',
+                labelOriginalYears: '原计划还清',
+                labelAcceleratedYears: '加速后还清',
+                labelSavedMonths: '节省月数',
+                labelSavedInterest: '节省利息',
+                addMoneyRedemption: '加钱赎身',
+                ctaBtn: '😭 压力太大，还是回去算算我的时薪摸摸鱼吧',
+                footer: '本工具已精确到分，但人生无法精确，愿你早日卸下牛鞍。',
+                yearSuffix: ' 年',
+                monthSuffix: ' 个月',
+                zeroMonths: '0 个月',
+                rentSurplusLabel: '租房月结余',
+                buySurplusLabel: '买房月结余',
+                lessAfterBuy: '（买房后每月少剩 ',
+                lessAfterBuyEnd: '）',
+                coffeeLine: '总利息 {interest} 够喝 {count} 杯咖啡（按30元/杯），按你每天一杯咖啡算，够你从现在喝到退休（约 {years} 年）',
+                bankWorkLine: '你将额外为银行打工约 {years} 年（利息÷年薪）',
+                survivalLevels: [
+                    { max: 0, icon: '💀', label: '活不下去型房奴', msg: '买房后每月入不敷出，建议先搬砖再搬砖。' },
+                    { max: 20, icon: '🍜', label: '泡面续命型', msg: '每天饭钱只够泡面，调料包都得省着放。' },
+                    { max: 50, icon: '🥡', label: '外卖凑活型', msg: '只能点最便宜的外卖，红包满减是你的生命线。' },
+                    { max: 100, icon: '🍱', label: '勉强温饱型', msg: '能吃上饭，但奶茶自由？想多了。' },
+                    { max: 200, icon: '🐂', label: '合格牛马型', msg: '还能存点钱，但离财务自由还隔着一套房。' },
+                    { max: 350, icon: '🐃', label: '壮年耕牛', msg: '日子能过，偶尔下馆子，但看一眼房价又缩回来了。' },
+                    { max: 500, icon: '🐂', label: '金牛座牛马', msg: '月供稳如老狗，生活质量在线，你是牛马中的小资。' },
+                    { max: 1000, icon: '👑', label: '人上人型房奴', msg: '房贷不耽误你喝星巴克，你已经是房奴里的前10%了。' },
+                    { max: 2000, icon: '💎', label: '镶金型房奴', msg: '别人当房奴是受苦，你当房奴是体验生活。' },
+                    { max: Infinity, icon: '🚀', label: '房奴终结者', msg: '月供只是你的零花钱，建议直接再买一套当投资。' }
+                ],
+                currency: '¥',
+                locale: 'zh-CN'
+            },
+            en: {
+                pageTitle: 'Mortgage Survival Calculator - Can You Afford Homeownership?',
+                backLink: '← Back to Wage Slave Workshop',
+                mainTitle: 'Mortgage Survival Calculator',
+                subtitle: 'Mortgage is clear, life is not | For laughs only, ask your bank for real advice',
+                warning: '⚠️ Just wage-slave humor, not financial advice! Consult licensed professionals.',
+                housePriceLabel: '🏚️ Concrete Cage Total Value (CNY)',
+                housePriceHint: 'Home price',
+                housePricePlaceholder: 'Enter total price',
+                downPaymentLabel: '👛 Six-Wallet Down Payment (%)',
+                downPaymentHint: 'Down payment ratio',
+                loanYearsLabel: '📜 Soul-Selling Contract (Years)',
+                loanYearsHint: 'Loan term',
+                yearUnit: ' yrs',
+                interestRateLabel: '🔪 Capital Scythe Rate (%)',
+                interestRateHint: 'Annual interest rate',
+                fillLPR: '📈 Fill LPR',
+                tipTitle: '💡 Which repayment method?',
+                tipEqualInterest: '<b>Equal Principal & Interest</b>: Fixed monthly payment, mostly interest early on. For stable-income "zen wage slaves" who hate payment surprises.',
+                tipEqualPrincipal: '<b>Equal Principal</b>: Payment decreases monthly, less total interest, but heavier early burden. For "hustler wage slaves" who can tough out the first few years.',
+                tipSummary: 'TL;DR: Save on total interest → equal principal. Lower monthly pressure → equal principal & interest.',
+                repaymentLabel: '🔄 Repayment Method',
+                equalInterest: 'Equal P&I',
+                equalPrincipal: 'Equal Principal',
+                salaryLabel: '🐂 Monthly Wage (CNY)',
+                salaryHint: 'After-tax monthly salary',
+                salaryPlaceholder: 'Enter after-tax salary',
+                housingFundLabel: '🏦 Housing Fund Lifeline (CNY)',
+                housingFundHint: 'Total monthly contribution (you + employer)',
+                housingFundPlaceholder: 'e.g. 2800',
+                housingFundTip: 'Housing fund can offset mortgage; enter total monthly contribution',
+                rentLabel: '🏕️ Barn Rent (CNY)',
+                rentHint: 'Current monthly rent',
+                rentPlaceholder: 'Enter current rent',
+                livingCostLabel: '🍜 Hay Money (CNY)',
+                livingCostHint: 'Basic monthly living costs (food, transport, utilities)',
+                livingCostPlaceholder: 'Enter basic living costs',
+                proResultsTitle: '📊 Hardcore Loan Data',
+                labelDownPayment: 'Down Payment',
+                labelLoanAmount: 'Loan Amount',
+                labelMonthlyPayment: 'Monthly Payment',
+                labelActualPayment: 'After Fund Offset',
+                labelTotalPayment: 'Total Repayment',
+                labelTotalInterest: 'Total Interest',
+                labelDebtRatio: 'Payment/Income Ratio',
+                labelMonthlySurplus: 'Monthly Surplus (After Buy)',
+                heartbreakTitle: '💔 Heartbreak Survival Report',
+                dailyFoodPrefix: 'Daily food budget: ',
+                redemptionTitle: '⛓️ Redemption Progress (Early Payoff Sim)',
+                extraPaymentLabel: 'Extra Monthly Payment (CNY)',
+                labelOriginalYears: 'Original Payoff',
+                labelAcceleratedYears: 'Accelerated Payoff',
+                labelSavedMonths: 'Months Saved',
+                labelSavedInterest: 'Interest Saved',
+                addMoneyRedemption: 'Pay to Free',
+                ctaBtn: '😭 Too much stress — go back and calc my hourly wage & slack off',
+                footer: 'This tool is precise to the cent, but life is not. May you shed the yoke soon.',
+                yearSuffix: ' yrs',
+                monthSuffix: ' mo',
+                zeroMonths: '0 mo',
+                rentSurplusLabel: 'Renting surplus',
+                buySurplusLabel: 'Buying surplus',
+                lessAfterBuy: '({amount} less per month after buying)',
+                lessAfterBuyEnd: '',
+                coffeeLine: 'Total interest {interest} buys {count} coffees (@ ¥30 each). One a day — drink until retirement (~{years} years)',
+                bankWorkLine: 'You\'ll work ~{years} extra years for the bank (interest ÷ annual salary)',
+                survivalLevels: [
+                    { max: 0, icon: '💀', label: 'Unsurvivable Mortgage Slave', msg: 'Underwater every month. Maybe stack more bricks first.' },
+                    { max: 20, icon: '🍜', label: 'Instant Noodle Tier', msg: 'Daily food budget = instant noodles. Seasoning is a luxury.' },
+                    { max: 50, icon: '🥡', label: 'Cheap Takeout Tier', msg: 'Cheapest delivery only. Coupons are your lifeline.' },
+                    { max: 100, icon: '🍱', label: 'Barely Fed Tier', msg: 'You eat, but bubble tea freedom? Dream on.' },
+                    { max: 200, icon: '🐂', label: 'Qualified Wage Slave', msg: 'Can save a bit, but financial freedom is one house away.' },
+                    { max: 350, icon: '🐃', label: 'Prime Farm Ox', msg: 'Life is okay, occasional dining out — then you glance at housing prices and shrink back.' },
+                    { max: 500, icon: '🐂', label: 'Taurus Wage Slave', msg: 'Mortgage steady as a rock, quality of life intact — bourgeois among wage slaves.' },
+                    { max: 1000, icon: '👑', label: 'Elite Mortgage Slave', msg: 'Mortgage doesn\'t stop your Starbucks. Top 10% of mortgage slaves.' },
+                    { max: 2000, icon: '💎', label: 'Gold-Plated Mortgage Slave', msg: 'Others suffer as mortgage slaves; you\'re just living the experience.' },
+                    { max: Infinity, icon: '🚀', label: 'Mortgage Terminator', msg: 'Monthly payment is pocket change. Buy another unit as an investment.' }
+                ],
+                currency: '¥',
+                locale: 'en-US'
+            }
+        };
+
+        let currentLang = 'zh';
+        let repaymentMethod = 'equalInterest';
+
+        function t() {
+            return translations[currentLang];
+        }
+
+        function safeUpdate(id, value, prop = 'textContent') {
+            const el = document.getElementById(id);
+            if (el) el[prop] = value;
+        }
+
+        function updateLoanYearOptions() {
+            const select = document.getElementById('loanYears');
+            const val = select.value;
+            const tr = t();
+            const years = [5, 10, 20, 30];
+            select.innerHTML = years.map(y =>
+                `<option value="${y}"${y == val ? ' selected' : ''}>${y}${tr.yearUnit}</option>`
+            ).join('');
+        }
+
+        function updateLanguageContent() {
+            const tr = t();
+            document.title = tr.pageTitle;
+            document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+
+            safeUpdate('backLink', tr.backLink);
+            safeUpdate('mainTitle', tr.mainTitle);
+            safeUpdate('subtitle', tr.subtitle);
+            safeUpdate('warningBox', tr.warning);
+            safeUpdate('housePriceLabel', tr.housePriceLabel);
+            safeUpdate('housePriceHint', tr.housePriceHint);
+            document.getElementById('housePrice').placeholder = tr.housePricePlaceholder;
+            safeUpdate('downPaymentLabel', tr.downPaymentLabel);
+            safeUpdate('downPaymentHint', tr.downPaymentHint);
+            safeUpdate('loanYearsLabel', tr.loanYearsLabel);
+            safeUpdate('loanYearsHint', tr.loanYearsHint);
+            updateLoanYearOptions();
+            safeUpdate('interestRateLabel', tr.interestRateLabel);
+            safeUpdate('interestRateHint', tr.interestRateHint);
+            safeUpdate('fillLPRBtn', tr.fillLPR);
+            safeUpdate('tipTitle', tr.tipTitle);
+            safeUpdate('tipEqualInterest', tr.tipEqualInterest, 'innerHTML');
+            safeUpdate('tipEqualPrincipal', tr.tipEqualPrincipal, 'innerHTML');
+            safeUpdate('tipSummary', tr.tipSummary);
+            safeUpdate('repaymentLabel', tr.repaymentLabel);
+            safeUpdate('btnEqualInterest', tr.equalInterest);
+            safeUpdate('btnEqualPrincipal', tr.equalPrincipal);
+            safeUpdate('salaryLabel', tr.salaryLabel);
+            safeUpdate('salaryHint', tr.salaryHint);
+            document.getElementById('salary').placeholder = tr.salaryPlaceholder;
+            safeUpdate('housingFundLabel', tr.housingFundLabel + '<span class="help-tip" id="housingFundTip" data-tip="' + tr.housingFundTip + '">?</span>', 'innerHTML');
+            safeUpdate('housingFundHint', tr.housingFundHint);
+            document.getElementById('housingFund').placeholder = tr.housingFundPlaceholder;
+            safeUpdate('rentLabel', tr.rentLabel);
+            safeUpdate('rentHint', tr.rentHint);
+            document.getElementById('rent').placeholder = tr.rentPlaceholder;
+            safeUpdate('livingCostLabel', tr.livingCostLabel);
+            safeUpdate('livingCostHint', tr.livingCostHint);
+            document.getElementById('livingCost').placeholder = tr.livingCostPlaceholder;
+            safeUpdate('proResultsTitle', tr.proResultsTitle);
+            safeUpdate('labelDownPayment', tr.labelDownPayment);
+            safeUpdate('labelLoanAmount', tr.labelLoanAmount);
+            safeUpdate('labelMonthlyPayment', tr.labelMonthlyPayment);
+            safeUpdate('labelActualPayment', tr.labelActualPayment);
+            safeUpdate('labelTotalPayment', tr.labelTotalPayment);
+            safeUpdate('labelTotalInterest', tr.labelTotalInterest);
+            safeUpdate('labelDebtRatio', tr.labelDebtRatio);
+            safeUpdate('labelMonthlySurplus', tr.labelMonthlySurplus);
+            safeUpdate('heartbreakTitle', tr.heartbreakTitle);
+            safeUpdate('redemptionTitle', tr.redemptionTitle);
+            safeUpdate('extraPaymentLabel', tr.extraPaymentLabel);
+            safeUpdate('labelOriginalYears', tr.labelOriginalYears);
+            safeUpdate('labelAcceleratedYears', tr.labelAcceleratedYears);
+            safeUpdate('labelSavedMonths', tr.labelSavedMonths);
+            safeUpdate('labelSavedInterest', tr.labelSavedInterest);
+            safeUpdate('ctaBtn', tr.ctaBtn);
+            safeUpdate('footerText', tr.footer);
+        }
+
+        function switchLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            document.getElementById('langSwitch').textContent = currentLang === 'zh' ? 'English' : '中文';
+            localStorage.setItem('preferredLang', currentLang);
+            updateLanguageContent();
+            calculate();
+        }
+
+        function round2(n) {
+            return Math.round(n * 100) / 100;
+        }
+
+        function fmt(n) {
+            if (!isFinite(n)) return '-';
+            const tr = t();
+            return tr.currency + n.toLocaleString(tr.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function fmtPct(n) {
+            if (!isFinite(n)) return '-';
+            return n.toFixed(1) + '%';
+        }
+
+        function setMethod(method) {
+            repaymentMethod = method;
+            document.getElementById('btnEqualInterest').classList.toggle('active', method === 'equalInterest');
+            document.getElementById('btnEqualPrincipal').classList.toggle('active', method === 'equalPrincipal');
+            calculate();
+        }
+
+        function setDownPct(pct) {
+            document.getElementById('downPaymentPct').value = pct;
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.pct) === pct);
+            });
+            calculate();
+        }
+
+        function onDownPctInput() {
+            const val = parseFloat(document.getElementById('downPaymentPct').value);
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.pct) === val);
+            });
+            calculate();
+        }
+
+        function fillLPR() {
+            document.getElementById('interestRate').value = 3.95;
+            calculate();
+        }
+
+        /** 等额本息：月供 = P × r × (1+r)^n / ((1+r)^n - 1) */
+        function calcEqualInterest(P, r, n) {
+            if (n <= 0 || P <= 0) return { monthlyPayment: 0, totalInterest: 0, totalPayment: 0 };
+            if (r === 0) {
+                const mp = round2(P / n);
+                return { monthlyPayment: mp, totalInterest: 0, totalPayment: round2(P) };
+            }
+            const pow = Math.pow(1 + r, n);
+            const monthlyPayment = round2(P * r * pow / (pow - 1));
+            const totalPayment = round2(monthlyPayment * n);
+            const totalInterest = round2(totalPayment - P);
+            return { monthlyPayment, totalInterest, totalPayment };
+        }
+
+        /** 等额本金：逐月精确计算 */
+        function calcEqualPrincipal(P, r, n) {
+            if (n <= 0 || P <= 0) return { firstPayment: 0, lastPayment: 0, totalInterest: 0, totalPayment: 0, monthlyPayment: 0 };
+            const monthlyPrincipal = P / n;
+            let remaining = P;
+            let totalInterest = 0;
+            let firstPayment = 0, lastPayment = 0;
+            for (let i = 0; i < n; i++) {
+                const interest = round2(remaining * r);
+                const payment = round2(monthlyPrincipal + interest);
+                totalInterest = round2(totalInterest + interest);
+                remaining = round2(remaining - monthlyPrincipal);
+                if (i === 0) firstPayment = payment;
+                if (i === n - 1) lastPayment = payment;
+            }
+            return {
+                firstPayment,
+                lastPayment,
+                totalInterest: round2(totalInterest),
+                totalPayment: round2(P + totalInterest),
+                monthlyPayment: firstPayment
+            };
+        }
+
+        /** 提前还款模拟：每月多还 extra，缩短期限 */
+        function simulatePrepayment(P, r, n, baseMonthlyPayment, extra, isEqualPrincipal) {
+            if (P <= 0 || n <= 0) return { months: 0, totalInterest: 0 };
+            let remaining = P;
+            let months = 0;
+            let totalInterest = 0;
+            const monthlyPrincipal = isEqualPrincipal ? P / n : 0;
+            const maxMonths = n * 3;
+
+            while (remaining > 0.005 && months < maxMonths) {
+                months++;
+                const interest = round2(remaining * r);
+                totalInterest = round2(totalInterest + interest);
+                let payment;
+                if (isEqualPrincipal) {
+                    payment = round2(monthlyPrincipal + interest);
+                } else {
+                    payment = baseMonthlyPayment;
+                }
+                let principalPaid = round2(payment - interest + extra);
+                if (principalPaid <= 0) principalPaid = round2(remaining);
+                if (principalPaid > remaining) principalPaid = remaining;
+                remaining = round2(remaining - principalPaid);
+            }
+            return { months, totalInterest: round2(totalInterest) };
+        }
+
+        function getSurvivalLevel(dailyFood) {
+            const levels = t().survivalLevels;
+            for (const level of levels) {
+                if (dailyFood < level.max) return level;
+            }
+            return levels[levels.length - 1];
+        }
+
+        function calculate() {
+            const tr = t();
+            const price = parseFloat(document.getElementById('housePrice').value) || 0;
+            const downPct = parseFloat(document.getElementById('downPaymentPct').value) || 0;
+            const years = parseInt(document.getElementById('loanYears').value) || 30;
+            const annualRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const housingFund = parseFloat(document.getElementById('housingFund').value) || 0;
+            const rent = parseFloat(document.getElementById('rent').value) || 0;
+            const livingCost = parseFloat(document.getElementById('livingCost').value) || 0;
+            const extraPayment = parseFloat(document.getElementById('extraPayment').value) || 0;
+
+            const downPayment = round2(price * downPct / 100);
+            const loanAmount = round2(price - downPayment);
+            const monthlyRate = annualRate / 100 / 12;
+            const totalMonths = years * 12;
+
+            let monthlyPayment, totalInterest, totalPayment, paymentLabel;
+            const isEP = repaymentMethod === 'equalPrincipal';
+
+            if (isEP) {
+                const r = calcEqualPrincipal(loanAmount, monthlyRate, totalMonths);
+                monthlyPayment = r.firstPayment;
+                totalInterest = r.totalInterest;
+                totalPayment = r.totalPayment;
+                paymentLabel = fmt(r.firstPayment) + ' → ' + fmt(r.lastPayment);
+            } else {
+                const r = calcEqualInterest(loanAmount, monthlyRate, totalMonths);
+                monthlyPayment = r.monthlyPayment;
+                totalInterest = r.totalInterest;
+                totalPayment = r.totalPayment;
+                paymentLabel = fmt(monthlyPayment);
+            }
+
+            const gjjDeduction = Math.min(housingFund, monthlyPayment);
+            const actualPayment = round2(monthlyPayment - gjjDeduction);
+            const debtRatio = salary > 0 ? (actualPayment / salary * 100) : 0;
+
+            const rentSurplus = round2(salary - rent - livingCost);
+            // 买房后月结余 = 月薪 + 公积金 - 月供 - 生活费 - 房租
+            const buySurplus = round2(salary + housingFund - monthlyPayment - livingCost - rent);
+            const dailyFood = round2(buySurplus / 30);
+
+            const level = getSurvivalLevel(dailyFood);
+            const coffeeCount = Math.floor(totalInterest / 30);
+            const coffeeYears = Math.round(coffeeCount / 365);
+            const interestWorkYears = salary > 0 ? round2(totalInterest / salary / 12) : 0;
+
+            document.getElementById('rDownPayment').textContent = fmt(downPayment);
+            document.getElementById('rLoanAmount').textContent = fmt(loanAmount);
+            document.getElementById('rMonthlyPayment').textContent = paymentLabel;
+            document.getElementById('rActualPayment').textContent = fmt(actualPayment);
+            document.getElementById('rTotalPayment').textContent = fmt(totalPayment);
+            document.getElementById('rTotalInterest').textContent = fmt(totalInterest);
+            document.getElementById('rDebtRatio').textContent = fmtPct(debtRatio);
+            document.getElementById('rMonthlySurplus').textContent = fmt(buySurplus);
+
+            document.getElementById('rDailyFood').textContent = tr.dailyFoodPrefix + fmt(dailyFood);
+            document.getElementById('rSurvivalLevel').textContent = level.icon + ' ' + level.label;
+
+            let compareLine = '<p>' + tr.rentSurplusLabel + ' <span>' + fmt(rentSurplus) + '</span> → ' + tr.buySurplusLabel + ' <span>' + fmt(buySurplus) + '</span>';
+            if (buySurplus < rentSurplus) {
+                if (currentLang === 'zh') {
+                    compareLine += tr.lessAfterBuy + '<span>' + fmt(round2(rentSurplus - buySurplus)) + '</span>' + tr.lessAfterBuyEnd;
+                } else {
+                    compareLine += tr.lessAfterBuy.replace('{amount}', fmt(round2(rentSurplus - buySurplus)));
+                }
+            }
+            compareLine += '</p>';
+
+            document.getElementById('rHeartbreakDetail').innerHTML =
+                '<p>' + level.msg + '</p>' +
+                compareLine +
+                '<p>' + tr.coffeeLine
+                    .replace('{interest}', '<span>' + fmt(totalInterest) + '</span>')
+                    .replace('{count}', '<span>' + coffeeCount.toLocaleString(tr.locale) + '</span>')
+                    .replace('{years}', '<span>' + coffeeYears + '</span>') + '</p>' +
+                '<p>' + tr.bankWorkLine.replace('{years}', '<span>' + interestWorkYears + '</span>') + '</p>';
+
+            // 赎身进度条
+            const orig = isEP
+                ? calcEqualPrincipal(loanAmount, monthlyRate, totalMonths)
+                : calcEqualInterest(loanAmount, monthlyRate, totalMonths);
+            const origInterest = orig.totalInterest;
+
+            const accelerated = simulatePrepayment(
+                loanAmount, monthlyRate, totalMonths,
+                isEP ? 0 : monthlyPayment,
+                extraPayment, isEP
+            );
+
+            const savedMonths = Math.max(0, totalMonths - accelerated.months);
+            const savedInterest = round2(origInterest - accelerated.totalInterest);
+            const progressPct = totalMonths > 0 ? Math.min(100, round2((savedMonths / totalMonths) * 100)) : 0;
+
+            document.getElementById('rOriginalYears').textContent = years + tr.yearSuffix;
+            document.getElementById('rAcceleratedYears').textContent =
+                extraPayment > 0
+                    ? (accelerated.months / 12).toFixed(1) + tr.yearSuffix
+                    : years + tr.yearSuffix;
+            document.getElementById('rSavedMonths').textContent = extraPayment > 0 ? savedMonths + tr.monthSuffix : tr.zeroMonths;
+            document.getElementById('rSavedInterest').textContent = extraPayment > 0 ? fmt(Math.max(0, savedInterest)) : fmt(0);
+
+            const bar = document.getElementById('redemptionBar');
+            bar.style.width = Math.max(progressPct, extraPayment > 0 ? 8 : 0) + '%';
+            bar.textContent = extraPayment > 0 ? progressPct + '%' : tr.addMoneyRedemption;
+        }
+
+        // 语言初始化（与 index.html 共享 preferredLang）
+        const storedLang = localStorage.getItem('preferredLang');
+        currentLang = (storedLang === 'zh' || storedLang === 'en') ? storedLang : 'zh';
+        document.getElementById('langSwitch').textContent = currentLang === 'zh' ? 'English' : '中文';
+        document.getElementById('langSwitch').addEventListener('click', switchLanguage);
+        updateLanguageContent();
+        calculate();
+    </script>
+</body>
+</html>
