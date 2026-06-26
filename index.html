@@ -6381,17 +6381,11 @@ What's your rank? Show off 👉 https://monsterwbin-afk.github.io/gold-income/`
             // 计算时薪
             let hourlyRate = 0;
             if (totalIncome > 0) {
-                if (monthlyIncome > 0) {
-                    // 有月薪时按正常计算
-                    const workDays = parseFloat(document.getElementById('workDays').value) || 5;
-                    const workHours = parseFloat(document.getElementById('workHours').value) || 8;
-                    const weeklyIncome = totalIncome / 4.333;
-                    const dailyIncome = weeklyIncome / workDays;
-                    hourlyRate = dailyIncome / workHours;
-                } else {
-                    // 只有被动收入时，24小时均摊
-                    hourlyRate = totalIncome / 30 / 24;
-                }
+                const workDays = parseFloat(document.getElementById('workDays').value) || 5;
+                const workHours = parseFloat(document.getElementById('workHours').value) || 8;
+                const weeklyIncome = totalIncome / 4.333;
+                const dailyIncome = weeklyIncome / workDays;
+                hourlyRate = dailyIncome / workHours;
             }
             document.getElementById('hourlyDetailValue').textContent = `¥${hourlyRate.toFixed(2)}`;
             
@@ -7255,6 +7249,8 @@ async function shareAchievement() {
                 });
                 const income = calculateIncome(0); // 使用计算后的总收入
                 updateDisplay(income);
+                updateIncomeResultDisplay();
+                updateInputMessages();
                 startRealTimeCoinDrop();
                 
                 // 显示月薪分级梗
@@ -7277,6 +7273,8 @@ async function shareAchievement() {
                 });
                 const income = calculateIncome(0); // 使用计算后的总收入
                 updateDisplay(income);
+                updateIncomeResultDisplay();
+                updateInputMessages();
                 startRealTimeCoinDrop();
                 
                 // 显示被动收入分级梗
