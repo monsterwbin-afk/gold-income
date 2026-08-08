@@ -263,10 +263,11 @@
         <div class="about-card">
             <h1 class="about-title" id="aboutTitle">关于牛马金币计算器</h1>
             <p class="about-text" id="aboutText1">这个网站诞生于一个灵魂拷问：<br>"我这一小时，到底值几个钱？"</p>
-            <p class="about-text" id="aboutText2">算完之后，沉默了。<br>于是做了这个计算器，帮同样迷茫的牛马们算清自己的价码。</p>
-            <p class="about-text" id="aboutText3">顺便做了个接金币小游戏，让金币从屏幕掉下来的时候，<br>至少那一刻，你是开心的。</p>
-            <p class="about-text" id="aboutText4">希望你算完这笔账之后，<br>要么更清醒地搬砖，<br>要么更坚定地向前。</p>
+            <p class="about-text" id="aboutText2">很多人只看月薪，却忽略了每周工作天数和每天实际工时。本计算器把月薪、被动收入和工作时长结合起来，帮你算出更真实的时薪。</p>
+            <p class="about-text" id="aboutText3">它适合所有想了解自己时间价值的人：上班族、自由职业者、准备买房的人，以及想对比不同工作待遇的你。</p>
+            <p class="about-text" id="aboutText4">页面中还加入了接金币小游戏，希望在沉重的现实之外，给你一个轻松的入口，让你边算边反思“时间到底值多少”。</p>
             <p class="about-text" id="aboutText5">📮 想骂我、夸我、或者有Bug要报：<br>monster.wbin（at）gmail（dot）com<br>（邮件标题请写"牛马来信"，我会优先看）</p>
+            <p class="about-text" id="aboutText6">本网站工具仅供参考，最终财务决策请结合个人收支情况、地区生活成本与专业建议。</p>
             <a class="return-btn" id="returnBtn" href="index.html">返回首页</a>
         </div>
     </div>
@@ -276,10 +277,11 @@
             zh: {
                 aboutTitle: '关于牛马金币计算器',
                 aboutText1: '这个网站诞生于一个灵魂拷问：\n"我这一小时，到底值几个钱？"',
-                aboutText2: '算完之后，沉默了。\n于是做了这个计算器，帮同样迷茫的牛马们算清自己的价码。',
-                aboutText3: '顺便做了个接金币小游戏，让金币从屏幕掉下来的时候，\n至少那一刻，你是开心的。',
-                aboutText4: '希望你算完这笔账之后，\n要么更清醒地搬砖，\n要么更坚定地向前。',
+                aboutText2: '很多人只看月薪，却忽略了每周工作天数和每天实际工时。本计算器把月薪、被动收入和工作时长结合起来，帮你算出更真实的时薪。',
+                aboutText3: '它适合所有想了解自己时间价值的人：上班族、自由职业者、准备买房的人，以及想对比不同工作待遇的你。',
+                aboutText4: '页面中还加入了接金币小游戏，希望在沉重的现实之外，给你一个轻松的入口，让你边算边反思“时间到底值多少”。',
                 aboutText5: '📮 想骂我、夸我、或者有Bug要报：\nmonster.wbin（at）gmail（dot）com\n（邮件标题请写"牛马来信"，我会优先看）',
+                aboutText6: '本网站工具仅供参考，最终财务决策请结合个人收支情况、地区生活成本与专业建议。',
                 returnBtn: '返回首页',
                 langSwitch: 'English',
                 aboutNav: '关于',
@@ -288,10 +290,11 @@
             en: {
                 aboutTitle: 'About Niuma Gold Calculator',
                 aboutText1: 'This website was born from a soul-searching question:\n"How much is this hour of mine really worth?"',
-                aboutText2: 'After calculating, I fell silent.\nSo I made this calculator to help fellow "niuma" (workhorses) figure out their true worth.',
-                aboutText3: 'I also added a coin-catching mini-game.\nWhen gold coins fall from the screen,\nat least in that moment, you are happy.',
-                aboutText4: 'I hope after calculating this bill,\nyou either work more clearly,\nor move forward more firmly.',
+                aboutText2: 'Many people only look at monthly income and ignore weekly work days and daily working hours. This calculator combines salary, passive income, and work time to help you derive a more realistic hourly value.',
+                aboutText3: 'It is useful for anyone who wants to understand the value of their time: office workers, freelancers, people preparing to buy a home, and anyone comparing different job offers.',
+                aboutText4: 'The page also includes a coin-catching mini-game, so that in addition to the heavy reality, you have a light moment to think about "what is my time really worth".',
                 aboutText5: '📮 Want to scold me, praise me, or report a bug:\nmonster.wbin (at) gmail (dot)com\n(Please write "Niuma Letter" in the email subject, I will prioritize it)',
+                aboutText6: 'This tool is for reference only. Final financial decisions should consider your personal expenses, local costs, and professional advice.',
                 returnBtn: 'Return Home',
                 langSwitch: '中文',
                 aboutNav: 'About',
@@ -307,6 +310,7 @@
             document.getElementById('aboutText3').innerHTML = t.aboutText3.replace(/\n/g, '<br>');
             document.getElementById('aboutText4').innerHTML = t.aboutText4.replace(/\n/g, '<br>');
             document.getElementById('aboutText5').innerHTML = t.aboutText5.replace(/\n/g, '<br>');
+            document.getElementById('aboutText6').innerHTML = t.aboutText6.replace(/\n/g, '<br>');
             const aboutNav = document.getElementById('aboutNav');
             const privacyNav = document.getElementById('privacyNav');
             const returnBtn = document.getElementById('returnBtn');
